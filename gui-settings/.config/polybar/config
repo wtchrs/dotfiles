@@ -37,7 +37,9 @@ font-3 = "Font Awesome 5 Brands:pixelsize=12;3"
 ;--------;
 
 background = #00000000
-foreground = #c5a9f9
+;foreground = #c5a9f9
+;foreground = #e0ece4
+foreground = #dfdfdf
 border-color = #00000000
 
 ;---------------;
@@ -45,13 +47,13 @@ border-color = #00000000
 ;---------------;
 
 fixed-center = true
-padding-left = 2 
+padding-left = 2
 padding-right = 2
 module-margin = 1.5
 
 modules-left = volume backlight battery mpd
 modules-center = i3
-modules-right = wlan cpu date time
+modules-right = cpu memory wlan date time
 
 tray-position = none
 tray-detached = true
@@ -102,13 +104,13 @@ border-color = #00000000
 ;---------------;
 
 fixed-center = true
-padding-left = 2 
+padding-left = 2
 padding-right = 2
 module-margin = 1.5
 
-;modules-left = 
+;modules-left =
 modules-center = mpd
-;modules-right = 
+;modules-right =
 
 
 ;---------;
@@ -123,7 +125,7 @@ strip-wsnumbers = true
 enable-scroll = false
 
 label-unfocused-foreground = #afafaf
-label-focused-foreground = #c5a9f9
+label-focused-foreground = #ffffff
 label-urgent-foreground = #ff0000
 
 [module/time]
@@ -199,7 +201,7 @@ type = internal/backlight
 
 ; Use the following command to list available cards:
 ; $ ls -1 /sys/class/backlight/
-card = radeon_bl0
+card = intel_backlight
 
 format = <ramp> <label>
 
@@ -208,6 +210,8 @@ label = %percentage%%
 ramp-0 = 
 ramp-1 = 
 ramp-2 = 
+
+enable-scroll = true
 
 [module/wlan]
 type = internal/network
@@ -218,6 +222,8 @@ interval = 5
 
 label-connected =  %essid%
 label-disconnected =  Not Connected
+
+;click-left = nm-connection-editor
 
 [module/cpu]
 type = internal/cpu

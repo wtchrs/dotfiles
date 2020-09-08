@@ -57,8 +57,8 @@ Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 "Plug 'bling/vim-bufferline'
 Plug 'joshdick/onedark.vim'
-Plug 'chriskempson/base16-vim'
-Plug 'morhetz/gruvbox'
+"Plug 'chriskempson/base16-vim'
+"Plug 'morhetz/gruvbox'
 "Plug 'pangloss/vim-javascript'
 Plug 'mengelbrecht/lightline-bufferline'
 Plug 'mattn/emmet-vim'
@@ -71,6 +71,8 @@ call plug#end()
 
 set background=dark
 colorscheme onedark
+
+hi Normal guibg=NONE ctermbg=NONE
 
 " airline setting
 let g:airline_theme='bubblegum'
