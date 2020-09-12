@@ -2,19 +2,20 @@
 ! URXVT CONFIG !
 !--------------!
 
-URxvt.internalBorder:	10
+URxvt.internalBorder:	5
 URxvt.scrollBar:	false
 URxvt.letterSpace:	-1
 !URxvt.cursorColor:	#191919
 URxvt.font: xft:Hack:size=12, xft:Font Awesome 5 Free Solid:size=12
 !! Larger history limit
-urxvt.saveLines: 1000000
+URxvt.saveLines: 1000000
 
 !! Perl extensions
-urxvt.perl-ext-common: default,matcher,font-size,clipboard
+URxvt.perl-ext-common: default,matcher,font-size,clipboard
 !! Open urls in browser with Control-Click
-urxvt.urlLauncher: /usr/bin/firefox
-urxvt.matcher.button: C1
+!urxvt.urlLauncher: /usr/bin/firefox
+URxvt.urlLauncher: /usr/bin/google-chrome-stable
+URxvt.matcher.button: C1
 !! Change font size on Control-Plus/Minus
 URxvt.keysym.Control-0x2b: perl:font-size:increase
 URxvt.keysym.Control-0x2d: perl:font-size:decrease

@@ -1,3 +1,5 @@
+#!/usr/bin/env sh
+
 xrdb -I$HOME ~/.Xresources
 
 export GTK_IM_MODULE=ibus

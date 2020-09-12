@@ -18,6 +18,9 @@ floating_modifier $mod
 # kill focused window
 bindsym $mod+q kill
 
+# do not use mouse for focus (still can use mouse click)
+focus_follows_mouse no
+
 # change focus
 bindsym $mod+j focus left
 bindsym $mod+k focus down
@@ -101,8 +104,6 @@ bindsym $mod+Shift+8 move container to workspace $ws8
 bindsym $mod+Shift+9 move container to workspace $ws9
 bindsym $mod+Shift+0 move container to workspace $ws10
 
-
-
 # resize window (you can also use the mouse for that)
 mode "resize" {
         # These bindings trigger as soon as you enter the resize mode
@@ -130,14 +131,12 @@ mode "resize" {
 
 bindsym $mod+r mode "resize"
 
-
-
 #----------------#
 # BASIC BINDINGS #
 #----------------#
 
 # rofi
-bindsym $mod+d exec --no-startup-id "rofi -modi window,run,drun,ssh -show run"
+bindsym $mod+d exec --no-startup-id "rofi -modi window,run,drun,ssh -show drun"
 
 # urxvt
 bindsym $mod+Return exec --no-startup-id urxvt
@@ -168,9 +167,9 @@ bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcu
 # GAPS #
 #------#
 
-gaps inner 20
-gaps outer 0
-bindsym $mod+o gaps outer current set 0; gaps inner current set 10
+gaps inner 10
+gaps outer 10
+bindsym $mod+o gaps outer current set 10; gaps inner current set 10
 bindsym $mod+i gaps outer current set 20; gaps inner current set 20
 
 #------------#
@@ -178,15 +177,15 @@ bindsym $mod+i gaps outer current set 20; gaps inner current set 20
 #------------#
 
 # window border
-for_window [class="^.*"] border pixel 0
+for_window [class="^.*"] border pixel 2
 #for_window [class=".*"] title_format "<span font='Hack 10'> > %title</span>"
 
-# class				border		background	text		indicator	child border
-client.focused          	#		#		#	 	#		#
-client.unfocused        	#		#		#		#		#
-client.focused_inactive 	#		#		#		#		#
-client.urgent           	#		#		#		#		#
-client.background 		#
+# class                 border  backgr. text    indicator
+client.background       #000000
+client.focused          #dddddd #dddddd #ffffff #2e9ef4
+client.focused_inactive #aaaaaa #aaaaaa #ffffff #484e50
+client.unfocused        #aaaaaa #aaaaaa #888888 #292d2e
+client.urgent           #ff4949 #ff4949 #ffffff #900000
 
 #----------------------#
 # STARTUP APPLICATIONS #
@@ -208,7 +207,6 @@ exec --no-startup-id ibus-daemon -drx
 # SPECIAL CASES #
 #---------------#
 
-
 # thunar
 for_window [class="Thunar"] floating enable
 for_window [class="Thunar"] resize set 1000 750
@@ -227,6 +225,9 @@ for_window [instance="floating"] floating enable
 for_window [class="Soffice"] resize set 1000 750
 for_window [class="Soffice"] move absolute position center
 
+floating_maximum_size 1280 x 720
+floating_minimum_size -1 x -1
+
 #------------#
 # MEDIA KEYS #
 #------------#
@@ -240,18 +241,16 @@ bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute 0 toggle
 bindsym XF86MonBrightnessUp exec light -A 10
 bindsym XF86MonBrightnessDown exec light -U 10
 
-floating_maximum_size 1280 x 720
-floating_minimum_size -1 x -1
-
 #-----#
 # BAR #
 #-----#
 
 exec_always --no-startup-id ~/Scripts/bar.sh
 
-#########################################################################################################################################
-#|||	ASSIGNMENTS
-#########################################################################################################################################
+#-------------#
+# ASSIGNMENTS #
+#-------------#
+
 #assign [class="Firefox"] $ws2
 #assign [class="Chromium"] $ws2
 #assign [class="Gedit"] $ws3
