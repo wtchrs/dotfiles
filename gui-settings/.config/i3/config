@@ -143,10 +143,10 @@ bindsym $mod+Return exec --no-startup-id urxvt
 bindsym $mod+Tab exec --no-startup-id urxvt -name floating
 
 # ranger on floating urxvt
-bindsym $mod+n exec --no-startup-id urxvt -name floating -e ranger
+bindsym $mod+n exec --no-startup-id urxvt -name floating-big -e ranger
 
 # htop on floating urxvt
-bindsym $mod+Escape exec --no-startup-id urxvt -name floating -e htop
+bindsym $mod+Escape exec --no-startup-id urxvt -name floating-big -e htop
 
 # drawing urxvt
 bindsym $mod+t exec --no-startup-id ~/Scripts/urdraw.sh
@@ -182,10 +182,10 @@ for_window [class="^.*"] border pixel 2
 
 # class                 border  backgr. text    indicator
 client.background       #000000
-client.focused          #dddddd #dddddd #ffffff #2e9ef4
-client.focused_inactive #aaaaaa #aaaaaa #ffffff #484e50
-client.unfocused        #aaaaaa #aaaaaa #888888 #292d2e
-client.urgent           #ff4949 #ff4949 #ffffff #900000
+client.focused          #dddddd #dddddd #ffffff #dddddd
+client.focused_inactive #aaaaaa #aaaaaa #ffffff #aaaaaa
+client.unfocused        #aaaaaa #aaaaaa #888888 #aaaaaa
+client.urgent           #ff4949 #ff4949 #ffffff #ff4949
 
 #----------------------#
 # STARTUP APPLICATIONS #
@@ -218,8 +218,12 @@ for_window [class="feh"] move absolute position center
 
 # dropdown terminal
 for_window [instance="floating"] floating enable
-#for_window [instance="floating"] resize set 600 450
+#for_window [instance="floating"] resize set 1000 750
 #for_window [instance="floating"] move absolute position center
+
+# resize some programs on dropdown terminal
+for_window [instance="floating-big"] resize set 1000 750
+for_window [instance="floating-big"] move absolute position center
 
 # libreoffice
 for_window [class="Soffice"] resize set 1000 750
