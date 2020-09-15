@@ -26,11 +26,12 @@ URxvt.keysym.m-v: perl:clipboard:paste
 
 !! real transparency
 URxvt*depth: 32
-URxvt*background: [95]#2d2d2d
+URxvt*background: [85]#2d2d2d
 
 !! fake transparency
 !URxvt*transparent: true
-!URxvt*shading: 30
+!URxvt*shading: 50
+!URxvt*blurRadius: 5
 
 !-------------!
 ! ROFI CONFIG !

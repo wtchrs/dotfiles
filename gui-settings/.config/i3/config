@@ -183,8 +183,8 @@ for_window [class="^.*"] border pixel 2
 # class                 border  backgr. text    indicator
 client.background       #000000
 client.focused          #dddddd #dddddd #ffffff #dddddd
-client.focused_inactive #aaaaaa #aaaaaa #ffffff #aaaaaa
-client.unfocused        #aaaaaa #aaaaaa #888888 #aaaaaa
+client.focused_inactive #999999 #999999 #ffffff #999999
+client.unfocused        #999999 #999999 #888888 #999999
 client.urgent           #ff4949 #ff4949 #ffffff #ff4949
 
 #----------------------#
@@ -194,7 +194,7 @@ client.urgent           #ff4949 #ff4949 #ffffff #ff4949
 exec_always --no-startup-id feh --bg-fill ~/Pictures/wallpaper/wallpaper.jpg
 
 #exec --no-startup-id dropbox
-exec --no-startup-id compton -cb --config ~/.config/compton/compton.conf
+exec --no-startup-id picom --experimental-backends --backend glx -cb --config ~/.config/compton/compton.conf
 #exec --no-startup-id sudo powertop --auto-tune
 exec --no-startup-id nm-applet
 #exec --no-startup-id udiskie
