@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
 
 cp ~/.vimrc     ./.vimrc
 cp ~/.tmux.conf ./.tmux.conf

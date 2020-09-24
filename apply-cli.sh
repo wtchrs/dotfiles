@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
 
-cp .vimrc ~/.vimrc
-cp .tmux.conf ~/.tmux.conf
+cp ./cli-settings/.vimrc     ~/.vimrc
+cp ./cli-settings/.tmux.conf ~/.tmux.conf
 
