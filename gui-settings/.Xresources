@@ -14,8 +14,8 @@ URxvt.saveLines: 1000000
 URxvt.perl-ext-common: default,matcher,font-size,clipboard
 !! Open urls in browser with Control-Click
 !urxvt.urlLauncher: /usr/bin/firefox
-URxvt.urlLauncher: /usr/bin/google-chrome-stable
-URxvt.matcher.button: C1
+URxvt.urlLauncher: /usr/bin/xdg-open
+URxvt.matcher.button: 1
 !! Change font size on Control-Plus/Minus
 URxvt.keysym.Control-0x2b: perl:font-size:increase
 URxvt.keysym.Control-0x2d: perl:font-size:decrease

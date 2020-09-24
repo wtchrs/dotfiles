@@ -25,9 +25,9 @@ let mapleader="`"
 set laststatus=2
 "set statusline=\ %<%l:%v\ [%P]%=%a\ %h%m%r\ %F\
 
-"if !has('gui_running')
+if !has('gui_running')
     set t_Co=256
-"endif
+endif
 
 " Syntax Highlighting
 if has('syntax')
@@ -35,9 +35,9 @@ if has('syntax')
 endif
 
 au BufReadPost *
-\ if line("'\"") > 0 && line("'\"") <= line("$") |
-\ exe "norm g`\"" |
-\ endif
+    \ if line("'\"") > 0 && line("'\"") <= line("$") |
+    \ exe "norm g`\"" |
+    \ endif
 
 "if (has("termguicolors"))
     set notermguicolors
@@ -48,6 +48,7 @@ call plug#begin('~/.vim/plugged')
 
 Plug 'rust-lang/rust.vim'
 Plug 'scrooloose/nerdtree'
+Plug 'preservim/nerdcommenter'
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'tpope/vim-pathogen'
 Plug 'neoclide/coc.nvim', {'branch': 'release', 'tag': '*'}
@@ -57,21 +58,22 @@ Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 "Plug 'bling/vim-bufferline'
 Plug 'joshdick/onedark.vim'
-"Plug 'chriskempson/base16-vim'
 "Plug 'morhetz/gruvbox'
-"Plug 'pangloss/vim-javascript'
 Plug 'mengelbrecht/lightline-bufferline'
 Plug 'mattn/emmet-vim'
 Plug 'junegunn/rainbow_parentheses.vim', {'on': 'RainbowParentheses'}
-"Plug 'majutsushi/tagbar'
 Plug 'liuchengxu/vista.vim'
-Plug 'WolfgangMehner/bash-support'
+"Plug 'WolfgangMehner/bash-support'
+Plug 'jackguo380/vim-lsp-cxx-highlight'
+Plug 'rhysd/vim-clang-format'
+"Plug 'kana/vim-operator-user'
 
 call plug#end()
 
 set background=dark
 colorscheme onedark
 
+" No background color for transparency
 hi Normal guibg=NONE ctermbg=NONE
 
 " airline setting
@@ -84,12 +86,12 @@ let g:airline_powerline_fonts = 1
 " Vista.vim setting
 let g:vista_icon_indent = ["╰─▸ ", "├─▸ "]
 let g:vista_executive_for = {
-  \ 'cpp': 'coc',
-  \ 'rust': 'coc',
-  \ 'javascript': 'coc',
-  \ 'html': 'coc',
-  \ 'haskell': 'coc'
-  \ }
+    \ 'cpp': 'coc',
+    \ 'rust': 'coc',
+    \ 'javascript': 'coc',
+    \ 'html': 'coc',
+    \ 'haskell': 'coc'
+    \ }
 let g:vista_update_on_text_changed = 1
 let g:vista_update_on_text_changed_delay = 3000
 
@@ -137,13 +139,47 @@ map <C-f> :NERDTreeFind<CR>
 let NERDTreeShowHidden=1
 let g:NERDTreeWinPos = "right"
 
+" NERDCommenter Plugin setting
+let g:NERDCreateDefaultMappings = 0
+let g:NERDDefaultAlign = 'left'
+
+nmap <Leader>/ <Plug>NERDCommenterToggle
+xmap <Leader>/ <Plug>NERDCommenterToggle
+
 " delimitMate setting
 let delimitMate_expand_cr=1
+
+" vim-clang-format setting
+let g:clang_format#detect_style_file = 1
+" map to <Leader>cf in C++ code
+autocmd FileType c,cpp,objc nnoremap <buffer><Leader>cf :<C-u>ClangFormat<CR>
+autocmd FileType c,cpp,objc vnoremap <buffer><Leader>cf :ClangFormat<CR>
+" auto-enabling auto-formating
+autocmd FileType c,cpp ClangFormatAutoEnable
 
 "===================
 " Coc.nvim settings
 "===================
 
+" User Settings
+let g:coc_global_extentions = [
+    \ 'coc-cmake', 'coc-clangd', 'coc-vimlsp', 'coc-rust-analyzer',
+    \ 'coc-json', 'coc-eslint', 'coc-tsserver', 'coc-prettier', 'coc-css'
+    \ ]
+
+"let g:coc_user_config =
+
+call coc#config('languageserver', {
+    \ "haskell": {
+    \     "command": "haskell-language-server-wrapper",
+    \     "args": ["--lsp"],
+    \     "rootPatterns": ["*.cabal", "stack.yaml", "cabal.project", "package.yaml", "hie.yaml"],
+    \     "filetypes": ["haskell", "lhaskell"]
+    \ }})
+
+call coc#config('clangd.semanticHighlighting', v:true)
+
+" Recommended Settings
 " TextEdit might fail if hidden is not set.
 set hidden
 
@@ -164,40 +200,40 @@ set shortmess+=c
 " Always show the signcolumn, otherwise it would shift the text each time
 " diagnostics appear/become resolved.
 if has("patch-8.1.1564")
-  " Recently vim can merge signcolumn and number column into one
-  set signcolumn=number
+    " Recently vim can merge signcolumn and number column into one
+    set signcolumn=number
 else
-  set signcolumn=yes
+    set signcolumn=yes
 endif
 
 " Use tab for trigger completion with characters ahead and navigate.
 " NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
 " other plugin before putting this into your config.
 inoremap <silent><expr> <TAB>
-      \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<TAB>" :
-      \ coc#refresh()
+    \ pumvisible() ? "\<C-n>" :
+    \ <SID>check_back_space() ? "\<TAB>" :
+    \ coc#refresh()
 inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 
 function! s:check_back_space() abort
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~# '\s'
+    let col = col('.') - 1
+    return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
 
 " Use <c-space> to trigger completion.
 if has('nvim')
-  inoremap <silent><expr> <c-space> coc#refresh()
+    inoremap <silent><expr> <c-space> coc#refresh()
 else
-  inoremap <silent><expr> <c-@> coc#refresh()
+    inoremap <silent><expr> <c-@> coc#refresh()
 endif
 
 " Use <cr> to confirm completion, `<C-g>u` means break undo chain at current
 " position. Coc only does snippet and additional edit on confirm.
 " <cr> could be remapped by other vim plugin, try `:verbose imap <CR>`.
 if exists('*complete_info')
-  inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
+    inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
 else
-  inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+    inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 endif
 
 " Use `[g` and `]g` to navigate diagnostics
@@ -219,11 +255,11 @@ nnoremap <silent> gr :<C-u>call CocActionAsync('jumpReferences')<CR>
 nnoremap <silent> K :call <SID>show_documentation()<CR>
 
 function! s:show_documentation()
-  if (index(['vim','help'], &filetype) >= 0)
-    execute 'h '.expand('<cword>')
-  else
-    call CocAction('doHover')
-  endif
+    if (index(['vim','help'], &filetype) >= 0)
+        execute 'h '.expand('<cword>')
+    else
+        call CocAction('doHover')
+    endif
 endfunction
 
 " Highlight the symbol and its references when holding the cursor.
@@ -237,11 +273,11 @@ xmap <leader>f  <Plug>(coc-format-selected)
 nmap <leader>f  <Plug>(coc-format-selected)
 
 augroup mygroup
-  autocmd!
-  " Setup formatexpr specified filetype(s).
-  autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
-  " Update signature help on jump placeholder.
-  autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
+    autocmd!
+    " Setup formatexpr specified filetype(s).
+    autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
+    " Update signature help on jump placeholder.
+    autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
 augroup end
 
 " Applying codeAction to the selected region.
