@@ -39,9 +39,9 @@ au BufReadPost *
     \ exe "norm g`\"" |
     \ endif
 
-"if (has("termguicolors"))
-    set notermguicolors
-"endif
+if (has("termguicolors"))
+    set termguicolors
+endif
 
 " Plugins with VimPlug
 call plug#begin('~/.vim/plugged')
@@ -67,6 +67,7 @@ Plug 'liuchengxu/vista.vim'
 Plug 'jackguo380/vim-lsp-cxx-highlight'
 Plug 'rhysd/vim-clang-format'
 "Plug 'kana/vim-operator-user'
+Plug 'easymotion/vim-easymotion'
 
 call plug#end()
 
@@ -75,6 +76,10 @@ colorscheme onedark
 
 " No background color for transparency
 hi Normal guibg=NONE ctermbg=NONE
+
+" termdebug setting
+packadd termdebug
+let g:termdebug_wide=1
 
 " airline setting
 let g:airline_theme='bubblegum'
@@ -86,7 +91,7 @@ let g:airline_powerline_fonts = 1
 " Vista.vim setting
 let g:vista_icon_indent = ["╰─▸ ", "├─▸ "]
 let g:vista_executive_for = {
-    \ 'cpp': 'coc',
+    \ 'cpp': 'ctags',
     \ 'rust': 'coc',
     \ 'javascript': 'coc',
     \ 'html': 'coc',
@@ -136,6 +141,10 @@ let g:user_emmet_leader_key = ','
 " NERDTree Plugin setting
 map <C-n> :NERDTreeToggle<CR>
 map <C-f> :NERDTreeFind<CR>
+
+let NERDTreeMapJumpNextSibling = "<Leader>j"
+let NERDTreeMapJumpPrevSibling = "<Leader>k"
+
 let NERDTreeShowHidden=1
 let g:NERDTreeWinPos = "right"
 
@@ -179,7 +188,7 @@ call coc#config('languageserver', {
 
 call coc#config('clangd.semanticHighlighting', v:true)
 
-" Recommended Settings
+" initial settings
 " TextEdit might fail if hidden is not set.
 set hidden
 

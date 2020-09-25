@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 
-cp ~/.vimrc     ./.vimrc
-cp ~/.tmux.conf ./.tmux.conf
+cp ~/.vimrc     ./cli-settings/.vimrc
+cp ~/.tmux.conf ./cli-settings/.tmux.conf
 
 cp ~/.xinitrc    ./gui-settings/.xinitrc
 cp ~/.Xresources ./gui-settings/.Xresources
