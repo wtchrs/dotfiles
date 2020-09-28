@@ -23,6 +23,7 @@ URxvt.copyCommand: xclip -i -selection clipboard
 URxvt.pasteCommand: xclip -o -selection clipboard
 URxvt.keysym.m-c: perl:clipboard:copy
 URxvt.keysym.m-v: perl:clipboard:paste
+URxvt.iso14755: false
 
 !! real transparency
 URxvt*depth: 32

@@ -140,7 +140,10 @@ bindsym $mod+d exec --no-startup-id "rofi -modi window,run,drun,ssh -show drun"
 
 # urxvt
 bindsym $mod+Return exec --no-startup-id urxvt
+# urxvt floating
 bindsym $mod+Tab exec --no-startup-id urxvt -name floating
+# urxvt with Tmux
+bindsym $mod+Shift+Return exec --no-startup-id urxvt -e ~/Scripts/tmux.sh
 
 # ranger on floating urxvt
 bindsym $mod+n exec --no-startup-id urxvt -name floating-big -e ranger
