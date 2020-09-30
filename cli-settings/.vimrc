@@ -1,10 +1,5 @@
 set encoding=UTF-8
-"set autoindent
-"set cindent
-set smartindent
-set expandtab
-set tabstop=4
-set shiftwidth=4
+
 set number
 set ruler
 set title
@@ -12,18 +7,22 @@ set wrap
 set cursorline
 set linebreak
 set showmatch
-set mouse=a
 set showcmd
 set hidden
-"set showtabline=2
 set belloff=all
+set laststatus=2
 
-set background=dark
+" Indent setting
+set smartindent
+set expandtab
+set tabstop=4
+set shiftwidth=4
+
+" mouse setting
+set mouse=a
+set ttymouse=xterm2
 
 let mapleader="`"
-
-set laststatus=2
-"set statusline=\ %<%l:%v\ [%P]%=%a\ %h%m%r\ %F\
 
 if !has('gui_running')
     set t_Co=256
@@ -53,14 +52,12 @@ Plug 'ctrlpvim/ctrlp.vim'
 Plug 'tpope/vim-pathogen'
 Plug 'neoclide/coc.nvim', {'branch': 'release', 'tag': '*'}
 Plug 'Raimondi/delimitMate'
-"Plug 'itchyny/lightline.vim'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
-"Plug 'bling/vim-bufferline'
-Plug 'joshdick/onedark.vim'
-"Plug 'morhetz/gruvbox'
+"Plug 'itchyny/lightline.vim'
 Plug 'mengelbrecht/lightline-bufferline'
-Plug 'mattn/emmet-vim'
+Plug 'joshdick/onedark.vim'
+"Plug 'mattn/emmet-vim'
 Plug 'junegunn/rainbow_parentheses.vim', {'on': 'RainbowParentheses'}
 Plug 'liuchengxu/vista.vim'
 "Plug 'WolfgangMehner/bash-support'
@@ -83,9 +80,7 @@ let g:termdebug_wide=1
 
 " airline setting
 let g:airline_theme='bubblegum'
-
 let g:airline#extensions#tabline#enabled = 1
-
 let g:airline_powerline_fonts = 1
 
 " Vista.vim setting
@@ -157,6 +152,7 @@ xmap <Leader>/ <Plug>NERDCommenterToggle
 
 " delimitMate setting
 let delimitMate_expand_cr=1
+let delimitMate_expand_space=1
 
 " vim-clang-format setting
 let g:clang_format#detect_style_file = 1
@@ -218,8 +214,7 @@ function s:scroll_cursor_popup(down)
   endif
 
   let pp = popup_getpos(winid)
-  call popup_setoptions( winid,
-        \ {'firstline' : pp.firstline + ( a:down ? 1 : -1 ) } )
+  call popup_setoptions( winid, {'firstline' : pp.firstline + ( a:down ? 1 : -1 ) } )
 
   return 1
 endfunction
@@ -275,10 +270,11 @@ endif
 " Use <cr> to confirm completion, `<C-g>u` means break undo chain at current
 " position. Coc only does snippet and additional edit on confirm.
 " <cr> could be remapped by other vim plugin, try `:verbose imap <CR>`.
+" NOTE: I added '\<c-r>=coc#on_enter()\<CR>' for delimitMate_expand_cr
 if exists('*complete_info')
-  inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
+  inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
 else
-  inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+  inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
 endif
 
 " Use `[g` and `]g` to navigate diagnostics
