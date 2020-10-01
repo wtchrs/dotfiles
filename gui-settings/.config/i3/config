@@ -129,19 +129,26 @@ bindsym $mod+r mode "resize"
 bindsym $mod+d exec --no-startup-id "rofi -modi window,run,drun,ssh -show drun"
 
 # urxvt
-bindsym $mod+Return exec --no-startup-id urxvt
+#bindsym $mod+Return exec --no-startup-id urxvt
 # urxvt floating
-bindsym $mod+Tab exec --no-startup-id urxvt -name floating
+#bindsym $mod+Tab exec --no-startup-id urxvt -name floating
 # urxvt with Tmux
-bindsym $mod+Shift+Return exec --no-startup-id urxvt -e ~/Scripts/tmux.sh
+#bindsym $mod+Shift+Return exec --no-startup-id urxvt -e ~/Scripts/tmux.sh
 
-# ranger on floating urxvt
-bindsym $mod+n exec --no-startup-id urxvt -name floating-big -e ranger
+# Alacritty
+bindsym $mod+Return exec --no-startup-id alacritty
+# floating Alacritty
+bindsym $mod+Tab exec --no-startup-id alacritty --class floating
+# Alacritty with Tmux
+bindsym $mod+Shift+Return exec --no-startup-id alacritty --command ~/Scripts/tmux.sh
 
-# htop on floating urxvt
-bindsym $mod+Escape exec --no-startup-id urxvt -name floating-big -e htop
+# ranger on floating Alacritty
+bindsym $mod+n exec --no-startup-id alacritty --class floating-big --command ranger
 
-# drawing urxvt
+# htop on floating Alacritty
+bindsym $mod+Escape exec --no-startup-id alacritty --class floating-big --command htop
+
+# drawing Alacritty
 bindsym $mod+t exec --no-startup-id ~/Scripts/urdraw.sh
 
 # restart i3 in place

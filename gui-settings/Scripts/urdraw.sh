@@ -19,5 +19,6 @@ read -r X Y W H < <(slop -f "%x %y %w %h" -b 4 -t 0 -q)
 g=${W}x${H}+${X}+${Y}
 
 # Draw with floating rule
-urxvt -name floating -g $g &
+#urxvt -name floating -g $g &
+alacritty --class floating --position ${X} ${Y} --dimensions ${W} ${H}
 
