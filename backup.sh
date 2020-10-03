@@ -10,6 +10,7 @@ cp -r ~/Scripts  ./gui-settings
 cp -r ~/Pictures ./gui-settings
 
 cp -r ~/.config/alacritty ./gui-settings/.config
+cp -r ~/.config/cava      ./gui-settings/.config
 cp -r ~/.config/compton   ./gui-settings/.config
 cp -r ~/.config/dunst     ./gui-settings/.config
 cp -r ~/.config/i3        ./gui-settings/.config

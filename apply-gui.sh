@@ -7,9 +7,11 @@ cp -r ./gui-settings/Scripts  ~
 cp -r ./gui-settings/Pictures ~
 
 cp -r ./gui-settings/.config/alacritty ~/.config
+cp -r ./gui-settings/.config/cava      ~/.config
 cp -r ./gui-settings/.config/compton   ~/.config
 cp -r ./gui-settings/.config/dunst     ~/.config
 cp -r ./gui-settings/.config/i3        ~/.config
 cp -r ./gui-settings/.config/mpd       ~/.config
 cp -r ./gui-settings/.config/polybar   ~/.config
 cp -r ./gui-settings/.config/ranger    ~/.config
+

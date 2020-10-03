@@ -51,7 +51,7 @@ Plug 'scrooloose/nerdtree'
 Plug 'preservim/nerdcommenter'
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'tpope/vim-pathogen'
-Plug 'neoclide/coc.nvim', {'branch': 'release', 'tag': '*'}
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'Raimondi/delimitMate'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
@@ -168,7 +168,7 @@ autocmd FileType c,cpp ClangFormatAutoEnable
 "===================
 
 " User Settings
-let g:coc_global_extentions = [
+let g:coc_global_extensions = [
     \ 'coc-cmake', 'coc-clangd', 'coc-vimlsp', 'coc-rust-analyzer',
     \ 'coc-json', 'coc-eslint', 'coc-tsserver', 'coc-prettier', 'coc-css'
     \ ]
