@@ -75,6 +75,10 @@ colorscheme onedark
 " No background color for transparency
 hi Normal guibg=NONE ctermbg=NONE
 
+" skip over closing parenthesis
+" merge it into coc.nvim's Tab binding
+"inoremap <expr> <Tab> stridx('])}"', getline('.')[col('.')-1])==-1 ? "\t" : "\<Right>"
+
 " termdebug setting
 packadd termdebug
 let g:termdebug_wide=1
@@ -170,7 +174,8 @@ autocmd FileType c,cpp ClangFormatAutoEnable
 " User Settings
 let g:coc_global_extensions = [
     \ 'coc-cmake', 'coc-clangd', 'coc-vimlsp', 'coc-rust-analyzer',
-    \ 'coc-json', 'coc-eslint', 'coc-tsserver', 'coc-prettier', 'coc-css'
+    \ 'coc-json', 'coc-eslint', 'coc-tsserver', 'coc-prettier', 'coc-css',
+    \ 'coc-sh', 'coc-snippets'
     \ ]
 
 "let g:coc_user_config =
@@ -252,7 +257,9 @@ endif
 " other plugin before putting this into your config.
 inoremap <silent><expr> <TAB>
     \ pumvisible() ? "\<C-n>" :
+    \ coc#expandableOrJumpable() ? "\<C-r>=coc#rpc#request('doKeymap', ['snippets-expand-jump',''])\<CR>" :
     \ <SID>check_back_space() ? "\<TAB>" :
+    \ stridx('])}"', getline('.')[col('.')-1])!=-1 ? "\<Right>" :
     \ coc#refresh()
 inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 
@@ -260,6 +267,8 @@ function! s:check_back_space() abort
   let col = col('.') - 1
   return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
+
+let g:coc_snippet_next = '<tab>'
 
 " Use <c-space> to trigger completion.
 if has('nvim')

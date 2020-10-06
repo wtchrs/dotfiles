@@ -222,6 +222,6 @@ label-connected =  %downspeed% |  %upspeed%
 
 inherit = bar/white
 
-background = #ffffff
+background = #888888
 
-tray-position = center
+tray-position = right
