@@ -13,6 +13,9 @@ set hidden
 set belloff=all
 set laststatus=2
 
+" Line length guide
+set colorcolumn=80
+
 " Indent setting
 set smartindent
 set expandtab
@@ -39,8 +42,13 @@ au BufReadPost *
     \ exe "norm g`\"" |
     \ endif
 
-if (has("termguicolors"))
-    set termguicolors
+"if (has("termguicolors"))
+"    set termguicolors
+"endif
+if exists('+termguicolors')
+  let &t_8f="\<Esc>[38;2;%lu;%lu;%lum"
+  let &t_8b="\<Esc>[48;2;%lu;%lu;%lum"
+  set termguicolors
 endif
 
 " Plugins with VimPlug
@@ -66,6 +74,7 @@ Plug 'jackguo380/vim-lsp-cxx-highlight'
 Plug 'rhysd/vim-clang-format'
 "Plug 'kana/vim-operator-user'
 Plug 'easymotion/vim-easymotion'
+Plug 'Yggdroot/indentLine'
 
 call plug#end()
 
@@ -82,6 +91,9 @@ hi Normal guibg=NONE ctermbg=NONE
 " termdebug setting
 packadd termdebug
 let g:termdebug_wide=1
+
+let g:indentLine_char = '┆'
+"let g:indentLine_char_list = ['|', '¦', '┆', '┊']
 
 " airline setting
 let g:airline_theme='bubblegum'
@@ -105,6 +117,7 @@ nmap <F8> :Vista!!<CR>
 " RainbowParenthesis
 let g:rainbow#max_level = 16
 let g:rainbow#pairs = [['(', ')'], ['{', '}'], ['[', ']']]
+let g:rainbow#blacklist = [248, 59, 239, 238]
 autocmd VimEnter * RainbowParentheses
 
 " shortcut for buffers and bufferline
