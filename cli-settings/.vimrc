@@ -66,7 +66,7 @@ Plug 'vim-airline/vim-airline-themes'
 "Plug 'itchyny/lightline.vim'
 Plug 'mengelbrecht/lightline-bufferline'
 Plug 'joshdick/onedark.vim'
-"Plug 'mattn/emmet-vim'
+Plug 'mattn/emmet-vim'
 Plug 'junegunn/rainbow_parentheses.vim', {'on': 'RainbowParentheses'}
 Plug 'liuchengxu/vista.vim'
 "Plug 'WolfgangMehner/bash-support'
@@ -75,6 +75,7 @@ Plug 'rhysd/vim-clang-format'
 "Plug 'kana/vim-operator-user'
 Plug 'easymotion/vim-easymotion'
 Plug 'Yggdroot/indentLine'
+Plug 'turbio/bracey.vim'
 
 call plug#end()
 
@@ -92,6 +93,7 @@ hi Normal guibg=NONE ctermbg=NONE
 packadd termdebug
 let g:termdebug_wide=1
 
+" indentline setting
 let g:indentLine_char = '┆'
 "let g:indentLine_char_list = ['|', '¦', '┆', '┊']
 
@@ -184,14 +186,17 @@ autocmd FileType c,cpp ClangFormatAutoEnable
 " Coc.nvim settings
 "===================
 
-" User Settings
+" Extensions for install
 let g:coc_global_extensions = [
     \ 'coc-cmake', 'coc-clangd', 'coc-vimlsp', 'coc-rust-analyzer',
-    \ 'coc-json', 'coc-eslint', 'coc-tsserver', 'coc-prettier', 'coc-css',
-    \ 'coc-sh', 'coc-snippets'
+    \ 'coc-html', 'coc-json', 'coc-eslint', 'coc-tsserver', 'coc-prettier',
+    \ 'coc-css', 'coc-stylelint', 'coc-emmet', 'coc-sh', 'coc-snippets'
     \ ]
 
-"let g:coc_user_config =
+" Coc Configs
+call coc#config('coc.preferences.formatOnSaveFiletypes', [
+    \ "html", "javascript", "css", "markdown", "rust"
+    \ ])
 
 call coc#config('languageserver', {
     \ "haskell": {
@@ -203,6 +208,8 @@ call coc#config('languageserver', {
 
 call coc#config('clangd.semanticHighlighting', v:true)
 call coc#config('clangd.arguments', ["-header-insertion=never"])
+
+call coc#config('prettier.tabWidth', 4)
 
 " for scrolling popup
 nnoremap <expr> <c-d> <SID>scroll_cursor_popup(1) ? '<esc>' : '<c-d>'
@@ -237,10 +244,6 @@ function s:scroll_cursor_popup(down)
 
   return 1
 endfunction
-
-" initial settings
-" TextEdit might fail if hidden is not set.
-set hidden
 
 " Some servers have issues with backup files, see #649.
 set nobackup
@@ -306,10 +309,6 @@ nmap <silent> [g <Plug>(coc-diagnostic-prev)
 nmap <silent> ]g <Plug>(coc-diagnostic-next)
 
 " GoTo code navigation.
-"nmap <silent> gd <Plug>(coc-definition)
-"nmap <silent> gy <Plug>(coc-type-definition)
-"nmap <silent> gi <Plug>(coc-implementation)
-"nmap <silent> gr <Plug>(coc-references)
 nnoremap <silent> gd :<C-u>call CocActionAsync('jumpDefinition')<CR>
 nnoremap <silent> gy :<C-u>call CocActionAsync('jumpTypeDefinition')<CR>
 nnoremap <silent> gi :<C-u>call CocActionAsync('jumpImplementation')<CR>
