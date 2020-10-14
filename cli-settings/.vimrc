@@ -1,3 +1,82 @@
+" Plugins with VimPlug
+call plug#begin('~/.vim/plugged')
+
+Plug 'scrooloose/nerdtree'
+  let NERDTreeMapJumpNextSibling = "<Leader>j"
+  let NERDTreeMapJumpPrevSibling = "<Leader>k"
+  let NERDTreeShowHidden=1
+  let g:NERDTreeWinPos = "right"
+  map <C-n> :NERDTreeToggle<CR>
+  map <C-f> :NERDTreeFind<CR>
+
+Plug 'preservim/nerdcommenter'
+  let g:NERDCreateDefaultMappings = 0
+  let g:NERDDefaultAlign = 'left'
+  nmap <Leader>/ <Plug>NERDCommenterToggle
+  xmap <Leader>/ <Plug>NERDCommenterToggle
+
+Plug 'ctrlpvim/ctrlp.vim'
+Plug 'tpope/vim-pathogen'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+
+Plug 'Raimondi/delimitMate'
+  let delimitMate_expand_cr=1
+  let delimitMate_expand_space=1
+
+Plug 'vim-airline/vim-airline'
+  let g:airline_theme='bubblegum'
+  let g:airline#extensions#tabline#enabled = 1
+  let g:airline_powerline_fonts = 1
+
+Plug 'vim-airline/vim-airline-themes'
+Plug 'mengelbrecht/lightline-bufferline'
+Plug 'joshdick/onedark.vim'
+
+Plug 'mattn/emmet-vim'
+  let g:user_emmet_leader_key = ','
+
+Plug 'junegunn/rainbow_parentheses.vim', {'on': 'RainbowParentheses'}
+  let g:rainbow#max_level = 16
+  let g:rainbow#pairs = [['(', ')'], ['{', '}'], ['[', ']']]
+  let g:rainbow#blacklist = [248, 59, 239, 238]
+  autocmd VimEnter * RainbowParentheses
+
+Plug 'liuchengxu/vista.vim'
+  let g:vista_icon_indent = ["╰─▸ ", "├─▸ "]
+  let g:vista_executive_for = {
+      \ 'cpp': 'ctags',
+      \ 'rust': 'coc',
+      \ 'javascript': 'coc',
+      \ 'html': 'coc',
+      \ 'haskell': 'coc'
+      \ }
+  let g:vista_update_on_text_changed = 1
+  let g:vista_update_on_text_changed_delay = 3000
+  nmap <F8> :Vista!!<CR>
+
+Plug 'jackguo380/vim-lsp-cxx-highlight'
+
+Plug 'rhysd/vim-clang-format'
+  let g:clang_format#detect_style_file = 1
+  " map to <Leader>cf in C++ code
+  autocmd FileType c,cpp,objc nnoremap <buffer><Leader>cf :<C-u>ClangFormat<CR>
+  autocmd FileType c,cpp,objc vnoremap <buffer><Leader>cf :ClangFormat<CR>
+  " auto-enabling auto-formating
+  autocmd FileType c,cpp ClangFormatAutoEnable
+
+"Plug 'kana/vim-operator-user'
+Plug 'easymotion/vim-easymotion'
+
+Plug 'Yggdroot/indentLine'
+  let g:indentLine_char = '┆'
+
+Plug 'rust-lang/rust.vim'
+Plug 'turbio/bracey.vim'
+Plug 'tjdevries/coc-zsh'
+Plug 'ryanoasis/vim-devicons'
+
+call plug#end()
+
 set encoding=UTF-8
 set nobomb
 
@@ -29,12 +108,12 @@ set ttymouse=xterm2
 let mapleader="`"
 
 if !has('gui_running')
-    set t_Co=256
+  set t_Co=256
 endif
 
 " Syntax Highlighting
 if has('syntax')
-    syntax on
+  syntax on
 endif
 
 au BufReadPost *
@@ -42,42 +121,11 @@ au BufReadPost *
     \ exe "norm g`\"" |
     \ endif
 
-"if (has("termguicolors"))
-"    set termguicolors
-"endif
 if exists('+termguicolors')
   let &t_8f="\<Esc>[38;2;%lu;%lu;%lum"
   let &t_8b="\<Esc>[48;2;%lu;%lu;%lum"
   set termguicolors
 endif
-
-" Plugins with VimPlug
-call plug#begin('~/.vim/plugged')
-
-Plug 'rust-lang/rust.vim'
-Plug 'scrooloose/nerdtree'
-Plug 'preservim/nerdcommenter'
-Plug 'ctrlpvim/ctrlp.vim'
-Plug 'tpope/vim-pathogen'
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'Raimondi/delimitMate'
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
-"Plug 'itchyny/lightline.vim'
-Plug 'mengelbrecht/lightline-bufferline'
-Plug 'joshdick/onedark.vim'
-Plug 'mattn/emmet-vim'
-Plug 'junegunn/rainbow_parentheses.vim', {'on': 'RainbowParentheses'}
-Plug 'liuchengxu/vista.vim'
-"Plug 'WolfgangMehner/bash-support'
-Plug 'jackguo380/vim-lsp-cxx-highlight'
-Plug 'rhysd/vim-clang-format'
-"Plug 'kana/vim-operator-user'
-Plug 'easymotion/vim-easymotion'
-Plug 'Yggdroot/indentLine'
-Plug 'turbio/bracey.vim'
-
-call plug#end()
 
 set background=dark
 colorscheme onedark
@@ -85,42 +133,14 @@ colorscheme onedark
 " No background color for transparency
 hi Normal guibg=NONE ctermbg=NONE
 
+autocmd FileType vim setlocal shiftwidth=2 tabstop=2
+
 " skip over closing parenthesis
-" merge it into coc.nvim's Tab binding
 "inoremap <expr> <Tab> stridx('])}"', getline('.')[col('.')-1])==-1 ? "\t" : "\<Right>"
 
 " termdebug setting
 packadd termdebug
 let g:termdebug_wide=1
-
-" indentline setting
-let g:indentLine_char = '┆'
-"let g:indentLine_char_list = ['|', '¦', '┆', '┊']
-
-" airline setting
-let g:airline_theme='bubblegum'
-let g:airline#extensions#tabline#enabled = 1
-let g:airline_powerline_fonts = 1
-
-" Vista.vim setting
-let g:vista_icon_indent = ["╰─▸ ", "├─▸ "]
-let g:vista_executive_for = {
-    \ 'cpp': 'ctags',
-    \ 'rust': 'coc',
-    \ 'javascript': 'coc',
-    \ 'html': 'coc',
-    \ 'haskell': 'coc'
-    \ }
-let g:vista_update_on_text_changed = 1
-let g:vista_update_on_text_changed_delay = 3000
-
-nmap <F8> :Vista!!<CR>
-
-" RainbowParenthesis
-let g:rainbow#max_level = 16
-let g:rainbow#pairs = [['(', ')'], ['{', '}'], ['[', ']']]
-let g:rainbow#blacklist = [248, 59, 239, 238]
-autocmd VimEnter * RainbowParentheses
 
 " shortcut for buffers and bufferline
 nmap <Leader>1 <Plug>lightline#bufferline#go(1)
@@ -150,38 +170,6 @@ noremap <C-j> <C-w>j
 noremap <C-k> <C-w>k
 noremap <C-l> <C-w>l
 
-" Emmet-vim Plugin setting
-let g:user_emmet_leader_key = ','
-
-" NERDTree Plugin setting
-map <C-n> :NERDTreeToggle<CR>
-map <C-f> :NERDTreeFind<CR>
-
-let NERDTreeMapJumpNextSibling = "<Leader>j"
-let NERDTreeMapJumpPrevSibling = "<Leader>k"
-
-let NERDTreeShowHidden=1
-let g:NERDTreeWinPos = "right"
-
-" NERDCommenter Plugin setting
-let g:NERDCreateDefaultMappings = 0
-let g:NERDDefaultAlign = 'left'
-
-nmap <Leader>/ <Plug>NERDCommenterToggle
-xmap <Leader>/ <Plug>NERDCommenterToggle
-
-" delimitMate setting
-let delimitMate_expand_cr=1
-let delimitMate_expand_space=1
-
-" vim-clang-format setting
-let g:clang_format#detect_style_file = 1
-" map to <Leader>cf in C++ code
-autocmd FileType c,cpp,objc nnoremap <buffer><Leader>cf :<C-u>ClangFormat<CR>
-autocmd FileType c,cpp,objc vnoremap <buffer><Leader>cf :ClangFormat<CR>
-" auto-enabling auto-formating
-autocmd FileType c,cpp ClangFormatAutoEnable
-
 "===================
 " Coc.nvim settings
 "===================
@@ -200,10 +188,10 @@ call coc#config('coc.preferences.formatOnSaveFiletypes', [
 
 call coc#config('languageserver', {
     \ "haskell": {
-    \     "command": "haskell-language-server-wrapper",
-    \     "args": ["--lsp"],
-    \     "rootPatterns": ["*.cabal", "stack.yaml", "cabal.project", "package.yaml", "hie.yaml"],
-    \     "filetypes": ["haskell", "lhaskell"]
+    \   "command": "haskell-language-server-wrapper",
+    \   "args": ["--lsp"],
+    \   "rootPatterns": ["*.cabal", "stack.yaml", "cabal.project", "package.yaml", "hie.yaml"],
+    \   "filetypes": ["haskell", "lhaskell"]
     \ }})
 
 call coc#config('clangd.semanticHighlighting', v:true)
@@ -377,11 +365,6 @@ command! -nargs=? Fold :call     CocAction('fold', <f-args>)
 
 " Add `:OR` command for organize imports of the current buffer.
 command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organizeImport')
-
-" Add (Neo)Vim's native statusline support.
-" NOTE: Please see `:h coc-status` for integrations with external plugins that
-" provide custom statusline: lightline.vim, vim-airline.
-set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
 
 " Mappings for CoCList
 " Show all diagnostics.

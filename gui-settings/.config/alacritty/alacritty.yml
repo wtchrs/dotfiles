@@ -29,22 +29,22 @@ scrolling:
 font:
   # Normal (roman) font face
   normal:
-    family: Hack
+    family: DejaVuSansMono Nerd Font
     style: Regular
 
   # Bold font face
   bold:
-    family: Hack
+    family: DejaVuSansMono Nerd Font
     style: Bold
 
   # Italic font face
   italic:
-    family: Hack
+    family: DejaVuSansMono Nerd Font
     style: Italic
 
   # Bold italic font face
   bold_italic:
-    family: Hack
+    family: DejaVuSansMono Nerd Font
     style: Bold Italic
 
   # Point size
