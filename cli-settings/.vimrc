@@ -1,13 +1,17 @@
-let mapleader="`"
+set encoding=UTF-8
+scriptencoding UTF-8
+set nobomb
+
+let mapleader='`'
 
 " Plugins with VimPlug
 call plug#begin('~/.vim/plugged')
 
 Plug 'scrooloose/nerdtree'
-  let NERDTreeMapJumpNextSibling = "<Leader>j"
-  let NERDTreeMapJumpPrevSibling = "<Leader>k"
+  let NERDTreeMapJumpNextSibling = '<Leader>j'
+  let NERDTreeMapJumpPrevSibling = '<Leader>k'
   let NERDTreeShowHidden=1
-  let g:NERDTreeWinPos = "right"
+  let g:NERDTreeWinPos = 'right'
   map <C-n> :NERDTreeToggle<CR>
   map <C-f> :NERDTreeFind<CR>
 
@@ -21,6 +25,23 @@ Plug 'ctrlpvim/ctrlp.vim'
 Plug 'tpope/vim-pathogen'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
+Plug 'dense-analysis/ale'
+  let b:ale_linters = {
+      \ 'vim': ['vint'],
+      \ }
+  let g:ale_fixers = {
+      \ '*': ['remove_trailing_lines', 'trim_whitespace'],
+      \ 'sh': ['shfmt'],
+      \ 'cpp': ['clang-format']
+      \ }
+  let g:ale_fix_on_save = 1
+  let g:ale_lint_delay = 1000
+  let g:ale_echo_msg_error_str = 'E'
+  let g:ale_echo_msg_warning_str = 'W'
+  let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
+  nmap <silent> [a <Plug>(ale_previous_wrap)
+  nmap <silent> ]a <Plug>(ale_next_wrap)
+
 Plug 'Raimondi/delimitMate'
   let delimitMate_expand_cr=1
   let delimitMate_expand_space=1
@@ -28,14 +49,19 @@ Plug 'Raimondi/delimitMate'
 Plug 'vim-airline/vim-airline'
   let g:airline_theme='bubblegum'
   let g:airline#extensions#tabline#enabled = 1
+  let g:airline#extensions#ale#enabled = 1
+  let g:airline#extensions#tabline#buffer_idx_mode = 1
   let g:airline_powerline_fonts = 1
 
 Plug 'vim-airline/vim-airline-themes'
 Plug 'mengelbrecht/lightline-bufferline'
 Plug 'joshdick/onedark.vim'
+Plug 'mhartington/oceanic-next'
 
 Plug 'mattn/emmet-vim'
   let g:user_emmet_leader_key = ','
+  let g:user_emmet_install_global = 0
+  autocmd FileType html,css EmmetInstall
 
 Plug 'junegunn/rainbow_parentheses.vim', {'on': 'RainbowParentheses'}
   let g:rainbow#max_level = 16
@@ -44,8 +70,9 @@ Plug 'junegunn/rainbow_parentheses.vim', {'on': 'RainbowParentheses'}
   autocmd VimEnter * RainbowParentheses
 
 Plug 'liuchengxu/vista.vim'
-  let g:vista_icon_indent = ["╰─▸ ", "├─▸ "]
+  let g:vista_icon_indent = ['╰─▸ ', '├─▸ ']
   let g:vista_executive_for = {
+      \ 'vim': 'ctags',
       \ 'cpp': 'ctags',
       \ 'rust': 'coc',
       \ 'javascript': 'coc',
@@ -57,17 +84,6 @@ Plug 'liuchengxu/vista.vim'
   nmap <F8> :Vista!!<CR>
 
 Plug 'jackguo380/vim-lsp-cxx-highlight'
-"Plug 'octol/vim-cpp-enhanced-highlight'
-
-Plug 'rhysd/vim-clang-format'
-  let g:clang_format#detect_style_file = 1
-  " map to <Leader>cf in C++ code
-  autocmd FileType c,cpp,objc nnoremap <buffer><Leader>cf :<C-u>ClangFormat<CR>
-  autocmd FileType c,cpp,objc vnoremap <buffer><Leader>cf :ClangFormat<CR>
-  " auto-enabling auto-formating
-  autocmd FileType c,cpp ClangFormatAutoEnable
-
-"Plug 'kana/vim-operator-user'
 Plug 'easymotion/vim-easymotion'
 
 Plug 'Yggdroot/indentLine'
@@ -80,9 +96,6 @@ Plug 'ryanoasis/vim-devicons'
 
 call plug#end()
 
-set encoding=UTF-8
-set nobomb
-
 set number
 set ruler
 set title
@@ -94,6 +107,7 @@ set showcmd
 set hidden
 set belloff=all
 set laststatus=2
+set scrolloff=5
 
 " Line length guide
 set colorcolumn=80
@@ -108,6 +122,12 @@ set shiftwidth=4
 set mouse=a
 set ttymouse=xterm2
 
+set nobackup
+set nowritebackup
+set cmdheight=2
+set updatetime=300
+set shortmess+=c
+set signcolumn=number
 
 if !has('gui_running')
   set t_Co=256
@@ -118,7 +138,7 @@ if has('syntax')
   syntax on
 endif
 
-au BufReadPost *
+autocmd BufReadPost *
     \ if line("'\"") > 0 && line("'\"") <= line("$") |
     \ exe "norm g`\"" |
     \ endif
@@ -130,12 +150,20 @@ if exists('+termguicolors')
 endif
 
 set background=dark
-colorscheme onedark
+colorscheme OceanicNext
 
 " No background color for transparency
 hi Normal guibg=NONE ctermbg=NONE
+hi LineNr guibg=NONE ctermbg=NONE
+hi CursorLineNr gui=NONE cterm=NONE
+"hi VertSplit guibg=NONE ctermbg=NONE
+hi EndOfBuffer guibg=NONE ctermbg=NONE
 
-autocmd FileType vim setlocal shiftwidth=2 tabstop=2
+augroup file_type
+  autocmd!
+  autocmd FileType vim setlocal shiftwidth=2 tabstop=2
+  autocmd FileType help,h wincmd L
+augroup END
 
 " skip over closing parenthesis
 "inoremap <expr> <Tab> stridx('])}"', getline('.')[col('.')-1])==-1 ? "\t" : "\<Right>"
@@ -185,19 +213,19 @@ let g:coc_global_extensions = [
 
 " Coc Configs
 call coc#config('coc.preferences.formatOnSaveFiletypes', [
-    \ "html", "javascript", "css", "markdown", "rust"
+    \ 'html', 'javascript', 'css', 'markdown', 'rust'
     \ ])
 
 call coc#config('languageserver', {
-    \ "haskell": {
-    \   "command": "haskell-language-server-wrapper",
-    \   "args": ["--lsp"],
-    \   "rootPatterns": ["*.cabal", "stack.yaml", "cabal.project", "package.yaml", "hie.yaml"],
-    \   "filetypes": ["haskell", "lhaskell"]
+    \ 'haskell': {
+    \   'command': 'haskell-language-server-wrapper',
+    \   'args': ['--lsp'],
+    \   'rootPatterns': ['*.cabal', 'stack.yaml', 'cabal.project', 'package.yaml', 'hie.yaml'],
+    \   'filetypes': ['haskell', 'lhaskell']
     \ }})
 
 call coc#config('clangd.semanticHighlighting', v:true)
-call coc#config('clangd.arguments', ["-header-insertion=never"])
+call coc#config('clangd.arguments', ['-header-insertion=never'])
 
 call coc#config('prettier.tabWidth', 4)
 
@@ -235,16 +263,10 @@ function s:scroll_cursor_popup(down)
   return 1
 endfunction
 
-set nobackup
-set nowritebackup
-set cmdheight=2
-set updatetime=300
-set shortmess+=c
-set signcolumn=number
-
 " Use tab for trigger completion with characters ahead and navigate.
 " NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
 " other plugin before putting this into your config.
+" stridx(... for skip closing brakets and braces
 inoremap <silent><expr> <TAB>
     \ pumvisible() ? "\<C-n>" :
     \ coc#expandableOrJumpable() ? "\<C-r>=coc#rpc#request('doKeymap', ['snippets-expand-jump',''])\<CR>" :
@@ -276,11 +298,6 @@ if exists('*complete_info')
 else
   inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
 endif
-
-" Use `[g` and `]g` to navigate diagnostics
-" Use `:CocDiagnostics` to get all diagnostics of current buffer in location list.
-nmap <silent> [g <Plug>(coc-diagnostic-prev)
-nmap <silent> ]g <Plug>(coc-diagnostic-next)
 
 " GoTo code navigation.
 nnoremap <silent> gd :<C-u>call CocActionAsync('jumpDefinition')<CR>
@@ -315,11 +332,6 @@ nmap <leader>ac  <Plug>(coc-codeaction)
 " Apply AutoFix to problem on the current line.
 nmap <leader>qf  <Plug>(coc-fix-current)
 
-" Use CTRL-S for selections ranges.
-" Requires 'textDocument/selectionRange' support of language server.
-nmap <silent> <C-s> <Plug>(coc-range-select)
-xmap <silent> <C-s> <Plug>(coc-range-select)
-
 " Mappings for CoCList
 " Show all diagnostics.
 nnoremap <silent><nowait> <space>a  :<C-u>CocList diagnostics<cr>
@@ -331,4 +343,3 @@ nnoremap <silent><nowait> <space>c  :<C-u>CocList commands<cr>
 nnoremap <silent><nowait> <space>o  :<C-u>CocList outline<cr>
 " Resume latest coc list.
 nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<CR>
-
