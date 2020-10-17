@@ -93,6 +93,7 @@ Plug 'rust-lang/rust.vim'
 Plug 'turbio/bracey.vim'
 Plug 'tjdevries/coc-zsh'
 Plug 'ryanoasis/vim-devicons'
+Plug 'dag/vim-fish'
 
 call plug#end()
 
@@ -138,6 +139,10 @@ if has('syntax')
   syntax on
 endif
 
+if &shell =~# 'fish$'
+  set shell=sh
+endif
+
 autocmd BufReadPost *
     \ if line("'\"") > 0 && line("'\"") <= line("$") |
     \ exe "norm g`\"" |
@@ -152,16 +157,18 @@ endif
 set background=dark
 colorscheme OceanicNext
 
+" Change Color Highlight
 " No background color for transparency
 hi Normal guibg=NONE ctermbg=NONE
 hi LineNr guibg=NONE ctermbg=NONE
 hi CursorLineNr gui=NONE cterm=NONE
-"hi VertSplit guibg=NONE ctermbg=NONE
 hi EndOfBuffer guibg=NONE ctermbg=NONE
+" for ALEWarning
+hi SpellCap gui=underline cterm=underline guibg=NONE ctermbg=NONE
 
 augroup file_type
   autocmd!
-  autocmd FileType vim setlocal shiftwidth=2 tabstop=2
+  autocmd FileType vim,sh,zsh setlocal shiftwidth=2 tabstop=2
   autocmd FileType help,h wincmd L
 augroup END
 

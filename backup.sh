@@ -1,20 +1,22 @@
 #!/usr/bin/env sh
 
-cp ~/.vimrc     ./cli-settings/.vimrc
-cp ~/.tmux.conf ./cli-settings/.tmux.conf
+cp ~/.vimrc ./settings/vimrc
+cp ~/.tmux.conf ./settings/tmux.conf
+cp ~/.zshrc ./settings/zshrc
 
-cp ~/.xinitrc    ./gui-settings/.xinitrc
-cp ~/.Xresources ./gui-settings/.Xresources
+cp ~/.xinitrc ./settings/xinitrc
+cp ~/.Xresources ./settings/Xresources
 
-cp -r ~/Scripts  ./gui-settings
-cp -r ~/Pictures ./gui-settings
+cp -r ~/Scripts ./settings
+cp -r ~/Pictures ./settings
 
-cp -r ~/.config/alacritty ./gui-settings/.config
-cp -r ~/.config/cava      ./gui-settings/.config
-cp -r ~/.config/compton   ./gui-settings/.config
-cp -r ~/.config/dunst     ./gui-settings/.config
-cp -r ~/.config/i3        ./gui-settings/.config
-cp -r ~/.config/mpd       ./gui-settings/.config
-cp -r ~/.config/polybar   ./gui-settings/.config
-cp -r ~/.config/ranger    ./gui-settings/.config
+cp ~/.config/fish/config.fish ./settings/config/fish/config.fish
 
+cp -r ~/.config/alacritty ./settings/config
+cp -r ~/.config/cava ./settings/config
+cp -r ~/.config/compton ./settings/config
+cp -r ~/.config/dunst ./settings/config
+cp -r ~/.config/i3 ./settings/config
+cp -r ~/.config/mpd ./settings/config
+cp -r ~/.config/polybar ./settings/config
+cp -r ~/.config/ranger ./settings/config

@@ -191,7 +191,7 @@ client.urgent           #ff4949 #ff4949 #ffffff #ff4949
 # STARTUP APPLICATIONS #
 #----------------------#
 
-exec_always --no-startup-id feh --bg-fill ~/Pictures/wallpaper/wallpaper.jpg
+exec_always --no-startup-id "feh --bg-fill ~/Pictures/wallpaper/wallpaper.jpg || feh --bg-fill ~/Pictures/wallpaper/wallpaper.png"
 
 #exec --no-startup-id dropbox
 exec --no-startup-id picom --experimental-backends --backend glx -cb --config ~/.config/compton/compton.conf
@@ -266,4 +266,3 @@ exec_always --no-startup-id ~/Scripts/bar.sh
 #assign [class="rtabmapviz"] $workspace3
 #assign [class="QGroundControl"] $workspace3
 #assign [class="obs"] $workspace9
-

@@ -7,8 +7,8 @@ env:
 window:
   # Window padding (changes require restart)
   padding:
-    x: 3
-    y: 3
+    x: 20
+    y: 20
 
   # Window title
   title: Alacritty
@@ -29,22 +29,30 @@ scrolling:
 font:
   # Normal (roman) font face
   normal:
-    family: DejaVuSansMono Nerd Font
+    #family: DejaVuSansMono Nerd Font
+    #family: MesloLGS NF
+    family: Hack
     style: Regular
 
   # Bold font face
   bold:
-    family: DejaVuSansMono Nerd Font
+    #family: DejaVuSansMono Nerd Font
+    #family: MesloLGS NF
+    family: Hack
     style: Bold
 
   # Italic font face
   italic:
-    family: DejaVuSansMono Nerd Font
+    #family: DejaVuSansMono Nerd Font
+    #family: MesloLGS NF
+    family: Hack
     style: Italic
 
   # Bold italic font face
   bold_italic:
-    family: DejaVuSansMono Nerd Font
+    #family: DejaVuSansMono Nerd Font
+    #family: MesloLGS NF
+    family: Hack
     style: Bold Italic
 
   # Point size
@@ -73,26 +81,48 @@ colors:
     background: '0x5d5d5d'
 
   # Normal colors
+  #normal:
+  #  black:   '0x282a2e'
+  #  red:     '0xa54242'
+  #  green:   '0x8c9440'
+  #  yellow:  '0xde935f'
+  #  blue:    '0x5f819d'
+  #  magenta: '0x85678f'
+  #  cyan:    '0x5e8d87'
+  #  white:   '0x707880'
+
+  # Bright colors
+  #bright:
+  #  black:   '0x373b41'
+  #  red:     '0xcc6666'
+  #  green:   '0xb5bd68'
+  #  yellow:  '0xf0c674'
+  #  blue:    '0x81a2be'
+  #  magenta: '0xb294bb'
+  #  cyan:    '0x8abeb7'
+  #  white:   '0xc5c8c6'
+
+  # Normal colors
   normal:
-    black:   '0x282a2e'
-    red:     '0xa54242'
-    green:   '0x8c9440'
-    yellow:  '0xde935f'
-    blue:    '0x5f819d'
-    magenta: '0x85678f'
-    cyan:    '0x5e8d87'
-    white:   '0x707880'
+    black:   '0x3D4C5F'
+    red:     '0xEE4F84'
+    green:   '0x53E2AE'
+    yellow:  '0xF1FF52'
+    blue:    '0x6498EF'
+    magenta: '0x985EFF'
+    cyan:    '0x24D1E7'
+    white:   '0xE5E5E5'
 
   # Bright colors
   bright:
-    black:   '0x373b41'
-    red:     '0xcc6666'
-    green:   '0xb5bd68'
-    yellow:  '0xf0c674'
-    blue:    '0x81a2be'
-    magenta: '0xb294bb'
-    cyan:    '0x8abeb7'
-    white:   '0xc5c8c6'
+    black:   '0x56687E'
+    red:     '0xF48FB1'
+    green:   '0xA1EFD3'
+    yellow:  '0xF1FA8C'
+    blue:    '0x92B6F4'
+    magenta: '0xBD99FF'
+    cyan:    '0x87DFEB'
+    white:   '0xF8F8F2'
 
 background_opacity: 0.85
 

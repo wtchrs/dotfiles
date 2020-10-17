@@ -1,17 +1,16 @@
 #!/usr/bin/env sh
 
-cp ./gui-settings/.xinitrc    ~/.xinitrc
-cp ./gui-settings/.Xresources ~/.Xresources 
+cp ./settings/xinitrc ~/.xinitrc
+cp ./settings/Xresources ~/.Xresources
 
-cp -r ./gui-settings/Scripts  ~
-cp -r ./gui-settings/Pictures ~
+cp -r ./settings/Scripts ~
+cp -r ./settings/Pictures ~
 
-cp -r ./gui-settings/.config/alacritty ~/.config
-cp -r ./gui-settings/.config/cava      ~/.config
-cp -r ./gui-settings/.config/compton   ~/.config
-cp -r ./gui-settings/.config/dunst     ~/.config
-cp -r ./gui-settings/.config/i3        ~/.config
-cp -r ./gui-settings/.config/mpd       ~/.config
-cp -r ./gui-settings/.config/polybar   ~/.config
-cp -r ./gui-settings/.config/ranger    ~/.config
-
+cp -r ./settings/config/alacritty ~/.config
+cp -r ./settings/config/cava ~/.config
+cp -r ./settings/config/compton ~/.config
+cp -r ./settings/config/dunst ~/.config
+cp -r ./settings/config/i3 ~/.config
+cp -r ./settings/config/mpd ~/.config
+cp -r ./settings/config/polybar ~/.config
+cp -r ./settings/config/ranger ~/.config
