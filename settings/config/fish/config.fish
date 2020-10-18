@@ -17,7 +17,7 @@ set -g __fish_git_prompt_showupstream informative
 set -g __fish_git_prompt_showdirtystate yes
 set -g __fish_git_prompt_char_stateseparator ' '
 set -g __fish_git_prompt_char_cleanstate '✔'
-set -g __fish_git_prompt_char_dirtystate '✚'
+set -g __fish_git_prompt_char_dirtystate '+'
 set -g __fish_git_prompt_char_invalidstate '✖'
 set -g __fish_git_prompt_char_stagedstate '●'
 set -g __fish_git_prompt_char_stashstate '⚑'

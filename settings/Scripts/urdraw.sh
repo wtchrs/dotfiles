@@ -12,13 +12,12 @@
 read -r X Y W H < <(slop -f "%x %y %w %h" -b 4 -t 0 -q)
 
 # Depends on font width & height
-(( W /= 9 ))
-(( H /= 18 ))
+((W /= 10))
+((H /= 20))
 
 # Create a variable to be used for URxvt flag option
 #g=${W}x${H}+${X}+${Y}
 
 # Draw with floating rule
 #urxvt -name floating -g $g &
-alacritty --class floating --position ${X} ${Y} --dimensions ${W} ${H} &
-
+alacritty --class floating --position "$X" "$Y" --dimensions "$W" "$H" &

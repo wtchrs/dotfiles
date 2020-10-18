@@ -26,13 +26,15 @@ Plug 'tpope/vim-pathogen'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 Plug 'dense-analysis/ale'
-  let b:ale_linters = {
-      \ 'vim': ['vint'],
+  let g:ale_linters = {
+      \ 'cpp': ['clangd'],
       \ }
   let g:ale_fixers = {
       \ '*': ['remove_trailing_lines', 'trim_whitespace'],
       \ 'sh': ['shfmt'],
-      \ 'cpp': ['clang-format']
+      \ 'cpp': ['clang-format'],
+      \ 'cmake': ['cmakeformat'],
+      \ 'html': ['prettier']
       \ }
   let g:ale_fix_on_save = 1
   let g:ale_lint_delay = 1000
@@ -67,7 +69,12 @@ Plug 'junegunn/rainbow_parentheses.vim', {'on': 'RainbowParentheses'}
   let g:rainbow#max_level = 16
   let g:rainbow#pairs = [['(', ')'], ['{', '}'], ['[', ']']]
   let g:rainbow#blacklist = [248, 59, 239, 238]
-  autocmd VimEnter * RainbowParentheses
+  augroup rainbow
+    autocmd!
+    " cmake syntax highlight conflict with RainbowParentheses
+    let ftToIgnRainbow = ['cmake']
+    autocmd VimEnter * if index(ftToIgnRainbow, &ft) < 0 | RainbowParentheses
+  augroup END
 
 Plug 'liuchengxu/vista.vim'
   let g:vista_icon_indent = ['╰─▸ ', '├─▸ ']
@@ -94,6 +101,7 @@ Plug 'turbio/bracey.vim'
 Plug 'tjdevries/coc-zsh'
 Plug 'ryanoasis/vim-devicons'
 Plug 'dag/vim-fish'
+Plug 'pboettch/vim-cmake-syntax'
 
 call plug#end()
 
@@ -145,7 +153,7 @@ endif
 
 autocmd BufReadPost *
     \ if line("'\"") > 0 && line("'\"") <= line("$") |
-    \ exe "norm g`\"" |
+    \   exe "norm g`\"" |
     \ endif
 
 if exists('+termguicolors')
@@ -159,21 +167,22 @@ colorscheme OceanicNext
 
 " Change Color Highlight
 " No background color for transparency
-hi Normal guibg=NONE ctermbg=NONE
-hi LineNr guibg=NONE ctermbg=NONE
-hi CursorLineNr gui=NONE cterm=NONE
-hi EndOfBuffer guibg=NONE ctermbg=NONE
+highlight Normal guibg=NONE ctermbg=NONE
+highlight LineNr guibg=NONE ctermbg=NONE
+highlight CursorLineNr gui=NONE cterm=NONE
+highlight EndOfBuffer guibg=NONE ctermbg=NONE
 " for ALEWarning
-hi SpellCap gui=underline cterm=underline guibg=NONE ctermbg=NONE
+highlight SpellCap gui=underline cterm=underline guibg=NONE ctermbg=NONE
 
 augroup file_type
   autocmd!
-  autocmd FileType vim,sh,zsh setlocal shiftwidth=2 tabstop=2
+  autocmd FileType vim,sh,zsh,html setlocal shiftwidth=2 tabstop=2
   autocmd FileType help,h wincmd L
 augroup END
 
 " skip over closing parenthesis
-"inoremap <expr> <Tab> stridx('])}"', getline('.')[col('.')-1])==-1 ? "\t" : "\<Right>"
+"inoremap <expr> <Tab> stridx('])}"', getline('.')[col('.')-1])==-1 ?
+"    \ "\t" : "\<Right>"
 
 " termdebug setting
 packadd termdebug
@@ -220,14 +229,16 @@ let g:coc_global_extensions = [
 
 " Coc Configs
 call coc#config('coc.preferences.formatOnSaveFiletypes', [
-    \ 'html', 'javascript', 'css', 'markdown', 'rust'
+    \ 'javascript', 'css', 'markdown', 'rust'
     \ ])
 
 call coc#config('languageserver', {
     \ 'haskell': {
     \   'command': 'haskell-language-server-wrapper',
     \   'args': ['--lsp'],
-    \   'rootPatterns': ['*.cabal', 'stack.yaml', 'cabal.project', 'package.yaml', 'hie.yaml'],
+    \   'rootPatterns': [
+    \     '*.cabal', 'stack.yaml', 'cabal.project', 'package.yaml', 'hie.yaml'
+    \   ],
     \   'filetypes': ['haskell', 'lhaskell']
     \ }})
 
@@ -265,7 +276,7 @@ function s:scroll_cursor_popup(down)
   endif
 
   let pp = popup_getpos(winid)
-  call popup_setoptions( winid, {'firstline' : pp.firstline + ( a:down ? 1 : -1 ) } )
+  call popup_setoptions(winid, {'firstline': pp.firstline + (a:down ? 1 : -1)})
 
   return 1
 endfunction
@@ -276,7 +287,8 @@ endfunction
 " stridx(... for skip closing brakets and braces
 inoremap <silent><expr> <TAB>
     \ pumvisible() ? "\<C-n>" :
-    \ coc#expandableOrJumpable() ? "\<C-r>=coc#rpc#request('doKeymap', ['snippets-expand-jump',''])\<CR>" :
+    \ coc#expandableOrJumpable() ?
+    \ "\<C-r>=coc#rpc#request('doKeymap', ['snippets-expand-jump',''])\<CR>" :
     \ <SID>check_back_space() ? "\<TAB>" :
     \ stridx('])}"', getline('.')[col('.')-1])!=-1 ? "\<Right>" :
     \ coc#refresh()
@@ -301,9 +313,11 @@ endif
 " <cr> could be remapped by other vim plugin, try `:verbose imap <CR>`.
 " '\<c-r>=coc#on_enter()\<CR>' for delimitMate_expand_cr
 if exists('*complete_info')
-  inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+  inoremap <expr> <cr> complete_info()["selected"] != "-1" ?
+      \ "\<C-y>" : "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
 else
-  inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+  inoremap <expr> <cr> pumvisible() ?
+      \ "\<C-y>" : "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
 endif
 
 " GoTo code navigation.
