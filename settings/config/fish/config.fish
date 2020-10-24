@@ -11,6 +11,8 @@ eval fundle init
 
 eval scheme set monokai
 
+set -g PATH $HOME/bin $HOME/.local/bin $PATH
+
 # settings for fishblocks theme
 set -g __fish_git_prompt_show_informative_status 1
 set -g __fish_git_prompt_showupstream informative

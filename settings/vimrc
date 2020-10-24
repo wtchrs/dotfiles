@@ -34,7 +34,8 @@ Plug 'dense-analysis/ale'
       \ 'sh': ['shfmt'],
       \ 'cpp': ['clang-format'],
       \ 'cmake': ['cmakeformat'],
-      \ 'html': ['prettier']
+      \ 'html': ['prettier'],
+      \ 'haskell': ['brittany']
       \ }
   let g:ale_fix_on_save = 1
   let g:ale_lint_delay = 1000
