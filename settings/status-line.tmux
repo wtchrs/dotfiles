@@ -1,24 +1,34 @@
 #!/usr/bin/env bash
 
 function uptime() {
-  local format upday uphour upminute upsecond
+  local format upweek upday uphour upminute upsecond
 
   upsecond=$(cut -d " " -f 1 </proc/uptime)
+  upweek=$(echo "$upsecond / 604800" | bc)
+  upsecond=$(echo "$upsecond % 604800" | bc)
   upday=$(echo "$upsecond / 86400" | bc)
   upsecond=$(echo "$upsecond % 86400" | bc)
   uphour=$(echo "$upsecond / 3600" | bc)
   upsecond=$(echo "$upsecond % 3600" | bc)
   upminute=$(echo "$upsecond / 60" | bc)
 
+  if [ "$upweek" -ne "0" ]; then
+    format="${upweek}w"
+  fi
+
   if [ "$upday" -ne "0" ]; then
-    format="${upday}d"
+    if [ -z "$format" ]; then
+      format="${upday}d"
+    else
+      format="$format ${upday}d"
+    fi
   fi
 
   if [ "$uphour" -ne "0" ]; then
     if [ -z "$format" ]; then
       format="${uphour}h"
     else
-      format="${format} ${uphour}h"
+      format="$format ${uphour}h"
     fi
   fi
 
