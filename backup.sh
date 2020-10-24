@@ -2,6 +2,7 @@
 
 cp ~/.vimrc ./settings/vimrc
 cp ~/.tmux.conf ./settings/tmux.conf
+cp ~/.status-line.tmux ./settings/status-line.tmux
 cp ~/.zshrc ./settings/zshrc
 
 cp ~/.xinitrc ./settings/xinitrc
