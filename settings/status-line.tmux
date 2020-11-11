@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 function uptime() {
-  local format upweek upday uphour upminute upsecond
+  local upfmt upweek upday uphour upminute upsecond
 
   upsecond=$(cut -d " " -f 1 </proc/uptime)
   upweek=$(echo "$upsecond / 604800" | bc)
@@ -13,54 +13,54 @@ function uptime() {
   upminute=$(echo "$upsecond / 60" | bc)
 
   if [ "$upweek" -ne "0" ]; then
-    format="${upweek}w"
+    upfmt="${upweek}w"
   fi
 
   if [ "$upday" -ne "0" ]; then
-    if [ -z "$format" ]; then
-      format="${upday}d"
+    if [ -z "$upfmt" ]; then
+      upfmt="${upday}d"
     else
-      format="$format ${upday}d"
+      upfmt="$upfmt ${upday}d"
     fi
   fi
 
   if [ "$uphour" -ne "0" ]; then
-    if [ -z "$format" ]; then
-      format="${uphour}h"
+    if [ -z "$upfmt" ]; then
+      upfmt="${uphour}h"
     else
-      format="$format ${uphour}h"
+      upfmt="$upfmt ${uphour}h"
     fi
   fi
 
-  if [ -z "$format" ] || [ "$upminute" -ne "0" ]; then
-    if [ -z "$format" ]; then
-      format="${upminute} min"
+  if [ -z "$upfmt" ] || [ "$upminute" -ne "0" ]; then
+    if [ -z "$upfmt" ]; then
+      upfmt="${upminute} min"
     else
-      format="$format ${upminute}m"
+      upfmt="$upfmt ${upminute}m"
     fi
   fi
 
-  echo "$format"
+  echo "$upfmt"
 }
 
 function main() {
-  local format width=$1
+  local fmt width=$1
 
-  if [ "$width" -lt 60 ]; then
-    format=""
-  elif [ "$width" -lt 100 ]; then
-    format="#[fg=colour250,bold][#S] #[fg=colour245,nobold] up $(uptime)  \
+  if [ "$width" -lt 80 ]; then
+    fmt="#[fg=colour237,nobold]#[fg=colour248,bg=colour237,nobold]"
+  elif [ "$width" -lt 120 ]; then
+    fmt="#[fg=colour250,bold][#S] #[fg=colour245,nobold] up $(uptime)  \
 $(cut -d " " -f 1-3 </proc/loadavg)#[fg=colour237,nobold] #[fg=colour248,bg=c\
-olour237,nobold]#[fg=colour16,bg=colour248,bold]"
+olour237,nobold]"
   else
-    format="SESSION #[fg=colour250,bold][#S] #[fg=colour245,nobold] up \
-$(uptime)  $(cut -d " " -f 1-3 </proc/loadavg)#[fg=colour237,nobold] #[fg=co\
-lour247,bg=colour237,nobold] $(date -I)#[fg=colour241,bg=colour237,nobold] #[\
-fg=colour252,bg=colour237,bold] $(date +"%I:%M %p")#[fg=colour248,bg=colour237\
-,nobold] #[fg=colour16,bg=colour248,bold] #H "
+    fmt="SESSION #[fg=colour250,bold][#S] #[fg=colour245,nobold] up $(uptime)\
+  $(cut -d " " -f 1-3 </proc/loadavg)#[fg=colour237,nobold] #[fg=colour247,b\
+g=colour237,nobold] $(date -I)#[fg=colour241,bg=colour237,nobold] #[fg=colour\
+252,bg=colour237,bold] $(date +"%I:%M %p")#[fg=colour248,bg=colour237,nobold] \
+#[fg=colour16,bg=colour248,bold] #H "
   fi
 
-  echo "$format"
+  echo "$fmt"
 }
 
 main "$1"

@@ -8,7 +8,7 @@ antigen bundle git
 antigen bundle command-not-found
 antigen bundle sudo
 
-#antigen bundle zsh-users/zsh-syntax-highlighting
+antigen bundle zsh-users/zsh-syntax-highlighting
 antigen bundle zsh-users/zsh-autosuggestions
 
 antigen theme ChesterYue/ohmyzsh-theme-passion
@@ -21,12 +21,12 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
 
 # tmux over ssh
-if [[ "$TMUX" == "" ]] && [[ "$SSH_CONNECTION" != "" ]]; then
-    WHOAMI=$(whoami)
-    SESSION_NAME="${WHOAMI}-REMOTE"
-    if tmux has-session -t $SESSION_NAME 2>/dev/null; then
-        tmux -2 attach-session -t $SESSION_NAME
-    else
-        tmux -2 new-session -s $SESSION_NAME
-    fi
-fi
+#if [[ "$TMUX" == "" ]] && [[ "$SSH_CONNECTION" != "" ]]; then
+#    WHOAMI=$(whoami)
+#    SESSION_NAME="${WHOAMI}-REMOTE"
+#    if tmux has-session -t $SESSION_NAME 2>/dev/null; then
+#        tmux -2 attach-session -t $SESSION_NAME
+#    else
+#        tmux -2 new-session -s $SESSION_NAME
+#    fi
+#fi
