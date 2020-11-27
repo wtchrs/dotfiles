@@ -7,7 +7,7 @@ let mapleader='`'
 " Plugins with VimPlug
 call plug#begin('~/.vim/plugged')
 
-Plug 'scrooloose/nerdtree'
+Plug 'preservim/nerdtree'
   let NERDTreeMapJumpNextSibling = '<Leader>j'
   let NERDTreeMapJumpPrevSibling = '<Leader>k'
   let NERDTreeShowHidden=1
@@ -21,8 +21,11 @@ Plug 'preservim/nerdcommenter'
   nmap <Leader>/ <Plug>NERDCommenterToggle
   xmap <Leader>/ <Plug>NERDCommenterToggle
 
+Plug 'preservim/tagbar'
+  nnoremap <F8> :TagbarToggle<CR>
+
 Plug 'ctrlpvim/ctrlp.vim'
-Plug 'tpope/vim-pathogen'
+"Plug 'tpope/vim-pathogen'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 Plug 'dense-analysis/ale'
@@ -52,8 +55,9 @@ Plug 'Raimondi/delimitMate'
 Plug 'vim-airline/vim-airline'
   let g:airline_theme='bubblegum'
   let g:airline#extensions#tabline#enabled = 1
-  let g:airline#extensions#ale#enabled = 1
   let g:airline#extensions#tabline#buffer_idx_mode = 1
+  let g:airline#extensions#tabline#formatter = 'unique_tail'
+  let g:airline#extensions#ale#enabled = 1
   let g:airline_powerline_fonts = 1
 
 Plug 'vim-airline/vim-airline-themes'
@@ -89,7 +93,7 @@ Plug 'liuchengxu/vista.vim'
   let g:vista_icon_indent = ['╰─▸ ', '├─▸ ']
   let g:vista_executive_for = {
       \ 'vim': 'ctags',
-      \ 'cpp': 'ctags',
+      \ 'cpp': 'coc',
       \ 'rust': 'coc',
       \ 'javascript': 'coc',
       \ 'html': 'coc',
@@ -97,13 +101,14 @@ Plug 'liuchengxu/vista.vim'
       \ }
   let g:vista_update_on_text_changed = 1
   let g:vista_update_on_text_changed_delay = 3000
-  nmap <F8> :Vista!!<CR>
+  nmap <F7> :Vista!!<CR>
 
 Plug 'jackguo380/vim-lsp-cxx-highlight'
 Plug 'easymotion/vim-easymotion'
 
 Plug 'Yggdroot/indentLine'
   let g:indentLine_char = '┆'
+
 
 Plug 'rust-lang/rust.vim'
 Plug 'turbio/bracey.vim'
@@ -135,6 +140,9 @@ set smartindent
 set expandtab
 set tabstop=4
 set shiftwidth=4
+
+" tags
+set tags=./tags;/
 
 " mouse setting
 set mouse=a
@@ -197,6 +205,8 @@ highlight SpellCap gui=underline cterm=underline guibg=NONE ctermbg=NONE
 
 augroup file_type
   autocmd!
+  autocmd FileType cpp nmap <buffer> <F5>
+      \ :wa<cr>:!g++ -g -o %:r.out % && ./%:r.out<cr>
   autocmd FileType vim,sh,zsh,html setlocal shiftwidth=2 tabstop=2
   autocmd FileType help,h wincmd L
 augroup END
@@ -232,11 +242,6 @@ nnoremap <Leader>vs :rightbelow vnew<CR>
 " new buffer [No Name]
 nnoremap <Leader>n :enew<CR>
 
-noremap <C-h> <C-w>h
-noremap <C-j> <C-w>j
-noremap <C-k> <C-w>k
-noremap <C-l> <C-w>l
-
 "===================
 " Coc.nvim settings
 "===================
@@ -246,7 +251,7 @@ let g:coc_global_extensions = [
     \ 'coc-cmake', 'coc-clangd', 'coc-vimlsp', 'coc-rust-analyzer',
     \ 'coc-html', 'coc-json', 'coc-eslint', 'coc-tsserver', 'coc-prettier',
     \ 'coc-css', 'coc-stylelint', 'coc-emmet', 'coc-sh', 'coc-snippets'
-    \ ]
+    \ ] " 'coc-clangd'
 
 " Coc Configs
 call coc#config('coc.preferences.formatOnSaveFiletypes', [
