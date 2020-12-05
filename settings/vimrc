@@ -53,7 +53,7 @@ Plug 'Raimondi/delimitMate'
   let delimitMate_expand_space=1
 
 Plug 'vim-airline/vim-airline'
-  let g:airline_theme='bubblegum'
+  let g:airline_theme='nord'
   let g:airline#extensions#tabline#enabled = 1
   let g:airline#extensions#tabline#buffer_idx_mode = 1
   let g:airline#extensions#tabline#formatter = 'unique_tail'
@@ -62,8 +62,11 @@ Plug 'vim-airline/vim-airline'
 
 Plug 'vim-airline/vim-airline-themes'
 Plug 'mengelbrecht/lightline-bufferline'
+
+" Vim Theme
 Plug 'joshdick/onedark.vim'
 Plug 'mhartington/oceanic-next'
+Plug 'arcticicestudio/nord-vim'
 
 Plug 'mattn/emmet-vim'
   let g:user_emmet_leader_key = ','
@@ -192,14 +195,15 @@ if exists('+termguicolors')
 endif
 
 set background=dark
-colorscheme OceanicNext
+"colorscheme OceanicNext
+colorscheme nord
 
 " Change Color Highlight
 " No background color for transparency
-highlight Normal guibg=NONE ctermbg=NONE
-highlight LineNr guibg=NONE ctermbg=NONE
-highlight CursorLineNr gui=NONE cterm=NONE
-highlight EndOfBuffer guibg=NONE ctermbg=NONE
+"highlight Normal guibg=NONE ctermbg=NONE
+"highlight LineNr guibg=NONE ctermbg=NONE
+"highlight CursorLineNr gui=NONE cterm=NONE
+"highlight EndOfBuffer guibg=NONE ctermbg=NONE
 " for ALEWarning
 highlight SpellCap gui=underline cterm=underline guibg=NONE ctermbg=NONE
 
