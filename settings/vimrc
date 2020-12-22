@@ -14,6 +14,7 @@ Plug 'preservim/nerdtree'
   let g:NERDTreeWinPos = 'right'
   map <C-n> :NERDTreeToggle<CR>
   map <C-f> :NERDTreeFind<CR>
+Plug 'ryanoasis/vim-devicons'
 
 Plug 'preservim/nerdcommenter'
   let g:NERDCreateDefaultMappings = 0
@@ -25,7 +26,6 @@ Plug 'preservim/tagbar'
   nnoremap <F8> :TagbarToggle<CR>
 
 Plug 'ctrlpvim/ctrlp.vim'
-"Plug 'tpope/vim-pathogen'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 Plug 'dense-analysis/ale'
@@ -64,8 +64,6 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'mengelbrecht/lightline-bufferline'
 
 " Vim Theme
-Plug 'joshdick/onedark.vim'
-Plug 'mhartington/oceanic-next'
 Plug 'arcticicestudio/nord-vim'
 
 Plug 'mattn/emmet-vim'
@@ -104,7 +102,7 @@ Plug 'liuchengxu/vista.vim'
       \ }
   let g:vista_update_on_text_changed = 1
   let g:vista_update_on_text_changed_delay = 3000
-  nmap <F7> :Vista!!<CR>
+  nmap <Leader><F8> :Vista!!<CR>
 
 Plug 'jackguo380/vim-lsp-cxx-highlight'
 Plug 'easymotion/vim-easymotion'
@@ -113,12 +111,21 @@ Plug 'Yggdroot/indentLine'
   let g:indentLine_char = '┆'
 
 
+Plug 'neovimhaskell/haskell-vim'
+  let g:haskell_enable_quantification = 1   " to enable highlighting of `forall`
+  let g:haskell_enable_recursivedo = 1      " to enable highlighting of `mdo` and `rec`
+  let g:haskell_enable_arrowsyntax = 1      " to enable highlighting of `proc`
+  let g:haskell_enable_pattern_synonyms = 1 " to enable highlighting of `pattern`
+  let g:haskell_enable_typeroles = 1        " to enable highlighting of type roles
+  let g:haskell_enable_static_pointers = 1  " to enable highlighting of `static`
+  let g:haskell_backpack = 1                " to enable highlighting of backpack keywords"
+
 Plug 'rust-lang/rust.vim'
 Plug 'turbio/bracey.vim'
 Plug 'tjdevries/coc-zsh'
-Plug 'ryanoasis/vim-devicons'
 Plug 'dag/vim-fish'
 Plug 'pboettch/vim-cmake-syntax'
+Plug 'airblade/vim-gitgutter'
 
 call plug#end()
 
@@ -158,9 +165,10 @@ set nowritebackup
 set cmdheight=2
 set updatetime=300
 set shortmess+=c
-if !has('nvim')
-  set signcolumn=number
-endif
+set signcolumn=yes
+"if !has('nvim')
+"  set signcolumn=number
+"endif
 
 " Preview replace
 if has('nvim')
@@ -195,22 +203,18 @@ if exists('+termguicolors')
 endif
 
 set background=dark
-"colorscheme OceanicNext
 colorscheme nord
 
 " Change Color Highlight
 " No background color for transparency
 "highlight Normal guibg=NONE ctermbg=NONE
-"highlight LineNr guibg=NONE ctermbg=NONE
-"highlight CursorLineNr gui=NONE cterm=NONE
-"highlight EndOfBuffer guibg=NONE ctermbg=NONE
 " for ALEWarning
 highlight SpellCap gui=underline cterm=underline guibg=NONE ctermbg=NONE
 
 augroup file_type
   autocmd!
-  autocmd FileType cpp nmap <buffer> <F5>
-      \ :wa<cr>:!g++ -g -o %:r.out % && ./%:r.out<cr>
+  "autocmd FileType cpp nmap <buffer> <F5>
+  "    \ :wa<cr>:!g++ -g -o %:r.out % && ./%:r.out<cr>
   autocmd FileType vim,sh,zsh,html setlocal shiftwidth=2 tabstop=2
   autocmd FileType help,h wincmd L
 augroup END
@@ -222,6 +226,13 @@ augroup END
 " termdebug setting
 packadd termdebug
 let g:termdebug_wide=1
+nnoremap <F5> :silent! Termdebug<CR>
+nnoremap <Leader><F5> :Run<CR>
+nnoremap <F6> :Step<CR>
+nnoremap <Leader><F6> :Over<CR>
+nnoremap <F7> :Continue<CR>
+nnoremap <F9> :Break<CR>
+nnoremap <F10> :Stop<CR>
 
 " shortcut for buffers and bufferline
 nmap <Leader>1 <Plug>lightline#bufferline#go(1)
@@ -238,10 +249,14 @@ nmap <Leader>0 <Plug>lightline#bufferline#go(10)
 nmap <Leader>h :bprevious<CR>
 nmap <Leader>l :bnext<CR>
 
+" close buffer
 nmap <leader>qq :bp <BAR> bd #<CR>
 
-" shortcut for split window
-nnoremap <Leader>vs :rightbelow vnew<CR>
+" resize split window
+nnoremap <C-W><C-h> :vertical resize -5<CR>
+nnoremap <C-W><C-j> :resize -2<CR>
+nnoremap <C-W><C-k> :resize +2<CR>
+nnoremap <C-W><C-l> :vertical resize +5<CR>
 
 " new buffer [No Name]
 nnoremap <Leader>n :enew<CR>
