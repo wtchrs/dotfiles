@@ -1,0 +1,19 @@
+{
+    "coc.preferences.formatOnSaveFiletypes": [
+        "javascript", "css", "markdown", "rust"
+    ],
+    "languageserver": {
+        "haskell":{
+            "command":"haskell-language-server-wrapper",
+            "args":["--lsp"],
+            "rootPatterns": [
+                "*.cabal", "stack.yaml", "cabal.project", "package.yaml", "hie.yaml"
+            ],
+            "filetypes": ["haskell", "lhaskell"]
+        }
+    },
+
+    "clangd.semanticHighlighting": true,
+    "clangd.arguments": ["-header-insertion=never"],
+    "prettier.tabWidth": 4
+}

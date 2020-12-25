@@ -36,7 +36,7 @@ Plug 'dense-analysis/ale'
       \ '*': ['remove_trailing_lines', 'trim_whitespace'],
       \ 'sh': ['shfmt'],
       \ 'cpp': ['clang-format'],
-      \ 'cmake': ['cmakeformat'],
+      \ 'cmake': [],
       \ 'html': ['prettier'],
       \ 'haskell': ['brittany']
       \ }
@@ -52,14 +52,40 @@ Plug 'Raimondi/delimitMate'
   let delimitMate_expand_cr=1
   let delimitMate_expand_space=1
 
-Plug 'vim-airline/vim-airline'
-  let g:airline_theme='nord'
-  let g:airline#extensions#tabline#enabled = 1
-  let g:airline#extensions#tabline#buffer_idx_mode = 1
-  let g:airline#extensions#tabline#formatter = 'unique_tail'
-  let g:airline#extensions#ale#enabled = 1
-  let g:airline_powerline_fonts = 1
-Plug 'mengelbrecht/lightline-bufferline'
+Plug 'glepnir/galaxyline.nvim'
+Plug 'glepnir/dashboard-nvim'
+Plug 'liuchengxu/vim-clap', { 'do': { -> clap#installer#force_download() } }
+
+Plug 'kyazdani42/nvim-web-devicons'
+Plug 'romgrk/barbar.nvim'
+  " Magic buffer-picking mode
+  nnoremap <silent> <C-s> :BufferPick<CR>
+  " Sort automatically by...
+  nnoremap <silent> <Space>bd :BufferOrderByDirectory<CR>
+  nnoremap <silent> <Space>bl :BufferOrderByLanguage<CR>
+  " Move to previous/next
+  nnoremap <silent>    <A-,> :BufferPrevious<CR>
+  nnoremap <silent>    <A-.> :BufferNext<CR>
+  " Re-order to previous/next
+  nnoremap <silent>    <A-<> :BufferMovePrevious<CR>
+  nnoremap <silent>    <A->> :BufferMoveNext<CR>
+  " Goto buffer in position...
+  nnoremap <silent>    <A-1> :BufferGoto 1<CR>
+  nnoremap <silent>    <A-2> :BufferGoto 2<CR>
+  nnoremap <silent>    <A-3> :BufferGoto 3<CR>
+  nnoremap <silent>    <A-4> :BufferGoto 4<CR>
+  nnoremap <silent>    <A-5> :BufferGoto 5<CR>
+  nnoremap <silent>    <A-6> :BufferGoto 6<CR>
+  nnoremap <silent>    <A-7> :BufferGoto 7<CR>
+  nnoremap <silent>    <A-8> :BufferGoto 8<CR>
+  nnoremap <silent>    <A-9> :BufferLast<CR>
+  " Close buffer
+  nnoremap <silent>    <A-c> :BufferClose<CR>
+
+"Plug 'vim-airline/vim-airline'
+"  let g:airline_theme='nord'
+"  let g:airline#extensions#ale#enabled = 1
+"  let g:airline_powerline_fonts = 1
 
 " Vim Theme
 Plug 'arcticicestudio/nord-vim'
@@ -112,16 +138,6 @@ Plug 'Yggdroot/indentLine'
     autocmd FileType json let g:indentLine_setConceal = 0
   augroup END
 
-
-Plug 'neovimhaskell/haskell-vim'
-  let g:haskell_enable_quantification = 1   " to enable highlighting of `forall`
-  let g:haskell_enable_recursivedo = 1      " to enable highlighting of `mdo` and `rec`
-  let g:haskell_enable_arrowsyntax = 1      " to enable highlighting of `proc`
-  let g:haskell_enable_pattern_synonyms = 1 " to enable highlighting of `pattern`
-  let g:haskell_enable_typeroles = 1        " to enable highlighting of type roles
-  let g:haskell_enable_static_pointers = 1  " to enable highlighting of `static`
-  let g:haskell_backpack = 1                " to enable highlighting of backpack keywords"
-
 Plug 'rust-lang/rust.vim'
 Plug 'turbio/bracey.vim'
 Plug 'tjdevries/coc-zsh'
@@ -130,6 +146,9 @@ Plug 'pboettch/vim-cmake-syntax'
 Plug 'airblade/vim-gitgutter'
 
 call plug#end()
+
+luafile ~/.config/nvim/spaceline.lua
+"luafile ~/.config/nvim/eviline.lua
 
 set number
 set ruler
@@ -168,9 +187,6 @@ set cmdheight=2
 set updatetime=300
 set shortmess+=c
 set signcolumn=yes
-"if !has('nvim')
-"  set signcolumn=number
-"endif
 
 " Preview replace
 if has('nvim')
@@ -190,7 +206,7 @@ if &shell =~# 'fish$'
   set shell=sh
 endif
 
-augroup newbuffer
+augroup NewBuffer
   autocmd!
   autocmd BufReadPost *
       \ if line("'\"") > 0 && line("'\"") <= line("$") |
@@ -212,6 +228,10 @@ colorscheme nord
 "highlight Normal guibg=NONE ctermbg=NONE
 " for ALEWarning
 highlight SpellCap gui=underline cterm=underline guibg=NONE ctermbg=NONE
+" for bufferline(barbar.nvim)
+highlight BufferCurrentMod guifg=lightgreen guibg=#2e3440
+highlight BufferVisibleMod guifg=lightgreen guibg=#4c566a
+highlight BufferInactiveMod guifg=lightgreen guibg=#3b4252
 
 augroup file_type
   autocmd!
@@ -227,26 +247,14 @@ augroup END
 
 " termdebug setting
 packadd termdebug
-let g:termdebug_wide=1
-nnoremap <F5> :silent! Termdebug<CR>
-nnoremap <Leader><F5> :Run<CR>
-nnoremap <F6> :Step<CR>
-nnoremap <Leader><F6> :Over<CR>
-nnoremap <F7> :Continue<CR>
-nnoremap <F9> :Break<CR>
-nnoremap <F10> :Stop<CR>
-
-" shortcut for buffers and bufferline
-nmap <Leader>1 <Plug>lightline#bufferline#go(1)
-nmap <Leader>2 <Plug>lightline#bufferline#go(2)
-nmap <Leader>3 <Plug>lightline#bufferline#go(3)
-nmap <Leader>4 <Plug>lightline#bufferline#go(4)
-nmap <Leader>5 <Plug>lightline#bufferline#go(5)
-nmap <Leader>6 <Plug>lightline#bufferline#go(6)
-nmap <Leader>7 <Plug>lightline#bufferline#go(7)
-nmap <Leader>8 <Plug>lightline#bufferline#go(8)
-nmap <Leader>9 <Plug>lightline#bufferline#go(9)
-nmap <Leader>0 <Plug>lightline#bufferline#go(10)
+  let g:termdebug_wide=1
+  nnoremap <F5> :silent! Termdebug<CR>
+  nnoremap <Leader><F5> :Run<CR>
+  nnoremap <F6> :Step<CR>
+  nnoremap <Leader><F6> :Over<CR>
+  nnoremap <F7> :Continue<CR>
+  nnoremap <F9> :Break<CR>
+  nnoremap <F10> :Stop<CR>
 
 nmap <Leader>h :bprevious<CR>
 nmap <Leader>l :bnext<CR>
@@ -260,9 +268,6 @@ nnoremap <C-W><C-j> :resize -2<CR>
 nnoremap <C-W><C-k> :resize +2<CR>
 nnoremap <C-W><C-l> :vertical resize +5<CR>
 
-" new buffer [No Name]
-nnoremap <Leader>n :enew<CR>
-
 "===================
 " Coc.nvim settings
 "===================
@@ -271,8 +276,9 @@ nnoremap <Leader>n :enew<CR>
 let g:coc_global_extensions = [
     \ 'coc-cmake', 'coc-clangd', 'coc-vimlsp', 'coc-rust-analyzer',
     \ 'coc-html', 'coc-json', 'coc-eslint', 'coc-tsserver', 'coc-prettier',
-    \ 'coc-css', 'coc-stylelint', 'coc-emmet', 'coc-sh', 'coc-snippets'
-    \ ] " 'coc-clangd'
+    \ 'coc-css', 'coc-stylelint', 'coc-emmet', 'coc-sh', 'coc-snippets',
+    \ 'coc-lua'
+    \ ]
 
 " Coc Configs
 call coc#config('coc.preferences.formatOnSaveFiletypes', [
@@ -295,38 +301,8 @@ call coc#config('clangd.arguments', ['-header-insertion=never'])
 call coc#config('prettier.tabWidth', 4)
 
 " for scrolling popup
-nnoremap <expr> <c-d> <SID>scroll_cursor_popup(1) ? '<esc>' : '<c-d>'
-nnoremap <expr> <c-u> <SID>scroll_cursor_popup(0) ? '<esc>' : '<c-u>'
-
-function s:find_cursor_popup(...)
-  let radius = get(a:000, 0, 2)
-  let srow = screenrow()
-  let scol = screencol()
-
-  " it's necessary to test entire rect, as some popup might be quite small
-  for r in range(srow - radius, srow + radius)
-    for c in range(scol - radius, scol + radius)
-      let winid = popup_locate(r, c)
-      if winid != 0
-        return winid
-      endif
-    endfor
-  endfor
-
-  return 0
-endfunction
-
-function s:scroll_cursor_popup(down)
-  let winid = s:find_cursor_popup()
-  if winid == 0
-    return 0
-  endif
-
-  let pp = popup_getpos(winid)
-  call popup_setoptions(winid, {'firstline': pp.firstline + (a:down ? 1 : -1)})
-
-  return 1
-endfunction
+nnoremap <expr> <c-d> coc#float#has_float() ? coc#float#scroll(1,2) : '<c-d>'
+nnoremap <expr> <c-u> coc#float#has_float() ? coc#float#scroll(0,2) : '<c-u>'
 
 " Use tab for trigger completion with characters ahead and navigate.
 " NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
@@ -385,23 +361,13 @@ function! s:show_documentation()
 endfunction
 
 " Highlight the symbol and its references when holding the cursor.
-augroup cochighlight
+augroup CocHighlight
   autocmd!
   autocmd CursorHold * silent call CocActionAsync('highlight')
 augroup END
 
 " Symbol renaming.
 nmap <leader>rn <Plug>(coc-rename)
-
-" Applying codeAction to the selected region.
-" Example: `<leader>aap` for current paragraph
-xmap <leader>a  <Plug>(coc-codeaction-selected)
-nmap <leader>a  <Plug>(coc-codeaction-selected)
-
-" Remap keys for applying codeAction to the current buffer.
-nmap <leader>ac  <Plug>(coc-codeaction)
-" Apply AutoFix to problem on the current line.
-nmap <leader>qf  <Plug>(coc-fix-current)
 
 " Mappings for CoCList
 " Show all diagnostics.
@@ -412,5 +378,3 @@ nnoremap <silent><nowait> <space>e  :<C-u>CocList extensions<cr>
 nnoremap <silent><nowait> <space>c  :<C-u>CocList commands<cr>
 " Find symbol of current document.
 nnoremap <silent><nowait> <space>o  :<C-u>CocList outline<cr>
-" Resume latest coc list.
-nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<CR>
