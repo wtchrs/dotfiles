@@ -280,29 +280,11 @@ let g:coc_global_extensions = [
     \ 'coc-lua'
     \ ]
 
-" Coc Configs
-call coc#config('coc.preferences.formatOnSaveFiletypes', [
-    \ 'javascript', 'css', 'markdown', 'rust'
-    \ ])
-
-call coc#config('languageserver', {
-    \ 'haskell': {
-    \   'command': 'haskell-language-server-wrapper',
-    \   'args': ['--lsp'],
-    \   'rootPatterns': [
-    \     '*.cabal', 'stack.yaml', 'cabal.project', 'package.yaml', 'hie.yaml'
-    \   ],
-    \   'filetypes': ['haskell', 'lhaskell']
-    \ }})
-
-call coc#config('clangd.semanticHighlighting', v:true)
-call coc#config('clangd.arguments', ['-header-insertion=never'])
-
-call coc#config('prettier.tabWidth', 4)
-
 " for scrolling popup
 nnoremap <expr> <c-d> coc#float#has_float() ? coc#float#scroll(1,2) : '<c-d>'
 nnoremap <expr> <c-u> coc#float#has_float() ? coc#float#scroll(0,2) : '<c-u>'
+
+nmap <silent> <c-F5> :CocRestart<CR>
 
 " Use tab for trigger completion with characters ahead and navigate.
 " NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
@@ -310,12 +292,12 @@ nnoremap <expr> <c-u> coc#float#has_float() ? coc#float#scroll(0,2) : '<c-u>'
 " stridx(... for skip closing brakets and braces
 inoremap <silent><expr> <TAB>
     \ pumvisible() ? "\<C-n>" :
-    \ coc#expandableOrJumpable() ?
+    \ (coc#expandableOrJumpable() ?
     \ "\<C-r>=coc#rpc#request('doKeymap', ['snippets-expand-jump',''])\<CR>" :
-    \ <SID>check_back_space() ? "\<TAB>" :
-    \ stridx('])}"', getline('.')[col('.')-1])!=-1 ? "\<Right>" :
-    \ coc#refresh()
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+    \ (<SID>check_back_space() ? "\<TAB>" :
+    \ (stridx('])}"', getline('.')[col('.')-1])!=-1 ? "\<Right>" :
+    \ coc#refresh())))
+inoremap <silent><expr> <S-TAB> pumvisible() ? "\<C-p>" : "\<S-TAB>"
 
 function! s:check_back_space() abort
   let col = col('.') - 1
@@ -348,6 +330,10 @@ nnoremap <silent> gd :<C-u>call CocActionAsync('jumpDefinition')<CR>
 nnoremap <silent> gy :<C-u>call CocActionAsync('jumpTypeDefinition')<CR>
 nnoremap <silent> gi :<C-u>call CocActionAsync('jumpImplementation')<CR>
 nnoremap <silent> gr :<C-u>call CocActionAsync('jumpReferences')<CR>
+
+" GoTo problems
+nnoremap <silent> [g :<c-u>call CocActionAsync('diagnosticPrevious')<CR>
+nnoremap <silent> ]g :<c-u>call CocActionAsync('diagnosticNext')<CR>
 
 " Use K to show documentation in preview window.
 nnoremap <silent> K :call <SID>show_documentation()<CR>
