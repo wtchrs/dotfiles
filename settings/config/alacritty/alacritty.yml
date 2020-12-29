@@ -7,8 +7,8 @@ env:
 window:
   # Window padding (changes require restart)
   padding:
-    x: 17
-    y: 17
+    x: 10
+    y: 10
 
   # Window title
   title: Alacritty
@@ -31,100 +31,91 @@ font:
   normal:
     #family: DejaVuSansMono Nerd Font
     #family: MesloLGS NF
-    family: Hack
+    family: FantasqueSansMono Nerd Font Mono
     style: Regular
 
   # Bold font face
   bold:
     #family: DejaVuSansMono Nerd Font
     #family: MesloLGS NF
-    family: Hack
+    family: FantasqueSansMono Nerd Font Mono
     style: Bold
 
   # Italic font face
   italic:
     #family: DejaVuSansMono Nerd Font
     #family: MesloLGS NF
-    family: Hack
+    family: FantasqueSansMono Nerd Font Mono
     style: Italic
 
   # Bold italic font face
   bold_italic:
     #family: DejaVuSansMono Nerd Font
     #family: MesloLGS NF
-    family: Hack
+    family: FantasqueSansMono Nerd Font Mono
     style: Bold Italic
 
   # Point size
-  size: 8
+  size: 13
 
   offset:
     x: 0
-    y: 0
+    y: 2
 
 # If `true`, bold text is drawn using the bright color variants.
 draw_bold_text_with_bright_colors: true
 
 # Colors
 colors:
-  # Default colors
   primary:
-    background: '0x2d2d2d'
-    foreground: '0xd3d0c8'
-
-  #cursor:
-  #  text: '0x000000'
-  #  cursor: '0xffffff'
-
+    background: '#2e3440'
+    foreground: '#d8dee9'
+    dim_foreground: '#a5abb6'
+  cursor:
+    text: '#2e3440'
+    cursor: '#d8dee9'
+  vi_mode_cursor:
+    text: '#2e3440'
+    cursor: '#d8dee9'
   selection:
-    text: '0xd3d0c8'
-    background: '0x5d5d5d'
-
-  # Normal colors
-  #normal:
-  #  black:   '0x282a2e'
-  #  red:     '0xa54242'
-  #  green:   '0x8c9440'
-  #  yellow:  '0xde935f'
-  #  blue:    '0x5f819d'
-  #  magenta: '0x85678f'
-  #  cyan:    '0x5e8d87'
-  #  white:   '0x707880'
-
-  # Bright colors
-  #bright:
-  #  black:   '0x373b41'
-  #  red:     '0xcc6666'
-  #  green:   '0xb5bd68'
-  #  yellow:  '0xf0c674'
-  #  blue:    '0x81a2be'
-  #  magenta: '0xb294bb'
-  #  cyan:    '0x8abeb7'
-  #  white:   '0xc5c8c6'
-
-  # Normal colors
+    text: CellForeground
+    background: '#4c566a'
+  search:
+    matches:
+      foreground: CellBackground
+      background: '#88c0d0'
+    bar:
+      background: '#434c5e'
+      foreground: '#d8dee9'
   normal:
-    black:   '0x3D4C5F'
-    red:     '0xEE4F84'
-    green:   '0x53E2AE'
-    yellow:  '0xF1FF52'
-    blue:    '0x6498EF'
-    magenta: '0x985EFF'
-    cyan:    '0x24D1E7'
-    white:   '0xE5E5E5'
-
-  # Bright colors
+    black: '#3b4252'
+    red: '#bf616a'
+    green: '#a3be8c'
+    yellow: '#ebcb8b'
+    blue: '#81a1c1'
+    magenta: '#b48ead'
+    cyan: '#88c0d0'
+    white: '#e5e9f0'
   bright:
-    black:   '0x56687E'
-    red:     '0xF48FB1'
-    green:   '0xA1EFD3'
-    yellow:  '0xF1FA8C'
-    blue:    '0x92B6F4'
-    magenta: '0xBD99FF'
-    cyan:    '0x87DFEB'
-    white:   '0xF8F8F2'
+    black: '#4c566a'
+    red: '#bf616a'
+    green: '#a3be8c'
+    yellow: '#ebcb8b'
+    blue: '#81a1c1'
+    magenta: '#b48ead'
+    cyan: '#8fbcbb'
+    white: '#eceff4'
+  dim:
+    black: '#373e4d'
+    red: '#94545d'
+    green: '#809575'
+    yellow: '#b29e75'
+    blue: '#68809a'
+    magenta: '#8c738c'
+    cyan: '#6d96a5'
+    white: '#aeb3bb'
 
-background_opacity: 0.85
+#background_opacity: 0.85
 
 key_bindings:
     # (Windows, Linux, and BSD only)
@@ -133,8 +124,8 @@ key_bindings:
   - { key: Insert,   mods: Shift,         action: PasteSelection   }
   - { key: Key0,     mods: Control,       action: ResetFontSize    }
   - { key: Equals,   mods: Control,       action: IncreaseFontSize }
-  - { key: Add,      mods: Control,       action: IncreaseFontSize }
-  - { key: Subtract, mods: Control,       action: DecreaseFontSize }
+  # - { key: Add,      mods: Control,       action: IncreaseFontSize }
+  # - { key: Subtract, mods: Control,       action: DecreaseFontSize }
   - { key: Minus,    mods: Control,       action: DecreaseFontSize }
 
   - { key: Paste,                    action: Paste                            }
