@@ -194,7 +194,7 @@ client.urgent           #ff4949 #ff4949 #ffffff #ff4949
 exec_always --no-startup-id "feh --bg-fill ~/Pictures/wallpaper/wallpaper.jpg || feh --bg-fill ~/Pictures/wallpaper/wallpaper.png"
 
 #exec --no-startup-id dropbox
-exec --no-startup-id picom --experimental-backends --backend glx -cb --config ~/.config/compton/compton.conf
+exec --no-startup-id picom --backend glx -cb --config ~/.config/compton/compton.conf
 #exec --no-startup-id sudo powertop --auto-tune
 exec --no-startup-id nm-applet
 #exec --no-startup-id udiskie
@@ -249,7 +249,7 @@ bindsym XF86MonBrightnessDown exec light -U 10
 # BAR #
 #-----#
 
-exec_always --no-startup-id ~/Scripts/bar.sh
+exec_always --no-startup-id ~/.config/polybar/launch.sh
 
 #-------------#
 # ASSIGNMENTS #
