@@ -64,7 +64,7 @@ gls.left[4] = {
 
 gls.left[5] = {
   GitIcon = {
-    provider = function() return '  ' end,
+    provider = function() return '   ' end,
     condition = require('galaxyline.provider_vcs').check_git_workspace,
     highlight = {colors.orange,colors.line_bg},
   }
@@ -126,7 +126,8 @@ gls.left[11] = {
 }
 gls.left[12] = {
   Space = {
-    provider = function () return ' ' end
+    provider = function () return ' ' end,
+    highlight = {colors.fg,colors.bg}
   }
 }
 gls.left[13] = {

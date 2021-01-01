@@ -7,15 +7,6 @@ let mapleader='`'
 " Plugins with VimPlug
 call plug#begin('~/.vim/plugged')
 
-Plug 'preservim/nerdtree'
-  let NERDTreeMapJumpNextSibling = '<Leader>j'
-  let NERDTreeMapJumpPrevSibling = '<Leader>k'
-  let NERDTreeShowHidden=1
-  let g:NERDTreeWinPos = 'right'
-  map <C-n> :NERDTreeToggle<CR>
-  map <C-f> :NERDTreeFind<CR>
-Plug 'ryanoasis/vim-devicons'
-
 Plug 'preservim/nerdcommenter'
   let g:NERDCreateDefaultMappings = 0
   let g:NERDDefaultAlign = 'left'
@@ -56,6 +47,17 @@ Plug 'glepnir/galaxyline.nvim'
 Plug 'glepnir/dashboard-nvim'
 Plug 'liuchengxu/vim-clap', { 'do': { -> clap#installer#force_download() } }
 
+Plug 'kyazdani42/nvim-tree.lua'
+  let g:nvim_tree_side = 'right'
+  let g:nvim_tree_auto_open = 1
+  let g:nvim_tree_auto_close = 1
+  let g:nvim_tree_follow = 1
+  let g:nvim_tree_indent_markers = 1
+  let g:nvim_tree_git_hl = 1
+  nnoremap <C-n> :NvimTreeToggle<CR>
+  nnoremap <leader>r :NvimTreeRefresh<CR>
+  nnoremap <leader>n :NvimTreeFindFile<CR>
+
 Plug 'kyazdani42/nvim-web-devicons'
 Plug 'romgrk/barbar.nvim'
   " Magic buffer-picking mode
@@ -82,11 +84,6 @@ Plug 'romgrk/barbar.nvim'
   " Close buffer
   nnoremap <silent>    <A-c> :BufferClose<CR>
 
-"Plug 'vim-airline/vim-airline'
-"  let g:airline_theme='nord'
-"  let g:airline#extensions#ale#enabled = 1
-"  let g:airline_powerline_fonts = 1
-
 " Vim Theme
 Plug 'arcticicestudio/nord-vim'
 
@@ -101,7 +98,6 @@ Plug 'mattn/emmet-vim'
 Plug 'junegunn/rainbow_parentheses.vim'
   let g:rainbow#max_level = 16
   let g:rainbow#pairs = [['(', ')'], ['{', '}'], ['[', ']']]
-  let g:rainbow#blacklist = [248, 59, 239, 238]
   augroup rainbow
     autocmd!
     " cmake syntax highlight conflict with RainbowParentheses
@@ -132,13 +128,23 @@ Plug 'jackguo380/vim-lsp-cxx-highlight'
 Plug 'easymotion/vim-easymotion'
 
 Plug 'Yggdroot/indentLine'
-  let g:indentLine_char = '┆'
+  let g:indentLine_char = '│'
   augroup IndentLineDisableJsonConceal
     autocmd!
     autocmd FileType json let g:indentLine_setConceal = 0
   augroup END
 
+" Rust, Crates, Toml
 Plug 'rust-lang/rust.vim'
+Plug 'cespare/vim-toml'
+Plug 'mhinz/vim-crates'
+  augroup CratesHighlight
+    autocmd!
+    if has('nvim')
+      autocmd BufRead Cargo.toml call crates#toggle()
+    endif
+  augroup END
+
 Plug 'turbio/bracey.vim'
 Plug 'tjdevries/coc-zsh'
 Plug 'dag/vim-fish'
@@ -147,8 +153,8 @@ Plug 'airblade/vim-gitgutter'
 
 call plug#end()
 
-luafile ~/.config/nvim/spaceline.lua
-"luafile ~/.config/nvim/eviline.lua
+"luafile ~/.config/nvim/spaceline.lua
+luafile ~/.config/nvim/eviline.lua
 
 set number
 set ruler
@@ -237,7 +243,7 @@ augroup file_type
   autocmd!
   "autocmd FileType cpp nmap <buffer> <F5>
   "    \ :wa<cr>:!g++ -g -o %:r.out % && ./%:r.out<cr>
-  autocmd FileType vim,sh,zsh,html setlocal shiftwidth=2 tabstop=2
+  autocmd FileType vim,sh,zsh,html,lua setlocal shiftwidth=2 tabstop=2
   autocmd FileType help,h wincmd L
 augroup END
 
@@ -280,10 +286,6 @@ let g:coc_global_extensions = [
     \ 'coc-lua'
     \ ]
 
-" for scrolling popup
-nnoremap <expr> <c-d> coc#float#has_float() ? coc#float#scroll(1,2) : '<c-d>'
-nnoremap <expr> <c-u> coc#float#has_float() ? coc#float#scroll(0,2) : '<c-u>'
-
 nmap <silent> <c-F5> :CocRestart<CR>
 
 " Use tab for trigger completion with characters ahead and navigate.
@@ -297,6 +299,7 @@ inoremap <silent><expr> <TAB>
     \ (<SID>check_back_space() ? "\<TAB>" :
     \ (stridx('])}"', getline('.')[col('.')-1])!=-1 ? "\<Right>" :
     \ coc#refresh())))
+
 inoremap <silent><expr> <S-TAB> pumvisible() ? "\<C-p>" : "\<S-TAB>"
 
 function! s:check_back_space() abort
@@ -305,13 +308,6 @@ function! s:check_back_space() abort
 endfunction
 
 let g:coc_snippet_next = '<tab>'
-
-" Use <c-space> to trigger completion.
-if has('nvim')
-  inoremap <silent><expr> <c-space> coc#refresh()
-else
-  inoremap <silent><expr> <c-@> coc#refresh()
-endif
 
 " Use <cr> to confirm completion, `<C-g>u` means break undo chain at current
 " position. Coc only does snippet and additional edit on confirm.
@@ -327,16 +323,21 @@ endif
 
 " GoTo code navigation.
 nnoremap <silent> gd :<C-u>call CocActionAsync('jumpDefinition')<CR>
-nnoremap <silent> gy :<C-u>call CocActionAsync('jumpTypeDefinition')<CR>
-nnoremap <silent> gi :<C-u>call CocActionAsync('jumpImplementation')<CR>
 nnoremap <silent> gr :<C-u>call CocActionAsync('jumpReferences')<CR>
 
-" GoTo problems
+" GoTo diagnostic
 nnoremap <silent> [g :<c-u>call CocActionAsync('diagnosticPrevious')<CR>
 nnoremap <silent> ]g :<c-u>call CocActionAsync('diagnosticNext')<CR>
 
 " Use K to show documentation in preview window.
 nnoremap <silent> K :call <SID>show_documentation()<CR>
+
+" for scrolling popup
+nnoremap <expr> <c-d> coc#float#has_float() ? coc#float#scroll(1,2) : '<c-d>'
+nnoremap <expr> <c-u> coc#float#has_float() ? coc#float#scroll(0,2) : '<c-u>'
+
+" Symbol renaming.
+nmap <leader>rn <Plug>(coc-rename)
 
 function! s:show_documentation()
   if (index(['vim','help'], &filetype) >= 0)
@@ -351,16 +352,3 @@ augroup CocHighlight
   autocmd!
   autocmd CursorHold * silent call CocActionAsync('highlight')
 augroup END
-
-" Symbol renaming.
-nmap <leader>rn <Plug>(coc-rename)
-
-" Mappings for CoCList
-" Show all diagnostics.
-nnoremap <silent><nowait> <space>a  :<C-u>CocList diagnostics<cr>
-" Manage extensions.
-nnoremap <silent><nowait> <space>e  :<C-u>CocList extensions<cr>
-" Show commands.
-nnoremap <silent><nowait> <space>c  :<C-u>CocList commands<cr>
-" Find symbol of current document.
-nnoremap <silent><nowait> <space>o  :<C-u>CocList outline<cr>
