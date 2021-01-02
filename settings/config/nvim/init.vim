@@ -153,8 +153,9 @@ Plug 'airblade/vim-gitgutter'
 
 call plug#end()
 
-"luafile ~/.config/nvim/spaceline.lua
-luafile ~/.config/nvim/eviline.lua
+" Loading galaxyline setting from lua file
+"lua require'spaceline'
+lua require'eviline'
 
 set number
 set ruler
