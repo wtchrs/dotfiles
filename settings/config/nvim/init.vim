@@ -4,7 +4,7 @@ set nobomb
 
 let mapleader='`'
 
-" Plugins with VimPlug
+" Vim-Plug Settings {{{
 call plug#begin('~/.vim/plugged')
 
 Plug 'preservim/nerdcommenter'
@@ -16,7 +16,6 @@ Plug 'preservim/nerdcommenter'
 Plug 'preservim/tagbar'
   nnoremap <F8> :TagbarToggle<CR>
 
-Plug 'ctrlpvim/ctrlp.vim'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 Plug 'dense-analysis/ale'
@@ -43,13 +42,23 @@ Plug 'Raimondi/delimitMate'
   let delimitMate_expand_cr=1
   let delimitMate_expand_space=1
 
+Plug 'kyazdani42/nvim-web-devicons'
 Plug 'glepnir/galaxyline.nvim'
 Plug 'glepnir/dashboard-nvim'
-Plug 'liuchengxu/vim-clap', { 'do': { -> clap#installer#force_download() } }
+  let g:dashboard_default_executive = 'telescope'
+
+Plug 'nvim-lua/popup.nvim'
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-telescope/telescope.nvim'
+  nnoremap <C-p> <cmd>lua require('telescope.builtin').find_files()<cr>
+  nnoremap <leader>fg <cmd>lua require('telescope.builtin').live_grep()<cr>
+  nnoremap <leader>fb <cmd>lua require('telescope.builtin').buffers()<cr>
+  nnoremap <leader>fh <cmd>lua require('telescope.builtin').help_tags()<cr>
 
 Plug 'kyazdani42/nvim-tree.lua'
   let g:nvim_tree_side = 'right'
-  let g:nvim_tree_auto_open = 1
+  let g:nvim_tree_width = 35
+  "let g:nvim_tree_auto_open = 1
   let g:nvim_tree_auto_close = 1
   let g:nvim_tree_follow = 1
   let g:nvim_tree_indent_markers = 1
@@ -58,7 +67,6 @@ Plug 'kyazdani42/nvim-tree.lua'
   nnoremap <leader>r :NvimTreeRefresh<CR>
   nnoremap <leader>n :NvimTreeFindFile<CR>
 
-Plug 'kyazdani42/nvim-web-devicons'
 Plug 'romgrk/barbar.nvim'
   " Magic buffer-picking mode
   nnoremap <silent> <C-s> :BufferPick<CR>
@@ -66,23 +74,23 @@ Plug 'romgrk/barbar.nvim'
   nnoremap <silent> <Space>bd :BufferOrderByDirectory<CR>
   nnoremap <silent> <Space>bl :BufferOrderByLanguage<CR>
   " Move to previous/next
-  nnoremap <silent>    <A-,> :BufferPrevious<CR>
-  nnoremap <silent>    <A-.> :BufferNext<CR>
+  nnoremap <silent> <A-,> :BufferPrevious<CR>
+  nnoremap <silent> <A-.> :BufferNext<CR>
   " Re-order to previous/next
-  nnoremap <silent>    <A-<> :BufferMovePrevious<CR>
-  nnoremap <silent>    <A->> :BufferMoveNext<CR>
+  nnoremap <silent> <A-<> :BufferMovePrevious<CR>
+  nnoremap <silent> <A->> :BufferMoveNext<CR>
   " Goto buffer in position...
-  nnoremap <silent>    <A-1> :BufferGoto 1<CR>
-  nnoremap <silent>    <A-2> :BufferGoto 2<CR>
-  nnoremap <silent>    <A-3> :BufferGoto 3<CR>
-  nnoremap <silent>    <A-4> :BufferGoto 4<CR>
-  nnoremap <silent>    <A-5> :BufferGoto 5<CR>
-  nnoremap <silent>    <A-6> :BufferGoto 6<CR>
-  nnoremap <silent>    <A-7> :BufferGoto 7<CR>
-  nnoremap <silent>    <A-8> :BufferGoto 8<CR>
-  nnoremap <silent>    <A-9> :BufferLast<CR>
+  nnoremap <silent> <A-1> :BufferGoto 1<CR>
+  nnoremap <silent> <A-2> :BufferGoto 2<CR>
+  nnoremap <silent> <A-3> :BufferGoto 3<CR>
+  nnoremap <silent> <A-4> :BufferGoto 4<CR>
+  nnoremap <silent> <A-5> :BufferGoto 5<CR>
+  nnoremap <silent> <A-6> :BufferGoto 6<CR>
+  nnoremap <silent> <A-7> :BufferGoto 7<CR>
+  nnoremap <silent> <A-8> :BufferGoto 8<CR>
+  nnoremap <silent> <A-9> :BufferLast<CR>
   " Close buffer
-  nnoremap <silent>    <A-c> :BufferClose<CR>
+  nnoremap <silent> <A-c> :BufferClose<CR>
 
 " Vim Theme
 Plug 'arcticicestudio/nord-vim'
@@ -108,6 +116,7 @@ Plug 'junegunn/rainbow_parentheses.vim'
         \ else |
         \   RainbowParentheses! |
         \ endif
+    autocmd TermOpen,TermEnter * RainbowParentheses!
   augroup END
 
 Plug 'liuchengxu/vista.vim'
@@ -129,10 +138,11 @@ Plug 'easymotion/vim-easymotion'
 
 Plug 'Yggdroot/indentLine'
   let g:indentLine_char = '│'
-  augroup IndentLineDisableJsonConceal
-    autocmd!
-    autocmd FileType json let g:indentLine_setConceal = 0
-  augroup END
+  let g:indentLine_fileTypeExclude = ['dashboard','json']
+  "augroup IndentLineDisableJsonConceal
+  "  autocmd!
+  "  autocmd FileType json let g:indentLine_setConceal = 0
+  "augroup END
 
 " Rust, Crates, Toml
 Plug 'rust-lang/rust.vim'
@@ -152,6 +162,7 @@ Plug 'pboettch/vim-cmake-syntax'
 Plug 'airblade/vim-gitgutter'
 
 call plug#end()
+" }}} End Vim-Plug Settings
 
 " Loading galaxyline setting from lua file
 "lua require'spaceline'
@@ -263,22 +274,13 @@ packadd termdebug
   nnoremap <F9> :Break<CR>
   nnoremap <F10> :Stop<CR>
 
-nmap <Leader>h :bprevious<CR>
-nmap <Leader>l :bnext<CR>
-
-" close buffer
-nmap <leader>qq :bp <BAR> bd #<CR>
-
 " resize split window
 nnoremap <C-W><C-h> :vertical resize -5<CR>
 nnoremap <C-W><C-j> :resize -2<CR>
 nnoremap <C-W><C-k> :resize +2<CR>
 nnoremap <C-W><C-l> :vertical resize +5<CR>
 
-"===================
-" Coc.nvim settings
-"===================
-
+" Coc.nvim Settings {{{
 " Extensions for install
 let g:coc_global_extensions = [
     \ 'coc-cmake', 'coc-clangd', 'coc-vimlsp', 'coc-rust-analyzer',
@@ -353,3 +355,4 @@ augroup CocHighlight
   autocmd!
   autocmd CursorHold * silent call CocActionAsync('highlight')
 augroup END
+" }}} End Coc.nvim Settings
