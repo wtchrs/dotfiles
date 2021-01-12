@@ -1,10 +1,48 @@
 set encoding=UTF-8
 scriptencoding UTF-8
+set nobomb
 
 let mapleader='`'
 
 " Vim-Plug Settings {{{
 call plug#begin('~/.vim/plugged')
+
+"Plug 'neovim/nvim-lspconfig'
+"  set omnifunc=v:lua.vim.lsp.omnifunc
+"  " GoTo code navigation.
+"  nnoremap <silent> gd <cmd>lua vim.lsp.buf.definition()<CR>
+"  nnoremap <silent> gr <cmd>lua vim.lsp.buf.references()<CR>
+"  " GoTo diagnostic
+"  nnoremap <silent> [g <cmd>lua vim.lsp.diagnostic.goto_prev()<CR>
+"  nnoremap <silent> ]g <cmd>lua vim.lsp.diagnostic.goto_next()<CR>
+"  " Use K to show documentation in preview window.
+"  nnoremap <silent> K <cmd>lua vim.lsp.buf.hover()<CR>
+"  " for scrolling popup
+"  "nnoremap <expr> <c-d> coc#float#has_float() ? coc#float#scroll(1,2) : '<c-d>'
+"  "nnoremap <expr> <c-u> coc#float#has_float() ? coc#float#scroll(0,2) : '<c-u>'
+"  " Symbol renaming.
+"  nmap <leader>rn <cmd>lua vim.lsp.buf.rename()<CR>
+"  " Formatting
+"  nnoremap <silent> <space>f :<cmd>lua vim.lsp.buf.formatting()<CR>
+"  " Highlight
+"  hi LspReferenceRead cterm=bold ctermbg=red guibg=grey
+"  hi LspReferenceText cterm=bold ctermbg=red guibg=grey
+"  hi LspReferenceWrite cterm=bold ctermbg=red guibg=grey
+"  augroup lsp_document_highlight
+"    autocmd!
+"    autocmd CursorHold <buffer> lua vim.lsp.buf.document_highlight()
+"    autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
+"  augroup END
+
+"Plug 'nvim-lua/completion-nvim'
+"  let g:completion_matching_strategy_list = ['exact', 'substring', 'fuzzy', 'all']
+"  let g:completion_matching_smart_case = 1
+"  let g:completion_matching_ignore_case = 1
+"  " use <Tab> and <S-Tab> for navigate completion lists
+"  inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
+"  inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+
+"Plug 'glepnir/lspsaga.nvim'
 
 Plug 'preservim/nerdcommenter'
   let g:NERDCreateDefaultMappings = 0
@@ -34,9 +72,6 @@ Plug 'dense-analysis/ale'
   let g:ale_echo_msg_error_str = 'E'
   let g:ale_echo_msg_warning_str = 'W'
   let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
-  " change ALEWarning color
-  highlight SpellCap gui=underline cterm=underline guibg=NONE ctermbg=NONE
-  " jump to diagnostic
   nmap <silent> [a <Plug>(ale_previous_wrap)
   nmap <silent> ]a <Plug>(ale_next_wrap)
 
@@ -48,15 +83,6 @@ Plug 'kyazdani42/nvim-web-devicons'
 Plug 'glepnir/galaxyline.nvim'
 Plug 'glepnir/dashboard-nvim'
   let g:dashboard_default_executive = 'telescope'
-  augroup DashboardSetting
-    autocmd!
-    autocmd FileType dashboard set nowrap
-    let ftToDisableWrap = ['dashboard']
-    autocmd BufEnter *
-        \ if index(ftToDisableWrap, &ft) < 0 | set wrap |
-        \ else | set nowrap |
-        \ endif
-  augroup END
 
 Plug 'nvim-lua/popup.nvim'
 Plug 'nvim-lua/plenary.nvim'
@@ -69,7 +95,7 @@ Plug 'nvim-telescope/telescope.nvim'
 Plug 'kyazdani42/nvim-tree.lua'
   let g:nvim_tree_side = 'right'
   let g:nvim_tree_width = 35
-  let g:nvim_tree_auto_open = 1
+  "let g:nvim_tree_auto_open = 1
   let g:nvim_tree_auto_close = 1
   let g:nvim_tree_follow = 1
   let g:nvim_tree_indent_markers = 1
@@ -117,12 +143,12 @@ Plug 'mattn/emmet-vim'
 Plug 'junegunn/rainbow_parentheses.vim'
   let g:rainbow#max_level = 16
   let g:rainbow#pairs = [['(', ')'], ['{', '}'], ['[', ']']]
-  augroup RainbowParenthesesSetting
+  augroup rainbow
     autocmd!
     " cmake syntax highlight conflict with RainbowParentheses
-    let ftToDisableRainbow = ['cmake']
+    let ftToIgnRainbow = ['cmake']
     autocmd BufEnter *
-        \ if index(ftToDisableRainbow, &ft) < 0 |
+        \ if index(ftToIgnRainbow, &ft) < 0 |
         \   RainbowParentheses |
         \ else |
         \   RainbowParentheses! |
@@ -153,7 +179,6 @@ Plug 'Yggdroot/indentLine'
 
 " Rust, Crates, Toml
 Plug 'rust-lang/rust.vim'
-Plug 'arzg/vim-rust-syntax-ext'
 Plug 'cespare/vim-toml'
 Plug 'mhinz/vim-crates'
   augroup CratesHighlight
@@ -175,9 +200,7 @@ call plug#end()
 " Loading galaxyline setting from lua file
 "lua require'spaceline'
 lua require'eviline'
-
-set background=dark
-colorscheme nord
+"lua require'lspconfig-custom'
 
 set number
 set ruler
@@ -250,16 +273,23 @@ if exists('+termguicolors')
   set termguicolors
 endif
 
+set background=dark
+colorscheme nord
+
 " Change Color Highlight
 " No background color for transparency
 "highlight Normal guibg=NONE ctermbg=NONE
-" change modified buffer color
+" for ALEWarning
+highlight SpellCap gui=underline cterm=underline guibg=NONE ctermbg=NONE
+" for bufferline(barbar.nvim)
 highlight BufferCurrentMod guifg=lightgreen guibg=#2e3440
 highlight BufferVisibleMod guifg=lightgreen guibg=#4c566a
 highlight BufferInactiveMod guifg=lightgreen guibg=#3b4252
 
 augroup file_type
   autocmd!
+  "autocmd FileType cpp nmap <buffer> <F5>
+  "    \ :wa<cr>:!g++ -g -o %:r.out % && ./%:r.out<cr>
   autocmd FileType vim,sh,zsh,html,lua setlocal shiftwidth=2 tabstop=2
   autocmd FileType help,h wincmd L
 augroup END
