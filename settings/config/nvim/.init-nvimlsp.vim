@@ -1,10 +1,66 @@
 set encoding=UTF-8
 scriptencoding UTF-8
+set nobomb
 
 let mapleader='`'
 
 " Vim-Plug Settings {{{
 call plug#begin('~/.vim/plugged')
+
+Plug 'neovim/nvim-lspconfig'
+  set omnifunc=v:lua.vim.lsp.omnifunc
+  " GoTo code navigation.
+  nnoremap <silent> gr <cmd>lua vim.lsp.buf.references()<CR>
+  " for scrolling popup
+  "nnoremap <expr> <c-d> coc#float#has_float() ? coc#float#scroll(1,2) : '<c-d>'
+  "nnoremap <expr> <c-u> coc#float#has_float() ? coc#float#scroll(0,2) : '<c-u>'
+  " Symbol renaming.
+  nmap <leader>rn <cmd>lua vim.lsp.buf.rename()<CR>
+  " Formatting
+  nnoremap <silent> <space>f :<cmd>lua vim.lsp.buf.formatting()<CR>
+  " Highlight
+  hi LspReferenceRead cterm=bold ctermbg=red guibg=grey
+  hi LspReferenceText cterm=bold ctermbg=red guibg=grey
+  hi LspReferenceWrite cterm=bold ctermbg=red guibg=grey
+  augroup lsp_document_highlight
+    autocmd!
+    autocmd CursorHold <buffer> lua vim.lsp.buf.document_highlight()
+    autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
+  augroup END
+
+Plug 'nvim-lua/completion-nvim'
+  let g:completion_matching_strategy_list = ['exact', 'substring', 'fuzzy', 'all']
+  let g:completion_matching_smart_case = 1
+  let g:completion_matching_ignore_case = 1
+  " use <Tab> and <S-Tab> for navigate completion lists
+  inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
+  inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+
+Plug 'tjdevries/lsp_extensions.nvim'
+  augroup InlayHint
+    autocmd!
+    autocmd CursorMoved,InsertLeave,BufEnter,BufWinEnter,TabEnter,BufWritePost *
+        \ lua require'lsp_extensions'.inlay_hints{ prefix = ' » ', aligned = true, highlight = "Comment", enabled = {"TypeHint", "ChainingHint"} }
+  augroup END
+
+
+Plug 'glepnir/lspsaga.nvim'
+  " lsp provider to find the cursor word definition and reference
+  nnoremap <silent> gh :LspSagaFinder<CR>
+  " code action
+  nnoremap <silent><leader>ca :LspSagaCodeAction<CR>
+  vnoremap <silent><leader>ca :LspSagaRangeCodeAction<CR>
+  " show hover doc
+  nnoremap <silent> K <cmd>lua vim.lsp.buf.hover()<CR>
+  " rename symbol
+  nnoremap <silent> <silent>rn :LspRename<CR>
+  " preview definition
+  nnoremap <silent> gd :LspSagaDefPreview<CR>
+  " show signature help
+  nnoremap <silent> gs <cmd>lua require('lspsaga.signaturehelp').signature_help()<CR>
+  " jump diagnostics
+  nnoremap <silent> [g :LspSagaDiagJumpPrev<CR>
+  nnoremap <silent> ]g :LspSagaDiagJumpNext<CR>
 
 Plug 'preservim/nerdcommenter'
   let g:NERDCreateDefaultMappings = 0
@@ -15,7 +71,7 @@ Plug 'preservim/nerdcommenter'
 Plug 'preservim/tagbar'
   nnoremap <F8> :TagbarToggle<CR>
 
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
+"Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 Plug 'dense-analysis/ale'
   let g:ale_linters = {
@@ -175,6 +231,8 @@ call plug#end()
 " Loading galaxyline setting from lua file
 "lua require'spaceline'
 lua require'eviline'
+lua require'lspconfig-custom'
+lua require'lspsaga'.init_lsp_saga()
 
 set background=dark
 colorscheme nord
@@ -285,108 +343,79 @@ nnoremap <C-W><C-j> :resize -2<CR>
 nnoremap <C-W><C-k> :resize +2<CR>
 nnoremap <C-W><C-l> :vertical resize +5<CR>
 
-function! CenteredFloatingWindow(border)
-  let width = min([&columns - 4, max([80, &columns - 20])])
-  let height = min([&lines - 4, max([20, &lines - 10])])
-  let top = ((&lines - height) / 2) - 1
-  let left = (&columns - width) / 2
-  let opts = {'relative': 'editor', 'row': top, 'col': left, 'width': width, 'height': height, 'style': 'minimal'}
-
-  if a:border == v:true
-    let top = '╭' . repeat('─', width - 2) . '╮'
-    let mid = '│' . repeat(' ', width - 2) . '│'
-    let bot = '╰' . repeat('─', width - 2) . '╯'
-    let lines = [top] + repeat([mid], height - 2) + [bot]
-    let s:buf = nvim_create_buf(v:false, v:true)
-    call nvim_buf_set_lines(s:buf, 0, -1, v:true, lines)
-    call nvim_open_win(s:buf, v:true, opts)
-    set winhl=Normal:Normal
-    let opts.row += 1
-    let opts.height -= 2
-    let opts.col += 2
-    let opts.width -= 4
-    call nvim_open_win(nvim_create_buf(v:false, v:true), v:true, opts)
-    augroup FloatingWindowSetting
-      autocmd BufWipeout <buffer> exe 'bw '.s:buf
-    augroup END
-  else
-    call nvim_open_win(nvim_create_buf(v:false, v:true), v:true, opts)
-  endif
-endfunction
-
 " Coc.nvim Settings {{{
 " Extensions for install
-let g:coc_global_extensions = [
-    \ 'coc-cmake', 'coc-clangd', 'coc-vimlsp', 'coc-rust-analyzer',
-    \ 'coc-html', 'coc-json', 'coc-eslint', 'coc-tsserver', 'coc-prettier',
-    \ 'coc-css', 'coc-stylelint', 'coc-emmet', 'coc-sh', 'coc-snippets',
-    \ 'coc-lua'
-    \ ]
+"let g:coc_global_extensions = [
+"    \ 'coc-cmake', 'coc-clangd', 'coc-vimlsp', 'coc-rust-analyzer',
+"    \ 'coc-html', 'coc-json', 'coc-eslint', 'coc-tsserver', 'coc-prettier',
+"    \ 'coc-css', 'coc-stylelint', 'coc-emmet', 'coc-sh', 'coc-snippets',
+"    \ 'coc-lua'
+"    \ ]
 
-nmap <silent> <c-F5> :CocRestart<CR>
+"nmap <silent> <c-F5> :CocRestart<CR>
 
-" Use tab for trigger completion with characters ahead and navigate.
-" NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
-" other plugin before putting this into your config.
-" stridx(... for skip closing brakets and braces
-inoremap <silent><expr> <TAB>
-    \ pumvisible() ? "\<C-n>" :
-    \ (coc#expandableOrJumpable() ?
-    \ "\<C-r>=coc#rpc#request('doKeymap', ['snippets-expand-jump',''])\<CR>" :
-    \ (<SID>check_back_space() ? "\<TAB>" :
-    \ (stridx('])}>"', getline('.')[col('.')-1])!=-1 ? "\<Right>" :
-    \ coc#refresh())))
+"" Use tab for trigger completion with characters ahead and navigate.
+"" NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
+"" other plugin before putting this into your config.
+"" stridx(... for skip closing brakets and braces
+"inoremap <silent><expr> <TAB>
+"    \ pumvisible() ? "\<C-n>" :
+"    \ (coc#expandableOrJumpable() ?
+"    \ "\<C-r>=coc#rpc#request('doKeymap', ['snippets-expand-jump',''])\<CR>" :
+"    \ (<SID>check_back_space() ? "\<TAB>" :
+"    \ (stridx('])}>"', getline('.')[col('.')-1])!=-1 ? "\<Right>" :
+"    \ coc#refresh())))
 
-inoremap <silent><expr> <S-TAB> pumvisible() ? "\<C-p>" : "\<S-TAB>"
+"inoremap <silent><expr> <S-TAB> pumvisible() ? "\<C-p>" : "\<S-TAB>"
 
-function! s:check_back_space() abort
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~# '\s'
-endfunction
+"function! s:check_back_space() abort
+"  let col = col('.') - 1
+"  return !col || getline('.')[col - 1]  =~# '\s'
+"endfunction
 
-let g:coc_snippet_next = '<tab>'
+"let g:coc_snippet_next = '<tab>'
 
-" Use <cr> to confirm completion, `<C-g>u` means break undo chain at current
-" position. Coc only does snippet and additional edit on confirm.
-" <cr> could be remapped by other vim plugin, try `:verbose imap <CR>`.
-" '\<c-r>=coc#on_enter()\<CR>' for delimitMate_expand_cr
-if exists('*complete_info')
-  inoremap <expr> <cr> complete_info()["selected"] != "-1" ?
-      \ "\<C-y>" : "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
-else
-  inoremap <expr> <cr> pumvisible() ?
-      \ "\<C-y>" : "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
-endif
+"" Use <cr> to confirm completion, `<C-g>u` means break undo chain at current
+"" position. Coc only does snippet and additional edit on confirm.
+"" <cr> could be remapped by other vim plugin, try `:verbose imap <CR>`.
+"" '\<c-r>=coc#on_enter()\<CR>' for delimitMate_expand_cr
+"if exists('*complete_info')
+"  inoremap <expr> <cr> complete_info()["selected"] != "-1" ?
+"      \ "\<C-y>" : "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+"else
+"  inoremap <expr> <cr> pumvisible() ?
+"      \ "\<C-y>" : "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+"endif
 
-" GoTo code navigation.
-nnoremap <silent> gd :<C-u>call CocActionAsync('jumpDefinition')<CR>
-nnoremap <silent> gr :<C-u>call CocActionAsync('jumpReferences')<CR>
+"" GoTo code navigation.
+"nnoremap <silent> gd :<C-u>call CocActionAsync('jumpDefinition')<CR>
+"nnoremap <silent> gr :<C-u>call CocActionAsync('jumpReferences')<CR>
 
-" GoTo diagnostic
-nnoremap <silent> [g :<c-u>call CocActionAsync('diagnosticPrevious')<CR>
-nnoremap <silent> ]g :<c-u>call CocActionAsync('diagnosticNext')<CR>
+"" GoTo diagnostic
+"nnoremap <silent> [g :<c-u>call CocActionAsync('diagnosticPrevious')<CR>
+"nnoremap <silent> ]g :<c-u>call CocActionAsync('diagnosticNext')<CR>
 
-" Use K to show documentation in preview window.
-nnoremap <silent> K :call <SID>show_documentation()<CR>
+"" Use K to show documentation in preview window.
+"nnoremap <silent> K :call <SID>show_documentation()<CR>
 
-" for scrolling popup
-nnoremap <expr> <c-d> coc#float#has_float() ? coc#float#scroll(1,2) : '<c-d>'
-nnoremap <expr> <c-u> coc#float#has_float() ? coc#float#scroll(0,2) : '<c-u>'
+"" for scrolling popup
+"nnoremap <expr> <c-d> coc#float#has_float() ? coc#float#scroll(1,2) : '<c-d>'
+"nnoremap <expr> <c-u> coc#float#has_float() ? coc#float#scroll(0,2) : '<c-u>'
 
-" Symbol renaming.
-nmap <leader>rn <Plug>(coc-rename)
+"" Symbol renaming.
+"nmap <leader>rn <Plug>(coc-rename)
 
-function! s:show_documentation()
-  if (index(['vim','help'], &filetype) >= 0)
-    execute 'h '.expand('<cword>')
-  else
-    call CocAction('doHover')
-  endif
-endfunction
+"function! s:show_documentation()
+"  if (index(['vim','help'], &filetype) >= 0)
+"    execute 'h '.expand('<cword>')
+"  else
+"    call CocAction('doHover')
+"  endif
+"endfunction
 
-" Highlight the symbol and its references when holding the cursor.
-augroup CocHighlight
-  autocmd!
-  autocmd CursorHold * silent call CocActionAsync('highlight')
-augroup END
+"" Highlight the symbol and its references when holding the cursor.
+"augroup CocHighlight
+"  autocmd!
+"  autocmd CursorHold * silent call CocActionAsync('highlight')
+"augroup END
 " }}} End Coc.nvim Settings
