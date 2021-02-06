@@ -69,7 +69,7 @@ Plug 'nvim-telescope/telescope.nvim'
 Plug 'kyazdani42/nvim-tree.lua'
   let g:nvim_tree_side = 'right'
   let g:nvim_tree_width = 35
-  let g:nvim_tree_auto_open = 1
+  "let g:nvim_tree_auto_open = 1
   let g:nvim_tree_auto_close = 1
   let g:nvim_tree_follow = 1
   let g:nvim_tree_indent_markers = 1
@@ -257,6 +257,8 @@ endif
 highlight BufferCurrentMod guifg=lightgreen guibg=#2e3440
 highlight BufferVisibleMod guifg=lightgreen guibg=#4c566a
 highlight BufferInactiveMod guifg=lightgreen guibg=#3b4252
+" change inlay hint color
+highlight! link CocHintSign Comment
 
 augroup file_type
   autocmd!
