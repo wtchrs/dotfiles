@@ -18,5 +18,6 @@
     "prettier.tabWidth": 4,
     "rust-analyzer.inlayHints.typeHintsSeparator":"  » ",
     "rust-analyzer.inlayHints.chainingHintsSeparator":"  ‣ ",
-    "rust-analyzer.inlayHints.refreshOnInsertMode":true
+    "rust-analyzer.inlayHints.refreshOnInsertMode":true,
+    "rust-analyzer.checkOnSave.command": "clippy"
 }
