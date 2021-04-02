@@ -149,7 +149,8 @@ Plug 'easymotion/vim-easymotion'
 
 Plug 'Yggdroot/indentLine'
   let g:indentLine_char = '│'
-  let g:indentLine_fileTypeExclude = ['dashboard','json']
+  let g:indentLine_fileTypeExclude = ['dashboard', 'json']
+Plug 'lukas-reineke/indent-blankline.nvim'
 
 " Rust, Crates, Toml
 Plug 'rust-lang/rust.vim'
