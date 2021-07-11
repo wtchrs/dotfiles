@@ -1,25 +1,64 @@
-# antigen
-[ ! -f ~/antigen.zsh ] && curl -L git.io/antigen > ~/antigen.zsh
-source ~/antigen.zsh
+### Added by Zinit's installer
+if [[ ! -f $HOME/.zinit/bin/zinit.zsh ]]; then
+    print -P "%F{33}▓▒░ %F{220}Installing %F{33}DHARMA%F{220} Initiative Plugin Manager (%F{33}zdharma/zinit%F{220})…%f"
+    command mkdir -p "$HOME/.zinit" && command chmod g-rwX "$HOME/.zinit"
+    command git clone https://github.com/zdharma/zinit "$HOME/.zinit/bin" && \
+        print -P "%F{33}▓▒░ %F{34}Installation successful.%f%b" || \
+        print -P "%F{160}▓▒░ The clone has failed.%f%b"
+fi
 
-antigen use oh-my-zsh
+source "$HOME/.zinit/bin/zinit.zsh"
+autoload -Uz _zinit
+(( ${+_comps} )) && _comps[zinit]=_zinit
 
-antigen bundle git
-antigen bundle command-not-found
-antigen bundle sudo
-antigen bundle fzf
+# Load a few important annexes, without Turbo
+# (this is currently required for annexes)
+zinit light-mode for \
+    zinit-zsh/z-a-rust \
+    zinit-zsh/z-a-as-monitor \
+    zinit-zsh/z-a-patch-dl \
+    zinit-zsh/z-a-bin-gem-node
 
-antigen bundle zsh-users/zsh-syntax-highlighting
-antigen bundle zsh-users/zsh-autosuggestions
+### End of Zinit's installer chunk
 
-antigen theme ChesterYue/ohmyzsh-theme-passion
+## Oh My Zsh Setting
+ZSH_THEME="ohmyzsh-theme-passion"
 
-antigen apply
+## Zinit Setting
+# Must Load OMZ Git library
+zinit snippet OMZL::git.zsh
 
-# nvm
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+# Load Git plugin from OMZ
+zinit snippet OMZP::git
+zinit cdclear -q # <- forget completions provided up to this moment
+
+setopt promptsubst
+autoload colors
+colors
+
+# Load Prompt
+zinit light ChesterYue/ohmyzsh-theme-passion
+
+zinit snippet OMZL::nvm.zsh
+
+zinit snippet OMZP::command-not-found
+zinit snippet OMZP::fzf
+zinit snippet OMZP::sudo
+
+zinit wait lucid for \
+ atinit"ZINIT[COMPINIT_OPTS]=-C; zicompinit; zicdreplay" \
+    zdharma/fast-syntax-highlighting \
+ blockf \
+    zsh-users/zsh-completions \
+ atload"!_zsh_autosuggest_start" \
+    zsh-users/zsh-autosuggestions
+
+HISTFILE="$HOME/.zsh_history"
+HISTSIZE=10000000
+SAVEHIST=10000000
+
+export PATH="$HOME/.local/bin:$PATH"
+export EDITOR=nvim
 
 # tmux over ssh
 #if [[ "$TMUX" == "" ]] && [[ "$SSH_CONNECTION" != "" ]]; then
