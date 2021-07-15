@@ -1,3 +1,5 @@
+### Zinit Settings {{{
+
 ### Added by Zinit's installer
 if [[ ! -f $HOME/.zinit/bin/zinit.zsh ]]; then
     print -P "%F{33}▓▒░ %F{220}Installing %F{33}DHARMA%F{220} Initiative Plugin Manager (%F{33}zdharma/zinit%F{220})…%f"
@@ -21,25 +23,23 @@ zinit light-mode for \
 
 ### End of Zinit's installer chunk
 
-## Oh My Zsh Setting
+## Oh My Zsh Theme Setting
 ZSH_THEME="ohmyzsh-theme-passion"
-
-## Zinit Setting
 # Must Load OMZ Git library
 zinit snippet OMZL::git.zsh
-
 # Load Git plugin from OMZ
 zinit snippet OMZP::git
 zinit cdclear -q # <- forget completions provided up to this moment
-
+#
 setopt promptsubst
 autoload colors
 colors
-
 # Load Prompt
 zinit light ChesterYue/ohmyzsh-theme-passion
 
-zinit snippet OMZL::nvm.zsh
+# NVM lazy loading
+export NVM_LAZY_LOAD=true
+zinit light lukechilds/zsh-nvm
 
 zinit snippet OMZP::command-not-found
 zinit snippet OMZP::fzf
@@ -53,20 +53,18 @@ zinit wait lucid for \
  atload"!_zsh_autosuggest_start" \
     zsh-users/zsh-autosuggestions
 
+### }}} END Zinit Settings
+
+# for zsh shortcuts
+bindkey -e
+
+# History
 HISTFILE="$HOME/.zsh_history"
 HISTSIZE=10000000
 SAVEHIST=10000000
 
+# add path
 export PATH="$HOME/.local/bin:$PATH"
-export EDITOR=nvim
 
-# tmux over ssh
-#if [[ "$TMUX" == "" ]] && [[ "$SSH_CONNECTION" != "" ]]; then
-#    WHOAMI=$(whoami)
-#    SESSION_NAME="${WHOAMI}-REMOTE"
-#    if tmux has-session -t $SESSION_NAME 2>/dev/null; then
-#        tmux -2 attach-session -t $SESSION_NAME
-#    else
-#        tmux -2 new-session -s $SESSION_NAME
-#    fi
-#fi
+# default editor
+export EDITOR=nvim
