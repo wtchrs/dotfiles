@@ -20,16 +20,13 @@ zinit light-mode for \
     zinit-zsh/z-a-as-monitor \
     zinit-zsh/z-a-patch-dl \
     zinit-zsh/z-a-bin-gem-node
-
 ### End of Zinit's installer chunk
 
 ## Oh My Zsh Theme Setting
 ZSH_THEME="ohmyzsh-theme-passion"
-# Must Load OMZ Git library
 zinit snippet OMZL::git.zsh
-# Load Git plugin from OMZ
 zinit snippet OMZP::git
-zinit cdclear -q # <- forget completions provided up to this moment
+zinit cdclear -q
 #
 setopt promptsubst
 autoload colors
@@ -37,13 +34,16 @@ colors
 # Load Prompt
 zinit light ChesterYue/ohmyzsh-theme-passion
 
-# NVM lazy loading
-export NVM_LAZY_LOAD=true
-zinit light lukechilds/zsh-nvm
+# Nodenv
+zinit ice from"gitlab"
+zinit light riverglide/zsh-nodenv
+eval "$(nodenv init -)"
 
 zinit snippet OMZP::command-not-found
-zinit snippet OMZP::fzf
 zinit snippet OMZP::sudo
+
+zinit wait lucid for \
+  atload"zicompinit; zicdreplay" Aloxaf/fzf-tab
 
 zinit wait lucid for \
  atinit"ZINIT[COMPINIT_OPTS]=-C; zicompinit; zicdreplay" \
@@ -62,9 +62,13 @@ bindkey -e
 HISTFILE="$HOME/.zsh_history"
 HISTSIZE=10000000
 SAVEHIST=10000000
+setopt HIST_IGNORE_DUPS
 
 # add path
 export PATH="$HOME/.local/bin:$PATH"
 
 # default editor
 export EDITOR=nvim
+
+# ls alias
+alias ls="ls --color=auto -h"
