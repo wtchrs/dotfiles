@@ -42,8 +42,10 @@ eval "$(nodenv init -)"
 zinit snippet OMZP::command-not-found
 zinit snippet OMZP::sudo
 
+# fzf
 zinit wait lucid for \
   atload"zicompinit; zicdreplay" Aloxaf/fzf-tab
+zstyle ':fzf-tab:*' fzf-command ftb-tmux-popup
 
 zinit wait lucid for \
  atinit"ZINIT[COMPINIT_OPTS]=-C; zicompinit; zicdreplay" \
@@ -64,10 +66,10 @@ HISTSIZE=10000000
 SAVEHIST=10000000
 setopt HIST_IGNORE_DUPS
 
-# add path
+# Add path
 export PATH="$HOME/.local/bin:$PATH"
 
-# default editor
+# Default editor
 export EDITOR=nvim
 
 # ls alias
