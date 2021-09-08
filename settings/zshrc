@@ -77,3 +77,8 @@ export EDITOR=nvim
 
 # ls alias
 alias ls="ls --color=auto -h"
+
+# WSL XServer setting
+if [ -n $WSL_DISTRO_NAME ]; then
+  export DISPLAY=$(cat /etc/resolv.conf | grep nameserver | awk '{print $2}'):0
+fi
