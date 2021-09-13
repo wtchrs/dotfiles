@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 
-cp ./settings/vimrc ~/.vimrc
 cp ./settings/tmux.conf ~/.tmux.conf
 cp ./settings/zshrc ~/.zshrc
 

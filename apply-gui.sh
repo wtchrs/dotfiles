@@ -13,4 +13,3 @@ cp -r ./settings/config/dunst ~/.config
 cp -r ./settings/config/i3 ~/.config
 cp -r ./settings/config/mpd ~/.config
 cp -r ./settings/config/polybar ~/.config
-cp -r ./settings/config/ranger ~/.config

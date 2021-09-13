@@ -1,8 +1,16 @@
+#!/bin/sh
+
+xrandr --setprovideroutputsource modesetting NVIDIA-0
+xrandr --auto
+
+/usr/bin/prime-offload
+
 xrdb -I$HOME ~/.Xresources
 
-export GTK_IM_MODULE=ibus
-export XMODIFIERS=@im=ibus
-export QT_IM_MODULE=ibus
+export GTK_IM_MODULE=kime
+export XMODIFIERS=@im=kime
+export QT_IM_MODULE=kime
 
-exec i3
+i3
 
+sudo /usr/bin/prime-switch
