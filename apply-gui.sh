@@ -2,6 +2,7 @@
 
 cp ./settings/xinitrc ~/.xinitrc
 cp ./settings/Xresources ~/.Xresources
+cp ./settings/imwheelrc ~/.imwheelrc
 
 cp -r ./settings/Scripts ~
 cp -r ./settings/Pictures ~

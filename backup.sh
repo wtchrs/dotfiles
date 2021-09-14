@@ -5,11 +5,10 @@ cp ~/.zshrc ./settings/zshrc
 
 cp ~/.xinitrc ./settings/xinitrc
 cp ~/.Xresources ./settings/Xresources
+cp ~/.imwheelrc ./settings/imwheelrc
 
 cp -r ~/Scripts ./settings
 cp -r ~/Pictures ./settings
-
-cp ~/.config/fish/config.fish ./settings/config/fish/config.fish
 
 cp -r ~/.config/alacritty ./settings/config
 cp -r ~/.config/cava ./settings/config

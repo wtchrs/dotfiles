@@ -1,0 +1,7 @@
+"^microsoft-edge-dev$"
+None,      Up,   Button4, 3
+None,      Down, Button5, 3
+
+"^org.gnome.Nautilus$"
+None,      Up,   Button4, 3
+None,      Down, Button5, 3
