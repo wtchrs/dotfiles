@@ -1,3 +1,6 @@
+!! DPI Setting
+Xft.dpi: 120
+
 !--------------!
 ! URXVT CONFIG !
 !--------------!

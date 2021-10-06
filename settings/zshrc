@@ -34,10 +34,8 @@ colors
 # Load Prompt
 zinit light ChesterYue/ohmyzsh-theme-passion
 
-# Nodenv
-zinit ice from"gitlab"
-zinit light riverglide/zsh-nodenv
-eval "$(nodenv init -)"
+# Volta, node version manager
+zinit light cowboyd/zsh-volta
 
 zinit snippet OMZP::command-not-found
 zinit snippet OMZP::sudo
