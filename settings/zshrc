@@ -23,16 +23,16 @@ zinit light-mode for \
 ### End of Zinit's installer chunk
 
 ## Oh My Zsh Theme Setting
-ZSH_THEME="ohmyzsh-theme-passion"
-zinit snippet OMZL::git.zsh
-zinit snippet OMZP::git
-zinit cdclear -q
+#ZSH_THEME="ohmyzsh-theme-passion"
+#zinit snippet OMZL::git.zsh
+#zinit snippet OMZP::git
+#zinit cdclear -q
 #
-setopt promptsubst
-autoload colors
-colors
+#setopt promptsubst
+#autoload colors
+#colors
 # Load Prompt
-zinit light ChesterYue/ohmyzsh-theme-passion
+#zinit light ChesterYue/ohmyzsh-theme-passion
 
 # Volta, node version manager
 zinit light cowboyd/zsh-volta
@@ -55,6 +55,12 @@ zinit wait lucid for \
 
 ### }}} END Zinit Settings
 
+# Install starship if not installed.
+if ! type starship > /dev/null; then
+    command curl -sS https://starship.rs/install.sh | sh
+fi
+eval "$(starship init zsh)"
+
 # for zsh shortcuts
 bindkey -e
 
@@ -75,6 +81,8 @@ export EDITOR=nvim
 
 # ls alias
 alias ls="ls --color=auto -h"
+
+alias tmux="env TERM=screen-256color tmux"
 
 # WSL XServer setting
 # if [ -n $WSL_DISTRO_NAME ]; then
