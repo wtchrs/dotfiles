@@ -61,8 +61,9 @@ if ! type starship > /dev/null; then
 fi
 eval "$(starship init zsh)"
 
-# for zsh shortcuts
+# for zsh emacs mode shortcuts
 bindkey -e
+bindkey '^H' backward-kill-word
 
 # History
 HISTFILE="$HOME/.zsh_history"
