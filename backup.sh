@@ -18,3 +18,4 @@ cp -r ~/.config/i3 ./settings/config
 cp -r ~/.config/mpd ./settings/config
 cp -r ~/.config/polybar ./settings/config
 cp -r ~/.config/ranger ./settings/config
+cp ~/.config/starship.toml ./settings/config
