@@ -1,0 +1,38 @@
+/**
+ * Based on: Waybar Config from the ML4W Hyprland Starter
+ * Source: https://github.com/mylinuxforwork/hyprland-starter/blob/main/dotfiles/.config/waybar/config
+ * Modified for personal use
+ */
+{
+    "layer": "top",
+    // "position": "bottom",
+    "margin-top": 10,
+    "margin-left": 20,
+    "margin-right": 20,
+    "spacing": 4,
+
+    "include": [
+        "~/.config/waybar/waybar-quicklinks.jsonc",
+        "~/.config/waybar/modules.jsonc"
+    ],
+    "modules-left": [
+        "custom/appmenu",
+        "group/quicklinks",
+        "hyprland/window"
+    ],
+    "modules-center": [
+        "hyprland/workspaces"
+    ],
+    "modules-right": [
+        "load",
+        "cpu",
+        "memory",
+        "mpd",
+        "pulseaudio",
+        "network",
+        "battery",
+        "clock",
+        "tray",
+        "custom/exit"
+    ]
+}

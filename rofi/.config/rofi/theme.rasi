@@ -1,0 +1,20 @@
+* {
+    // Nord Palette Reference:
+    // Polar Night: #2E3440, #3B4252, #434C5E, #4C566A
+    // Snow Storm:  #D8DEE9, #E5E9F0, #ECEFF4
+    // Frost:       #8FBCBB, #88C0D0, #81A1C1, #5E81AC
+    // Aurora:      #BF616A, #D08770, #EBCB8B, #A3BE8C, #B48EAD
+
+    main-bg:        #2E344099;
+    main-fg:        #D8DEE9FF;
+    main-br:        #4C566AFF;
+    main-ex:        #88C0D0CC;
+    select-bg:      #434C5EFF;
+    select-fg:      #8FBCBBFF;
+    separatorcolor: transparent;
+    border-color:   #3B4252CC;
+
+    entry-bg:       #3B425277;
+    entry-fg:       #ECEFF4FF;
+    entry-br:       transparent;
+}

@@ -1,0 +1,169 @@
+/**
+ * Based on: rofi Style 10 from The HyDE Project
+ * Source: https://github.com/HyDE-Project/HyDE/blob/master/Configs/.local/share/hyde/rofi/themes/style_10.rasi
+ * Modified for personal use
+ */
+
+
+// Config //
+configuration {
+    modi:                        "drun,filebrowser,window,run";
+    show-icons:                  true;
+    display-drun:                " ";
+    display-run:                 " ";
+    display-filebrowser:         " ";
+    display-window:              " ";
+    drun-display-format:         "{name}";
+    window-format:               "{w}{t}";
+    font:                        "Sarasa Mono K Nerd Font 10";
+    icon-theme:                  "Tela-circle-dracula";
+}
+
+@theme "theme.rasi"
+
+
+// Main //
+window {
+    height:                      40em;
+    width:                       25em;
+    transparency:                "real";
+    fullscreen:                  false;
+    enabled:                     true;
+    cursor:                      "default";
+    spacing:                     0em;
+    padding:                     0em;
+    border:                      2px;
+    border-radius:               1.5em;
+    border-color:                @border-color;
+    background-color:            @main-bg;
+
+}
+mainbox {
+    enabled:                     true;
+    spacing:                     0em;
+    padding:                     1em;
+    orientation:                 vertical;
+    children:                    [ "inputbar" , "listbox" ];
+    background-color:            transparent;
+}
+
+
+// Inputs //
+inputbar {
+    enabled:                     true;
+    spacing:                     0em;
+    padding:                     0.5em 0.5em 6.5em 0.5em;
+    children:                    [ "inputbar-ui" ];
+    background-color:            @main-bg;
+    background-image:            url("~/Photos/wallpapers/wallpaper.jpg", width);
+    border-radius:               1em 1em 0em 0em;
+}
+inputbar-ui {
+    enabled:                     true;
+    background-color:            @entry-bg;
+    text-color:                  @entry-fg;
+    orientation:                 horizontal;
+    children:                    [ "textbox-prompt-colon", "entry" ];
+    padding:                     0.5em 1em 0.5em 1em;
+    border-radius:               1em;
+    border:                      1px;
+    border-color:                @entry-br;
+}
+entry {
+    enabled:                     true;
+    background-color:            transparent;
+    text-color:                  inherit;
+    cursor:                      text;
+    placeholder:                 "Search";
+    placeholder-color:           inherit;
+}
+textbox-prompt-colon {
+    enabled:                     true;
+    expand:                      false;
+    str:                         "  ";
+    background-color:            transparent;
+    text-color:                  inherit;
+}
+
+
+// Lists //
+listbox {
+    spacing:                     0em;
+    padding:                     0em;
+    children:                    [ "dummyt" , "listview" , "dummyb" ];
+    background-color:            @main-bg;
+    border-radius:               0em 0em 1em 1em;
+}
+listview {
+    enabled:                     true;
+    spacing:                     0.4em;
+    padding:                     1em;
+    columns:                     1;
+    lines:                       10;
+    cycle:                       true;
+    dynamic:                     true;
+    scrollbar:                   false;
+    layout:                      vertical;
+    reverse:                     false;
+    expand:                      false;
+    fixed-height:                true;
+    fixed-columns:               true;
+    cursor:                      "default";
+    background-color:            @main-bg;
+    text-color:                  @main-fg;
+}
+dummyt {
+    spacing:                     0em;
+    padding:                     0em;
+    background-color:            @main-bg;
+}
+dummyb {
+    spacing:                     0em;
+    padding:                     0em;
+    background-color:            @main-bg;
+    border-radius:               0em 0em 1em 1em;
+}
+
+
+// Elements //
+element {
+    enabled:                     true;
+    spacing:                     1em;
+    padding:                     0.2em 0.2em 0.2em 1.5em;
+    cursor:                      pointer;
+    background-color:            transparent;
+    text-color:                  @main-fg;
+}
+element selected.normal {
+    background-color:            @select-bg;
+    text-color:                  @select-fg;
+    border-radius:               0.5em;
+}
+element-icon {
+    size:                        2em;
+    cursor:                      inherit;
+    background-color:            transparent;
+    text-color:                  inherit;
+}
+element-text {
+    vertical-align:              0.5;
+    horizontal-align:            0.0;
+    cursor:                      inherit;
+    background-color:            transparent;
+    text-color:                  inherit;
+}
+
+// Error message //
+error-message {
+    text-color:                  @main-fg;
+    background-color:            @main-bg;
+    text-transform:              capitalize;
+    children:                    [ "textbox" ];
+}
+
+textbox {
+    text-color:                  inherit;
+    background-color:            inherit;
+    vertical-align:              0.5;
+    horizontal-align:            0.5;
+}
