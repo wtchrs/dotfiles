@@ -18,16 +18,17 @@
     "modules-left": [
         "custom/appmenu",
         "group/quicklinks",
-        "hyprland/window"
+        "hyprland/window",
+        "mpris"
     ],
     "modules-center": [
         "hyprland/workspaces"
     ],
     "modules-right": [
-        "load",
+        // "load",
         "cpu",
         "memory",
-        "mpd",
+        "disk",
         "pulseaudio",
         "network",
         "battery",

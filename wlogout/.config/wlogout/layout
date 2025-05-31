@@ -6,7 +6,7 @@
 }
 {
     "label" : "logout",
-    "action" : "killall -9 hyprland",
+    "action" : "hyprctl dispatch exit",
     "text" : "Exit",
     "keybind" : "e"
 }

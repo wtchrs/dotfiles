@@ -9,11 +9,20 @@
         "on-click": "activate",
         "active-only": false,
         "all-outputs": true,
-        "format": "{}",
+        "format": "{icon}",
         "format-icons": {
-            "urgent": "",
-            "active": "",
-            "default": ""
+            "1": "⚫",
+            "2": "⚫",
+            "3": "⚫",
+            "4": "⚫",
+            "5": "⚫",
+            "6": "6",
+            "7": "7",
+            "8": "8",
+            "9": "9",
+            "10": "10",
+            "active": "⬤",
+            // "default": "⏺"
         },
         "persistent-workspaces": {
              "*": 5
@@ -29,6 +38,7 @@
             "(.*) - Chromium": "$1",
             "(.*) - Brave Search": "$1",
             "(.*) - Outlook": "$1",
+            "(.*) — Zen Browser": "$1",
             "(.*) Microsoft Teams": "$1"
         },
         "separate-outputs": true
@@ -47,8 +57,7 @@
     "custom/exit": {
         "format": "",
         "tooltip-format": "Powermenu",
-        "on-click": "wlogout -b 4",
-        "tooltip": false
+        "on-click": "wlogout -b 4"
     },
 
     // Keyboard State
@@ -102,7 +111,7 @@
     // Harddisc space used
     "disk": {
         "interval": 30,
-        "format": "D {percentage_used}% ",
+        "format": "DISK {percentage_used}% ",
         "path": "/",
         "on-click": "alacritty -e htop"
     }, 
@@ -150,13 +159,26 @@
             "warning": 30,
             "critical": 15
         },
-        "format": "{icon}   {capacity}%",
+        "format": "{icon}  {capacity}%",
         "format-charging": "  {capacity}%",
         "format-plugged": "  {capacity}%",
         "format-alt": "{icon}  {time}",
-        // "format-good": "", // An empty format will hide the module
-        // "format-full": "",
         "format-icons": [" ", " ", " ", " ", " "]
+    },
+
+    "mpris": {
+        // "format": "{player_icon} {dynamic}",
+        "format": "{player_icon} {title} [{position}/{length}]",
+        "format-paused": "{status_icon} {title}",
+        "player-icons": {
+            "default": "▶",
+            "mpv": "🎵"
+        },
+        "status-icons": {
+            "paused": "⏸"
+        },
+        "interval": 1,
+        "max-length": 100
     },
 
     // Pipewire
