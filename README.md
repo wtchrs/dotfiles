@@ -1,4 +1,8 @@
-# Dotfiles
+# Hyprland Dotfiles
+
+## Screenshot
+
+![screenshot](assets/screenshot.png)
 
 ## Dependencies
 
@@ -29,7 +33,7 @@
 - ttf-font-awesome
 - ttf-fira-sans
 - ttf-fira-code
-- aur/ttf-sarasa-gothic-nerd-fonts - instead, add only needed one from [here](https://github.com/jonz94/Sarasa-Gothic-Nerd-Fonts/releases)
+- aur/ttf-sarasa-gothic-nerd-fonts - or add only needed one from [here](https://github.com/jonz94/Sarasa-Gothic-Nerd-Fonts/releases)
 
 ## Stow Package Lists
 
