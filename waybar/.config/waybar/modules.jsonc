@@ -52,7 +52,7 @@
         "on-click-right": "~/.config/ml4w/scripts/keybindings.sh",
         "tooltip": false
     },
-    
+
     // Power Menu
     "custom/exit": {
         "format": "",
@@ -92,25 +92,27 @@
     // CPU
     "cpu": {
         "format": " CPU {usage}% ",
-        "on-click": "alacritty -e htop"
+        "on-click": "alacritty -e htop",
+        "interval": 2
     },
 
     // Load average
     "load": {
-        "interval": 1,
         "format": " {load1} | {load5} | {load15} ",
-        "on-click": "alacritty -e htop"
+        "on-click": "alacritty -e htop",
+        "interval": 1
     },
 
     // Memory
     "memory": {
         "format": " MEM {}% ",
-        "on-click": "alacritty -e htop"
+        "on-click": "alacritty -e htop",
+        "interval": 5
     },
 
     // Harddisc space used
     "disk": {
-        "interval": 30,
+        "interval": 20,
         "format": "DISK {percentage_used}% ",
         "path": "/",
         "on-click": "alacritty -e htop"
@@ -137,7 +139,7 @@
             "hyprland/language"
         ]
     },
-    
+
    // Network
     "network": {
         "format": "{ifname}",
@@ -239,6 +241,6 @@
             "activated": "",
             "deactivated": ""
         },
-        "on-click-right": "hyprlock"        
+        "on-click-right": "hyprlock"
     }
 }
