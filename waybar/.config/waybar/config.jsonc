@@ -25,13 +25,8 @@
         "hyprland/workspaces"
     ],
     "modules-right": [
-        // "load",
-        "cpu",
-        "memory",
-        "disk",
-        "pulseaudio",
-        "network",
-        "battery",
+        "group/hardware",
+        "group/misc",
         "clock",
         "tray",
         "custom/exit"

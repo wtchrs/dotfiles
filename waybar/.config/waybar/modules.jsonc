@@ -79,14 +79,19 @@
 
     // Clock
     "clock": {
-        "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
+        "tooltip-format": "<big>{:%Y %B}</big>\n<tt>{calendar}</tt>",
+        "format": "{:%Y-%m-%d %H:%M}",
         "format-alt": "{:%Y-%m-%d}"
     },
 
-    // System
-    "custom/system": {
-        "format": "",
-        "tooltip": false
+    // Group Hardware
+    "group/hardware": {
+        "orientation": "inherit",
+        "modules": [
+            "cpu",
+            "memory",
+            "disk"
+        ]
     },
 
     // CPU
@@ -94,13 +99,6 @@
         "format": " CPU {usage}% ",
         "on-click": "alacritty -e htop",
         "interval": 2
-    },
-
-    // Load average
-    "load": {
-        "format": " {load1} | {load5} | {load15} ",
-        "on-click": "alacritty -e htop",
-        "interval": 1
     },
 
     // Memory
@@ -115,29 +113,37 @@
         "interval": 20,
         "format": "DISK {percentage_used}% ",
         "path": "/",
-        "on-click": "alacritty -e htop"
-    }, 
-
-    "hyprland/language": {
-        "format": "/ K {short}"
+        "on-click": "btrfs-assistant-launcher"
     },
 
-    // Group Hardware
-    "group/hardware": {
+    "group/misc": {
         "orientation": "inherit",
-        "drawer": {
-            "transition-duration": 300,
-            "children-class": "not-memory",
-            "transition-left-to-right": false
-        },
         "modules": [
-            "custom/system",
-            "disk",
-            "cpu",
-            "load",
-            "memory",
-            "hyprland/language"
+            "pulseaudio",
+            "network",
+            "battery"
         ]
+    },
+
+    // Pulseaudio
+    "pulseaudio": {
+        // "scroll-step": 1, // %, can be a float
+        "format": "{icon}  {volume}%",
+        "format-bluetooth": "{volume}% {icon} {format_source}",
+        "format-bluetooth-muted": " {icon} {format_source}",
+        "format-muted": " {format_source}",
+        "format-source": "{volume}% ",
+        "format-source-muted": "",
+        "format-icons": {
+            "headphone": "",
+            "hands-free": "",
+            "headset": "",
+            "phone": "",
+            "portable": "",
+            "car": "",
+            "default": ["", " ", " "]
+        },
+        "on-click": "pavucontrol"
     },
 
    // Network
@@ -181,40 +187,6 @@
         },
         "interval": 1,
         "max-length": 100
-    },
-
-    // Pipewire
-    "custom/pipewire": {
-        "format": "{icon}",
-        "return-type": "json",
-        "signal": 8,
-        "interval": "once",
-        "format-icons": {
-            "mute": "",
-            "default": ["", "", "", ""],
-        },
-        "exec": "pw-volume status"
-    },
-
-    // Pulseaudio
-    "pulseaudio": {
-        // "scroll-step": 1, // %, can be a float
-        "format": "{icon}  {volume}%",
-        "format-bluetooth": "{volume}% {icon} {format_source}",
-        "format-bluetooth-muted": " {icon} {format_source}",
-        "format-muted": " {format_source}",
-        "format-source": "{volume}% ",
-        "format-source-muted": "",
-        "format-icons": {
-            "headphone": "",
-            "hands-free": "",
-            "headset": "",
-            "phone": "",
-            "portable": "",
-            "car": "",
-            "default": ["", " ", " "]
-        },
-        "on-click": "pavucontrol"
     },
 
     // Bluetooth
