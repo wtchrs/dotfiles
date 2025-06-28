@@ -242,11 +242,6 @@ window#waybar.empty #window {
  * Battery
  * ----------------------------------------------------- */
 
-#battery.charging, #battery.plugged {
-    color: @textcolor2;
-    background-color: @backgroundlight;
-}
-
 @keyframes blink {
     to {
         background-color: @backgroundlight;
@@ -257,6 +252,7 @@ window#waybar.empty #window {
 #battery.critical:not(.charging) {
     background-color: #f53c3c;
     color: @textcolor3;
+    border-radius: 10px;
     animation-name: blink;
     animation-duration: 0.5s;
     animation-timing-function: linear;
