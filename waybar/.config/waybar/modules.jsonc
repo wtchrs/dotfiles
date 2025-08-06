@@ -96,14 +96,14 @@
 
     // CPU
     "cpu": {
-        "format": " CPU {usage}% ",
+        "format": "  {usage}%",
         "on-click": "alacritty -e htop",
         "interval": 2
     },
 
     // Memory
     "memory": {
-        "format": " MEM {}% ",
+        "format": "  {}%",
         "on-click": "alacritty -e htop",
         "interval": 5
     },
@@ -111,7 +111,7 @@
     // Harddisc space used
     "disk": {
         "interval": 20,
-        "format": "DISK {percentage_used}% ",
+        "format": "  {percentage_used}% ",
         "path": "/",
         "on-click": "btrfs-assistant-launcher"
     },
@@ -128,7 +128,7 @@
     // Pulseaudio
     "pulseaudio": {
         // "scroll-step": 1, // %, can be a float
-        "format": "{icon}  {volume}%",
+        "format": "{icon} {volume}%",
         "format-bluetooth": "{volume}% {icon} {format_source}",
         "format-bluetooth-muted": " {icon} {format_source}",
         "format-muted": " {format_source}",
@@ -149,12 +149,12 @@
    // Network
     "network": {
         "format": "{ifname}",
-        "format-wifi": "   {signalStrength}%",
-        "format-ethernet": "  {ipaddr}",
+        "format-wifi": " {signalStrength}%",
+        "format-ethernet": " {ipaddr}",
         "format-disconnected": "Not connected", //An empty format will hide the module.
         "tooltip-format": " {ifname} via {gwaddri}",
-        "tooltip-format-wifi": "   {essid} ({signalStrength}%)",
-        "tooltip-format-ethernet": "  {ifname} ({ipaddr}/{cidr})",
+        "tooltip-format-wifi": " {essid} ({signalStrength}%)",
+        "tooltip-format-ethernet": " {ifname} ({ipaddr}/{cidr})",
         "tooltip-format-disconnected": "Disconnected",
         "max-length": 50,
         "on-click": "alacritty -e nmtui"
@@ -167,10 +167,10 @@
             "warning": 30,
             "critical": 15
         },
-        "format": "{icon}  {capacity}%",
-        "format-charging": "  {capacity}%",
-        "format-plugged": "  {capacity}%",
-        "format-alt": "{icon}  {time}",
+        "format": "{icon}{capacity}%",
+        "format-charging": " {capacity}%",
+        "format-plugged": " {capacity}%",
+        "format-alt": "{icon}{time}",
         "format-icons": [" ", " ", " ", " ", " "]
     },
 
