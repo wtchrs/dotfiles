@@ -1,5 +1,3 @@
-BASE_URL=https://gist.githubusercontent.com/wtchrs/8e087bc39a10b3ec9d1cc77b5a8d74df/raw
-
 # Define colors and text attributes
 RED=$(tput setaf 1)
 GREEN=$(tput setaf 2)
@@ -60,12 +58,6 @@ if ! type starship > /dev/null; then
   command sh <(curl -sS https://starship.rs/install.sh) -y --bin-dir $STARSHIP_INSTALL_DIR
 fi
 
-# Download Starship setting file if not exists.
-if ! [ -r "$STARSHIP_CONFIG" ]; then
-  mkdir -p "$(dirname $STARSHIP_CONFIG)"
-  command curl -o "$STARSHIP_CONFIG" ${BASE_URL}/starship.toml
-fi
-
 # Load starship if current session is not a TTY.
 if [[ "$(tty)" != /dev/tty* ]]; then
   eval "$(starship init zsh)"
@@ -103,11 +95,12 @@ fi
 
 # ls alias
 alias ls="ls --color=auto -h"
-
 alias tmux="env TERM=screen-256color tmux"
 
-# Download latest dotfiles
-function update_zsh {
-  command curl -o ${HOME}/.zshrc     ${BASE_URL}/.zshrc
-  command curl -o ${STARSHIP_CONFIG} ${BASE_URL}/starship.toml
-}
+# pnpm
+export PNPM_HOME="${HOME}/.local/share/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+# pnpm end

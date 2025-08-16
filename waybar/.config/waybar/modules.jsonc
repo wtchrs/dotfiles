@@ -49,7 +49,6 @@
         "format": "Apps",
         "tooltip-format": "Left: Open the application launcher\nRight: Show all keybindings",
         "on-click": "rofi -show drun -replace",
-        "on-click-right": "~/.config/ml4w/scripts/keybindings.sh",
         "tooltip": false
     },
 
@@ -97,14 +96,14 @@
     // CPU
     "cpu": {
         "format": "  {usage}%",
-        "on-click": "alacritty -e htop",
+        "on-click": "alacritty --class float -e htop",
         "interval": 2
     },
 
     // Memory
     "memory": {
         "format": "  {}%",
-        "on-click": "alacritty -e htop",
+        "on-click": "alacritty --class float -e htop",
         "interval": 5
     },
 
@@ -113,7 +112,7 @@
         "interval": 20,
         "format": "  {percentage_used}% ",
         "path": "/",
-        "on-click": "btrfs-assistant-launcher"
+        "on-click": "hyprctl dispatch exec \"[float]\" btrfs-assistant-launcher"
     },
 
     "group/misc": {
@@ -143,7 +142,7 @@
             "car": "",
             "default": ["", " ", " "]
         },
-        "on-click": "pavucontrol"
+        "on-click": "alacritty --class float -e pulsemixer"
     },
 
    // Network
@@ -157,7 +156,7 @@
         "tooltip-format-ethernet": " {ifname} ({ipaddr}/{cidr})",
         "tooltip-format-disconnected": "Disconnected",
         "max-length": 50,
-        "on-click": "alacritty -e nmtui"
+        "on-click": "alacritty --class float -e nmtui"
     },
 
     // Battery
