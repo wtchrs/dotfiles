@@ -80,6 +80,8 @@ monitor settings in `hyprland/.config/hypr/conf/monitor.conf`.
 
 Configuration inspired by [mylinuxforwork/hyprland-starter][hyprland-starter] and [HyDE-Project/HyDE][HyDE].
 
+Vertical Waybar configuration inspired by [this article](https://www.reddit.com/r/unixporn/comments/1caym4z/hyprland_vertical_bar_is_good/), with its source available [here](https://github.com/ketsumashu/nixx/blob/b44665bf6a760eca5660541df9fc95ea57f8bd65/home/waybar/default.nix).
+
 
 [alacritty]: https://github.com/alacritty/alacritty
 [brightnessctl]: https://github.com/Hummer12007/brightnessctl
