@@ -18,6 +18,23 @@ window#waybar.hidden {
     opacity: 0;
 }
 
+#window {
+    color: @textcolor3;
+    font-weight:bold;
+    padding: 50px 0px;
+    /* padding: 50px 0px 15px 0px; */
+}
+
+#mpris {
+    color: @textcolor3;
+    /* font-weight:bold; */
+    padding: 0px 0px 5px 0px;
+}
+
+#workspaces {
+    padding: 20px 0px;
+}
+
 #workspaces button {
     padding: 0px 0px;
     margin: 0px 0px;
@@ -53,7 +70,8 @@ window#waybar.hidden {
 #memory,
 #cpu,
 #disk,
-#temperature{
+#temperature,
+#battery {
     padding: 0 0px;
     color: @textcolor3;
     /*font-weight:bold;*/
@@ -62,15 +80,6 @@ window#waybar.hidden {
 #network.disconnected {
     background-color: #f5f5f5;
     color: #121214
-}
-
-#window{
-    color: @textcolor3;
-    font-weight:bold;
-    padding: 100px 20px;
-}
-#workspaces {
-    margin: 0 0px;
 }
 
 .modules-left > widget:first-child > #workspaces {
