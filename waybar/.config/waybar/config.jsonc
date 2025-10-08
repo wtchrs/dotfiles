@@ -11,12 +11,11 @@
     "margin-top": 8,
     "margin-bottom": 8,
     "spacing": 15,
-    "modules-left": ["hyprland/window"],
-    "modules-center": ["hyprland/workspaces"],
+    "modules-left": ["hyprland/workspaces", "hyprland/window"],
+    // "modules-center": ["hyprland/workspaces"],
     "modules-right": ["mpris", "pulseaudio", "group/status", "battery", "clock", "tray"],
 
     "hyprland/window": {
-        // "format": "{initialTitle}",
         "max-length": 49,
         "rotate": 270
     },

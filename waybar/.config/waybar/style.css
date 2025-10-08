@@ -1,5 +1,5 @@
 @define-color textcolor1 #000000;
-@define-color textcolor2 #BBBBBB;
+@define-color textcolor2 #AAAAAA;
 @define-color textcolor3 #FFFFFF;
 
 * {
@@ -18,10 +18,14 @@ window#waybar.hidden {
     opacity: 0;
 }
 
+#workspaces {
+    padding: 30px 0px 0px 0px;
+}
+
 #window {
     color: @textcolor3;
     font-weight:bold;
-    padding: 50px 0px;
+    padding: 40px 0px;
     /* padding: 50px 0px 15px 0px; */
 }
 
@@ -31,22 +35,19 @@ window#waybar.hidden {
     padding: 0px 0px 5px 0px;
 }
 
-#workspaces {
-    padding: 20px 0px;
-}
-
 #workspaces button {
-    padding: 0px 0px;
+    padding: 1px 0px;
     margin: 0px 0px;
     background-color: transparent;
+    border: none;
+    box-shadow: none;
+    outline: none;
     color: @textcolor2;
 }
 
 #workspaces button:hover {
     background: rgba(0, 0, 0, 0);
-    background-color: transparent;
-    border: none;
-    color: @textcolor2;
+    color: @textcolor3;
 }
 
 #workspaces button.active {
