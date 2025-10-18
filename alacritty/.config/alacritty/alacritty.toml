@@ -7,14 +7,18 @@ style = "Regular"
 
 [font.offset]
 x = 0
+y = 1
+
+[font.glyph_offset]
+x = 0
 y = -1
 
 [window]
 opacity = 0.8
 
 [window.padding]
-x = 15
-y = 15
+x = 12
+y = 12
 
 [selection]
 save_to_clipboard = true
