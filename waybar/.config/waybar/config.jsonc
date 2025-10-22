@@ -12,7 +12,6 @@
     "margin-bottom": 8,
     "spacing": 15,
     "modules-left": ["hyprland/workspaces", "hyprland/window"],
-    // "modules-center": ["hyprland/workspaces"],
     "modules-right": ["mpris", "pulseaudio", "group/status", "battery", "clock", "tray"],
 
     "hyprland/window": {
@@ -21,7 +20,6 @@
     },
 
     "mpris": {
-        // "format": "{player_icon}{dynamic}",
         "format": "{player_icon}{title}",
         "format-paused": "{status_icon}{title}",
         "player-icons": {
@@ -81,44 +79,54 @@
 
     "group/status": {
         "orientation": "vertical",
-        "modules": ["network", "cpu", "memory", "disk", "temperature#cpu", "temperature#gpu"],
+        "modules": [
+            "network",
+            "cpu",
+            "memory",
+            "disk",
+            "backlight"
+        ],
         "drawer": {
             "transition-duration": 500,
-            // "children-class": "group-children"
-        }
+        },
+        "align": 0
     },
 
     "network": {
-        "format": "{ifname}",
-        "format-wifi": " {signalStrength}%",
-        "format-ethernet": " {ipaddr}",
-        "format-disconnected": "󰌙 ",
-        "tooltip-format": " {ifname} via {gwaddri}",
-        "tooltip-format-wifi": " {essid} ({signalStrength}%)",
-        "tooltip-format-ethernet": " {ifname} ({ipaddr}/{cidr})",
-        "tooltip-format-disconnected": " Disconnected",
+        "format": " {ifname}",
+        "format-wifi": "  {signalStrength}%",
+        "format-ethernet": "  {ipaddr}",
+        "format-disconnected": " 󰌙 ",
+        "tooltip-format": "  {ifname} via {gwaddri}",
+        "tooltip-format-wifi": "  {essid} ({signalStrength}%)",
+        "tooltip-format-ethernet": "  {ifname} ({ipaddr}/{cidr})",
+        "tooltip-format-disconnected": "  Disconnected",
         "max-length": 50,
-        "on-click": "alacritty --class float -e nmtui"
+        "on-click": "alacritty --class float -e nmtui",
+        "align": 0
     },
 
     "cpu": {
-        "format": " {usage}%",
+        "format": "  {usage}%",
         "on-click": "alacritty --class float -e htop",
-        "interval": 2
+        "interval": 2,
+        "align": 0
     },
 
     "memory": {
-        "format": " {}%",
+        "format": "  {}%",
         "interval": 2,
         "on-click": "alacritty --class float -e htop",
-        "rotate": 0
+        "rotate": 0,
+        "align": 0
     },
 
     "disk": {
         "interval": 5,
-        "format": "  {percentage_used}% ",
+        "format": "  {percentage_used}%",
         "path": "/",
-        "on-click": "hyprctl dispatch exec \"[float]\" btrfs-assistant-launcher"
+        "on-click": "hyprctl dispatch exec \"[float]\" btrfs-assistant-launcher",
+        "align": 0
     },
 
     "battery": {
@@ -127,25 +135,38 @@
             "warning": 30,
             "critical": 15
         },
-        "format": "{icon}{capacity}%",
-        "format-charging": "󰂄 {capacity}%",
-        "format-plugged": " {capacity}%",
-        "format-alt": "{icon}{time}",
-        "format-icons": [" ", " ", " ", " ", " "]
+        "format": " {icon}{capacity}%",
+        "format-charging": " 󰂄 {capacity}%",
+        "format-plugged": "  {capacity}%",
+        "format-alt": " {icon}{time}",
+        "format-icons": [" ", " ", " ", " ", " "],
+        "align": 0
     },
 
     "temperature#cpu": {
-        "format": "{temperatureC}°C",
-        "hwmon-path": "/sys/class/hwmon/hwmon2/temp3_input",
+        "format": " {temperatureC}°C",
+        "tooltip-format": "CPU temperature {temperatureC}°C",
+        "hwmon-path": "/sys/class/hwmon/hwmon5/temp1_input",
         "interval": 1,
-        "rotate": 0
+        "rotate": 0,
+        "align": 0
     },
 
     "temperature#gpu": {
-        "format": "{temperatureC}°C",
+        "format": " {temperatureC}°C",
+        "tooltip-format": "GPU temperature {temperatureC}°C",
         "hwmon-path": "/sys/class/hwmon/hwmon1/temp2_input",
         "interval": 1,
-        "rotate": 0
+        "rotate": 0,
+        "align": 0
+    },
+
+    "backlight": {
+        "device": "intel_backlight",
+        "format": " {icon}{percent}%",
+        "format-icons": [" ", " ", " ", " ", " "],
+        "tooltip-format": "Display Brightness {percent}%",
+        "align": 0
     },
 
     "clock": {
@@ -153,7 +174,7 @@
         "interval": 1,
         "format": "{:%H\n%M}",
         "rotate": 0,
-        "on-click": "~/.config/waybar/scripts/calendar.sh"
+        "on-click": "~/.config/waybar/scripts/calendar.sh",
     },
 
     "tray": {
