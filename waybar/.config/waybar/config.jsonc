@@ -108,7 +108,7 @@
 
     "cpu": {
         "format": "  {usage}%",
-        "on-click": "alacritty --class float -e htop",
+        "on-click": "alacritty --class float -e sh -c 'command -v btop &>/dev/null && btop || htop'",
         "interval": 2,
         "align": 0
     },
@@ -116,7 +116,7 @@
     "memory": {
         "format": "  {}%",
         "interval": 2,
-        "on-click": "alacritty --class float -e htop",
+        "on-click": "alacritty --class float -e sh -c 'command -v btop &>/dev/null && btop || htop'",
         "rotate": 0,
         "align": 0
     },

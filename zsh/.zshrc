@@ -93,9 +93,18 @@ else
   export EDITOR=vim
 fi
 
-# ls alias
-alias ls="ls --color=auto -h"
+# Aliases
 alias tmux="env TERM=screen-256color tmux"
+
+if command -v eza >/dev/null 2>&1; then
+  alias ls="eza --icons"
+else
+  alias ls="ls --color=auto -h"
+fi
+
+if command -v bat >/dev/null 2>&1; then
+  alias cat="bat --paging=never"
+fi
 
 # pnpm
 export PNPM_HOME="${HOME}/.local/share/pnpm"
