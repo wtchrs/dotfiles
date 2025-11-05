@@ -1,0 +1,38 @@
+# Color palette
+# black
+palette = 0=#3b4252
+palette = 8=#4c566a
+# red
+palette = 1=#bf616a
+palette = 9=#bf616a
+# green
+palette = 2=#a3be8c
+palette = 10=#a3be8c
+# yellow
+palette = 3=#ebcb8b
+palette = 11=#ebcb8b
+# blue
+palette = 4=#81a1c1
+palette = 12=#81a1c1
+# magenta
+palette = 5=#b48ead
+palette = 13=#b48ead
+# cyan
+palette = 6=#88c0d0
+palette = 14=#8fbcbb
+# white
+palette = 7=#e5e9f0
+palette = 15=#eceff4
+
+background = "#000000"
+foreground = "#eceff4"
+
+# Opacity
+background-opacity = 0.7
+
+# Cursor configuration
+cursor-color = "#d8dee9"
+#cursor-opacity = 0.7
+cursor-style = block
+shell-integration-features = no-cursor
+adjust-cursor-thickness = 1
