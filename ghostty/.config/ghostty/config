@@ -3,6 +3,7 @@ theme = "nord-custom"
 # Ghostty has its own nerd font support
 font-family = "Sarasa Mono K"
 font-size = 13
+font-feature = -calt, -liga, -dlig
 
 adjust-cell-height = 1
 adjust-font-baseline = -1

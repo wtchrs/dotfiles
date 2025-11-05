@@ -98,8 +98,10 @@ alias tmux="env TERM=screen-256color tmux"
 
 if command -v eza >/dev/null 2>&1; then
   alias ls="eza --icons"
+  alias ll="ls -aal"
 else
   alias ls="ls --color=auto -h"
+  alias ll="ls -al"
 fi
 
 if command -v bat >/dev/null 2>&1; then

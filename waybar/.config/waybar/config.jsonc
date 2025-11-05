@@ -79,7 +79,7 @@
             "default": ["", "", ""]
         },
         "rotate": 0,
-        "on-click": "alacritty --class float -e pulsemixer"
+        "on-click": "hyprctl dispatch exec \"[float] ghostty -e pulsemixer\""
     },
 
     "group/status": {
@@ -107,13 +107,13 @@
         "tooltip-format-ethernet": "  {ifname} ({ipaddr}/{cidr})",
         "tooltip-format-disconnected": "  Disconnected",
         "max-length": 50,
-        "on-click": "alacritty --class float -e nmtui",
+        "on-click": "hyprctl dispatch exec \"[float] ghostty -e nmtui\"",
         "align": 0
     },
 
     "cpu": {
         "format": "  {usage}%",
-        "on-click": "alacritty --class float -e sh -c 'command -v btop &>/dev/null && btop || htop'",
+        "on-click": "hyprctl dispatch exec \"[float] ghostty -e sh -c 'command -v btop &>/dev/null && btop || htop'\"",
         "interval": 2,
         "align": 0
     },
@@ -121,7 +121,7 @@
     "memory": {
         "format": "  {}%",
         "interval": 2,
-        "on-click": "alacritty --class float -e sh -c 'command -v btop &>/dev/null && btop || htop'",
+        "on-click": "hyprctl dispatch exec \"[float] ghostty -e sh -c 'command -v btop &>/dev/null && btop || htop'\"",
         "rotate": 0,
         "align": 0
     },
@@ -179,7 +179,7 @@
         "interval": 1,
         "format": "{:%H\n%M}",
         "rotate": 0,
-        "on-click": "~/.config/waybar/scripts/calendar.sh",
+        "on-click": "~/.scripts/waybar-calendar.sh",
     },
 
     "tray": {
