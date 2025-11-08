@@ -1,0 +1,6 @@
+[flavor]
+dark = "nord"
+
+[mgr]
+#border_style = { fg="#e5e9f0" }
+border_style = { fg="#d8dee9" }
