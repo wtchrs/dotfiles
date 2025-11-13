@@ -1,12 +1,17 @@
+[[input.prepend_keymap]]
+on   = "<Esc>"
+run  = "close"
+desc = "Cancel input"
+
 [[mgr.prepend_keymap]]
 on   = "l"
 run  = "plugin smart-enter"
 desc = "Enter the child directory, or open the file"
 
-[[mgr.prepend_keymap]]
-on   = "<Enter>"
-run  = "plugin smart-enter"
-desc = "Enter the child directory, or open the file"
+# [[mgr.prepend_keymap]]
+# on   = "<Enter>"
+# run  = "plugin smart-enter"
+# desc = "Enter the child directory, or open the file"
 
 [[mgr.prepend_keymap]]
 on   = "t"
@@ -15,7 +20,7 @@ desc = "Create a tab and enter the hovered directory"
 
 [[mgr.prepend_keymap]]
 on  = "<C-n>"
-run = 'shell -- dragon-drop -x -i -T "$0"'
+run = 'shell -- dragon-drop -x -i -T -A "$@"'
 
 [[mgr.prepend_keymap]]
 on = ["<Space>", "<Space>"]
@@ -27,3 +32,15 @@ on   = ["<Space>", "w"]
 for  = "linux"
 run  = 'shell -- hyprctl hyprpaper reload ,"$0"'
 desc = "Set hovered file as wallpaper"
+
+[[mgr.prepend_keymap]]
+on   = "!"
+for  = "unix"
+run  = 'shell "$SHELL" --block'
+desc = "Open $SHELL here"
+
+[[mgr.prepend_keymap]]
+on   = "!"
+for  = "windows"
+run  = 'shell "powershell.exe" --block'
+desc = "Open PowerShell here"

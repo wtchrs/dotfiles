@@ -1,6 +1,7 @@
 [mgr]
 linemode = "size"
 scrolloff = 3
+show_hidden = true
 show_symlink = true
 
 [preview]
