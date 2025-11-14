@@ -94,6 +94,7 @@ else
 fi
 
 # Aliases
+setopt completealiases
 alias tmux="env TERM=screen-256color tmux"
 
 if command -v eza >/dev/null 2>&1; then
