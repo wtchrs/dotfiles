@@ -29,6 +29,9 @@ play = [
   { run = 'mpv "$@"', orphan = true, for = "unix", desc = "mpv" },
   { run = '"C:\Program Files\mpv.exe" %*', orphan = true, for = "windows", desc = "mpv" },
 ]
+pdff = [
+  { run = 'zathura "$@"', desc = "zathura", block = true, for = "unix" },
+]
 edit = [
   { run = '$EDITOR "$@"', block = true, for = "unix", desc = "$EDITOR" },
   { run = "%EDITOR% %*", block = true, for = "windows", desc = "%EDITOR%" },
@@ -52,6 +55,7 @@ prepend_rules = [
   { mime = "text/*", use = "edit" },
   { mime = "video/*", use = "play" },
   { mime = "image/*", use = "image" },
+  { mime = "application/pdf", use = [ "pdff", "reveal" ] },
 ]
 
 [tasks]

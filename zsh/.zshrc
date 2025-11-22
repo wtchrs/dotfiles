@@ -107,6 +107,9 @@ fi
 
 if command -v bat >/dev/null 2>&1; then
   alias cat="bat --paging=never"
+elif command -v batcat > /dev/null 2>&1; then
+  alias bat="batcat"
+  alias cat="bat --paging=never"
 fi
 
 # pnpm
