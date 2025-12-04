@@ -1,9 +1,0 @@
-# See https://github.com/hunkyburrito/xdg-desktop-portal-termfilechooser#firefox
-# if you want to use yazi as your default filechooser.
-
-[filechooser]
-cmd=yazi-wrapper.sh
-default_dir=$HOME
-env=TERMCMD='ghostty --title="terminal filechooser" -e'
-open_mode=suggested
-save_mode=last
