@@ -12,7 +12,7 @@
     "margin-bottom": 8,
     "spacing": 15,
     "modules-left": ["hyprland/workspaces", "hyprland/window"],
-    "modules-right": ["mpris", "pulseaudio", "group/status", "battery", "clock", "tray"],
+    "modules-right": ["mpris", "pulseaudio", "network", "backlight", "group/status", "clock", "tray"],
 
     "hyprland/window": {
         "max-length": 49,
@@ -39,19 +39,9 @@
         "all-outputs": false,
         "show-special": true,
         "persistent-workspaces": {
-            "eDP-1": [ 1, 2, 3, 4, 5, "__HIDE_TEMP" ]
+            "eDP-1": [ "__HIDE_TEMP" ]
         },
         "format-icons": {
-            "1": "⚫",
-            "2": "⚫",
-            "3": "⚫",
-            "4": "⚫",
-            "5": "⚫",
-            "6": "6",
-            "7": "7",
-            "8": "8",
-            "9": "9",
-            "10": "10",
             "__HIDE_TEMP": "",
             "special:special": " ",
             "chat": " ",
@@ -82,21 +72,6 @@
         "on-click": "hyprctl dispatch exec \"[float] ghostty -e pulsemixer\""
     },
 
-    "group/status": {
-        "orientation": "vertical",
-        "modules": [
-            "network",
-            "cpu",
-            "memory",
-            "disk",
-            "backlight"
-        ],
-        "drawer": {
-            "transition-duration": 500,
-        },
-        "align": 0
-    },
-
     "network": {
         "format": " {ifname}",
         "format-wifi": "  {signalStrength}%",
@@ -108,6 +83,42 @@
         "tooltip-format-disconnected": "  Disconnected",
         "max-length": 50,
         "on-click": "hyprctl dispatch exec \"[float] ghostty -e nmtui\"",
+        "align": 0
+    },
+
+    "backlight": {
+        "device": "intel_backlight",
+        "format": " {icon}{percent}%",
+        "format-icons": [" ", " ", " ", " ", " "],
+        "tooltip-format": "Display Brightness {percent}%",
+        "align": 0
+    },
+
+    "group/status": {
+        "orientation": "vertical",
+        "modules": [
+            "battery",
+            "cpu",
+            "memory",
+            "disk"
+        ],
+        "drawer": {
+            "transition-duration": 500,
+        },
+        "align": 0
+    },
+
+    "battery": {
+        "states": {
+            // "good": 95,
+            "warning": 30,
+            "critical": 15
+        },
+        "format": " {icon}{capacity}%",
+        "format-charging": " 󰂄 {capacity}%",
+        "format-plugged": "  {capacity}%",
+        "format-alt": " {icon}{time}",
+        "format-icons": [" ", " ", " ", " ", " "],
         "align": 0
     },
 
@@ -134,20 +145,6 @@
         "align": 0
     },
 
-    "battery": {
-        "states": {
-            // "good": 95,
-            "warning": 30,
-            "critical": 15
-        },
-        "format": " {icon}{capacity}%",
-        "format-charging": " 󰂄 {capacity}%",
-        "format-plugged": "  {capacity}%",
-        "format-alt": " {icon}{time}",
-        "format-icons": [" ", " ", " ", " ", " "],
-        "align": 0
-    },
-
     "temperature#cpu": {
         "format": " {temperatureC}°C",
         "tooltip-format": "CPU temperature {temperatureC}°C",
@@ -163,14 +160,6 @@
         "hwmon-path": "/sys/class/hwmon/hwmon1/temp2_input",
         "interval": 1,
         "rotate": 0,
-        "align": 0
-    },
-
-    "backlight": {
-        "device": "intel_backlight",
-        "format": " {icon}{percent}%",
-        "format-icons": [" ", " ", " ", " ", " "],
-        "tooltip-format": "Display Brightness {percent}%",
         "align": 0
     },
 
