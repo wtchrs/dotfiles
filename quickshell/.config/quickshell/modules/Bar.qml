@@ -12,7 +12,7 @@ PanelWindow {
         left: true
     }
 
-    implicitWidth: 50
+    width: 50
 
     color: "transparent"
 
@@ -94,17 +94,6 @@ PanelWindow {
             }
         }
 
-        /*
-        Network {
-            id: network
-            anchors {
-                bottom: tray.top
-                bottomMargin: 10
-                horizontalCenter: parent.horizontalCenter
-            }
-        }
-        */
-
         Tray {
             id: tray
             anchors {
@@ -112,13 +101,7 @@ PanelWindow {
                 bottomMargin: 10
                 horizontalCenter: parent.horizontalCenter
             }
-            children: [
-                Network {
-                    anchors {
-                        horizontalCenter: parent.horizontalCenter
-                    }
-                }
-            ]
+            barWindow: root
         }
 
         Clock {

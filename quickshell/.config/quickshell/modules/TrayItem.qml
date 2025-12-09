@@ -1,4 +1,5 @@
 import QtQuick
+import QtQuick.Window
 import Quickshell.Services.SystemTray
 
 Rectangle {
@@ -7,6 +8,7 @@ Rectangle {
     color: "transparent"
 
     property SystemTrayItem systemTray: null
+    property var barWindow: null
 
     Image {
         id: icon
@@ -26,14 +28,16 @@ Rectangle {
 
         MouseArea {
             anchors.fill: parent
+            acceptedButtons: Qt.AllButtons
             cursorShape: Qt.PointingHandCursor
 
             onClicked: event => {
+                console.log("Item clicked:", systemTray)
                 if (event.button === Qt.LeftButton) {
                     systemTray.activate()
                 } else if (event.button == Qt.RightButton) {
-                    systemTray.display(mouse.x, mouse.y)
-                    //systemTray.secondaryActivate()
+                    const pos = mapToItem(null, event.x, event.y)
+                    systemTray.display(barWindow, pos.x, pos.y)
                 }
             }
         }

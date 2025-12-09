@@ -7,6 +7,8 @@ Item {
     width: 50
     height: container.height
 
+    property var barWindow: null
+
     Column {
         id: container
         spacing: 5
@@ -21,6 +23,7 @@ Item {
             model: SystemTray.items
             delegate: TrayItem {
                 systemTray: modelData
+                barWindow: root.barWindow
             }
         }
     }
