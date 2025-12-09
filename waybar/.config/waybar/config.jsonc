@@ -39,9 +39,14 @@
         "all-outputs": false,
         "show-special": true,
         "persistent-workspaces": {
-            "eDP-1": [ "__HIDE_TEMP" ]
+            "eDP-1": [ "1", "2", "3", "4", "5", "__HIDE_TEMP" ]
         },
         "format-icons": {
+            "1": "",
+            "2": "",
+            "3": "",
+            "4": "",
+            "5": "",
             "__HIDE_TEMP": "",
             "special:special": " ",
             "chat": " ",

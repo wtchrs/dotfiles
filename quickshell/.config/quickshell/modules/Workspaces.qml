@@ -2,10 +2,10 @@ import QtQuick
 import QtQuick.Layouts
 import Quickshell.Hyprland
 
-ColumnLayout {
+Item {
     id: root
     width: 50
-    spacing: 1
+    height: container.implicitHeight
 
     readonly property var focusedWorkspaceId: Hyprland.focusedWorkspace.id
 
@@ -14,34 +14,48 @@ ColumnLayout {
     }
 
     readonly property var visibleWorkspaces: {
-        let workspaces = new Set();
+        let workspaces = new Set([1, 2, 3, 4, 5]);
         workspaces.add(focusedWorkspaceId);
         root.occupiedWs.forEach(ws => workspaces.add(ws.id));
         // Filter out special workspaces which have negative IDs
         return Array.from(workspaces).filter(id => id > 0).sort((a, b) => a - b);
     }
 
+    readonly property var iconMap: ({
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": "",
+    })
+
     onFocusedWorkspaceIdChanged: {
         Hyprland.refreshWorkspaces();
     }
 
-    Repeater {
-        model: root.visibleWorkspaces
+    ColumnLayout {
+        id: container
+        width: 50
+        spacing: 2
 
-        delegate: Text {
-            Layout.fillWidth: true
-            horizontalAlignment: Text.AlignHCenter
-            readonly property int wsId: modelData
-            text: wsId.toString()
-            font.pixelSize: 14
-            font.family: "Sarasa mono K"
-            color: wsId === root.focusedWorkspaceId ? "#FFFFFF" : "#AAAAAA"
+        Repeater {
+            model: root.visibleWorkspaces
 
-            MouseArea {
-                anchors.fill: parent
-                cursorShape: Qt.PointingHandCursor
-                onClicked: {
-                    Hyprland.dispatch(`workspace ${parent.wsId}`);
+            delegate: Text {
+                Layout.fillWidth: true
+                horizontalAlignment: Text.AlignHCenter
+                readonly property int wsId: modelData
+                text: iconMap[wsId] || wsId.toString()
+                font.pixelSize: 13
+                font.family: "Sarasa mono K"
+                color: wsId === root.focusedWorkspaceId ? "#FFFFFF" : "#AAAAAA"
+
+                MouseArea {
+                    anchors.fill: parent
+                    cursorShape: Qt.PointingHandCursor
+                    onClicked: {
+                        Hyprland.dispatch(`workspace ${parent.wsId}`);
+                    }
                 }
             }
         }
