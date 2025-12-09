@@ -2,11 +2,12 @@ import QtQuick
 import QtQuick.Layouts
 import Quickshell.Services.Mpris
 
-ColumnLayout {
+Item {
     id: root
+    width: 50
+    height: container.implicitHeight
 
     visible: player !== null && player.trackTitle
-    spacing: 4
 
     readonly property MprisPlayer player: Mpris.players.values.find(p => p.isPlaying) ?? Mpris.players.values[0]
     readonly property alias hovered: hover.hovered
@@ -22,26 +23,33 @@ ColumnLayout {
         onClicked: player.togglePlaying()
     }
 
-    RotatedText {
-        id: playerIcon
-        text: root.player?.isPlaying ? "▶" : "⏸"
-    }
+    ColumnLayout {
+        id: container
+        spacing: 4
 
-    RotatedMarquee {
-        id: marquee
-        Layout.fillWidth: true
-        // Layout.fillHeight: true
-        height: 150
-        text: {
-            if (!root.player)
-                return "No media playing";
-            if (!root.player.trackArtist)
-                return root.player.trackTitle;
-            return `<b>${root.player.trackArtist}</b> - ${root.player.trackTitle}`;
+        anchors.horizontalCenter: parent.horizontalCenter
+
+        RotatedText {
+            id: playerIcon
+            text: root.player?.isPlaying ? "▶" : "⏸"
         }
-        font.pixelSize: 13
-        font.family: "Sarasa Mono K Nerd Font"
-        running: root.visible && hovered
+
+        RotatedMarquee {
+            id: marquee
+            Layout.fillWidth: true
+            // Layout.fillHeight: true
+            height: 150
+            text: {
+                if (!root.player)
+                    return "No media playing";
+                if (!root.player.trackArtist)
+                    return root.player.trackTitle;
+                return `<b>${root.player.trackArtist}</b> - ${root.player.trackTitle}`;
+            }
+            font.pixelSize: 13
+            font.family: "Sarasa Mono K Nerd Font"
+            running: root.visible && hovered
+        }
     }
 
     component RotatedText: Text {

@@ -34,7 +34,7 @@ Item {
         const icons = [" ", " ", " ", " ", " "];
 
         var idx = Math.min(Math.floor(percentage / 20), 4);
-        if (pct > 0 && idx < 0) idx = 0;
+        if (percentage > 0 && idx < 0) idx = 0;
 
         return icons[idx];
     }

@@ -7,7 +7,7 @@ Item {
     width: 50
     height: container.implicitHeight
 
-    readonly property var focusedWorkspaceId: Hyprland.focusedWorkspace.id
+    readonly property int focusedWorkspaceId: Hyprland.focusedWorkspace?.id || 0
 
     readonly property var occupiedWs: {
         return Array.from(Hyprland.workspaces.values).sort((a, b) => a.id - b.id);

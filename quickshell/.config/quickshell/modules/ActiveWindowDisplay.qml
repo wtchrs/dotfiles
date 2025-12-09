@@ -44,7 +44,7 @@ Item {
 
         Text {
             id: titleText
-            text: Hyprland.activeToplevel.title
+            text: Hyprland.activeToplevel?.title || ""
 
             font.pixelSize: 14
             font.family: "Sarasa Mono K Nerd Font"

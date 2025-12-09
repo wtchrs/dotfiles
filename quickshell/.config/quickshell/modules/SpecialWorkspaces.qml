@@ -3,12 +3,20 @@ import QtQuick.Layouts
 import Quickshell.Hyprland
 import Quickshell.Io
 
-ColumnLayout {
+Item {
     id: root
     width: 50
-    spacing: 6
+    height: container.implicitHeight
 
     property var activeSpecialWorkspace: null
+
+    readonly property int focusedWorkspaceId: Hyprland.focusedWorkspace?.id || 0
+
+    readonly property var iconMap: ({
+        "chat": "",
+        "music": "󰎇",
+        "default": ""
+    })
 
     Process {
         id: hyprctlProc
@@ -25,7 +33,6 @@ ColumnLayout {
                         const specialW = focusedMonitor.specialWorkspace;
                         if (specialW.id !== 0 && specialW.name !== "") {
                             root.activeSpecialWorkspace = specialW.name.replace("special:", "");
-                            console.log("active special workspace (Process Result):", specialW.name);
                             return;
                         }
                     }
@@ -39,21 +46,14 @@ ColumnLayout {
     }
 
     Connections {
-        target: Hyprland.events
+        target: Hyprland
 
-        onActiveSpecialWorkspaceChanged: {
-            console.log("Hyprland activespecial event received. Re-running hyprctl.");
-            hyprctlProc.running = true;
+        function onRawEvent(event) {
+            if (event.name === "activespecialv2") {
+                hyprctlProc.running = true;
+            }
         }
     }
-
-    readonly property var focusedWorkspaceId: Hyprland.focusedWorkspace.id
-
-    readonly property var iconMap: ({
-        "chat": "",
-        "music": "󰎇",
-        "default": ""
-    })
 
     readonly property var specialWs: {
         return Array.from(Hyprland.workspaces.values)
@@ -67,25 +67,36 @@ ColumnLayout {
         hyprctlProc.running = true
     }
 
-    Repeater {
-        model: root.specialWs
+    ColumnLayout {
+        id: container
+        width: 50
+        spacing: 6
 
-        delegate: Text {
-            Layout.fillWidth: true
-            horizontalAlignment: Text.AlignHCenter
-            readonly property int wsId: modelData.id
-            readonly property string wsName: modelData.name.replace("special:", "")
-            text: root.iconMap[wsName] || root.iconMap["default"]
-            font.pixelSize: 13
-            font.family: "Symbols Nerd Font"
-            color: wsName === root.activeSpecialWorkspace ? "#FFFFFF" : "#AAAAAA"
+        Repeater {
+            model: root.specialWs
 
-            MouseArea {
-                anchors.fill: parent
-                cursorShape: Qt.PointingHandCursor
-                onClicked: {
-                    Hyprland.dispatch(`togglespecialworkspace ${wsName}`);
-                    hyprctlProc.running = true
+            delegate: Text {
+                Layout.fillWidth: true
+                horizontalAlignment: Text.AlignHCenter
+
+                readonly property int wsId: modelData.id
+                readonly property string wsName: modelData.name.replace("special:", "")
+
+                text: root.iconMap[wsName] || root.iconMap["default"]
+
+                font: {
+                    pixelSize: 13
+                    family: "Symbols Nerd Font"
+                }
+                color: wsName === root.activeSpecialWorkspace ? "#FFFFFF" : "#AAAAAA"
+
+                MouseArea {
+                    anchors.fill: parent
+                    cursorShape: Qt.PointingHandCursor
+                    onClicked: {
+                        Hyprland.dispatch(`togglespecialworkspace ${wsName}`);
+                        hyprctlProc.running = true
+                    }
                 }
             }
         }
