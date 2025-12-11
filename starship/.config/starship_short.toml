@@ -10,7 +10,11 @@ $os$username[@](bg:nord10 fg:nord0)$hostname$sudo\
 [](bg:nord9 fg:nord10)\
 $directory\
 [](bg:nord8 fg:nord9)\
+$git_branch$git_status\
 [](bg:nord7 fg:nord8)\
+$package$c$cmake$deno$dotnet$elixir$erlang$gleam$golang$haskell\
+$helm$java$julia$kotlin$gradle$lua$nodejs$php$python$ruby$rust\
+$scala$swift$terraform$typst$vagrant$zig\
 [](bg:nord4 fg:nord7)\
 $cmd_duration\
 [](fg:nord4)\
@@ -37,6 +41,156 @@ nord10 = '#5E81AC'
 nord11 = '#BF616A'
 nord13 = '#EBCB8B'
 nord14 = '#A2BE8A'
+
+# GIT
+# ===
+
+[git_branch]
+format = "[ $symbol]($style)"
+symbol = "󰘬 "
+style = "fg:nord0 bg:nord8"
+
+[git_status]
+format = "[$all_status$ahead_behind ]($style)"
+style = "fg:nord0 bg:nord8"
+
+# LANGUAGES
+# =========
+
+[c]
+symbol = " "
+format = "[$symbol]($style)"
+style = "fg:nord0 bg:nord7"
+
+[cmake]
+symbol = "󰔷 "
+format = "[$symbol]($style)"
+style = "fg:nord0 bg:nord7"
+
+[deno]
+symbol = "🦕 "
+format = "[$symbol]($style)"
+style = "fg:nord0 bg:nord7"
+
+[dotnet]
+symbol = " "
+format = "[$symbol]($style)"
+style = "fg:nord0 bg:nord7"
+
+[elixir]
+symbol = " "
+format = "[$symbol]($style)"
+style = "fg:nord0 bg:nord7"
+
+[erlang]
+symbol = " "
+format = "[$symbol]($style)"
+style = "fg:nord0 bg:nord7"
+
+[gleam]
+symbol = "⭐ "
+format = "[$symbol]($style)"
+style = "fg:nord0 bg:nord7"
+
+[golang]
+symbol = " "
+format = "[$symbol]($style)"
+style = "fg:nord0 bg:nord7"
+
+[haskell]
+symbol = " "
+format = "[$symbol]($style)"
+style = "fg:nord0 bg:nord7"
+
+[helm]
+symbol = "⎈ "
+format = "[$symbol]($style)"
+style = "fg:nord0 bg:nord7"
+
+[java]
+symbol = " "
+format = "[$symbol]($style)"
+style = "fg:nord0 bg:nord7"
+
+[julia]
+symbol = " "
+format = "[$symbol]($style)"
+style = "fg:nord0 bg:nord7"
+
+[kotlin]
+symbol = " "
+format = "[$symbol]($style)"
+style = "fg:nord0 bg:nord7"
+
+[gradle]
+symbol = " "
+format = "[$symbol]($style)"
+style = "fg:nord0 bg:nord7"
+
+[lua]
+symbol = '󰢱 '
+format = '[$symbol]($style)'
+style = "fg:nord0 bg:nord7"
+
+[python]
+symbol = '󰌠 '
+format = "[$symbol]($style)"
+style = "fg:nord0 bg:nord7"
+
+[nodejs]
+symbol = " "
+format = "[$symbol]($style)"
+style = "fg:nord0 bg:nord7"
+
+[php]
+symbol = " "
+format = "[$symbol]($style)"
+style = "fg:nord0 bg:nord7"
+
+[ruby]
+symbol = " "
+format = "[$symbol]($style)"
+style = "fg:nord0 bg:nord7"
+
+[rust]
+symbol = " "
+format = "[$symbol]($style)"
+style = "fg:nord0 bg:nord7"
+
+[scala]
+symbol = " "
+format = "[$symbol]($style)"
+style = "fg:nord0 bg:nord7"
+
+[swift]
+symbol = " "
+format = "[$symbol]($style)"
+style = "fg:nord0 bg:nord7"
+
+[terraform]
+symbol = " "
+format = "[$symbol]($style)"
+style = "fg:nord0 bg:nord7"
+
+[typst]
+symbol = " "
+format = "[$symbol]($style)"
+style = "fg:nord0 bg:nord7"
+
+[vagrant]
+symbol = " "
+format = "[$symbol]($style)"
+style = "fg:nord0 bg:nord7"
+
+[zig]
+symbol = " "
+format = "[$symbol]($style)"
+style = "fg:nord0 bg:nord7"
+
+[package]
+symbol = "󰏗 "
+format = "[$symbol]($style)"
+style = "fg:nord0 bg:nord7"
 
 # MISC
 # ====
