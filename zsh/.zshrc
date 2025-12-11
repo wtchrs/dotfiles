@@ -114,6 +114,17 @@ if ! type starship > /dev/null; then
   install_starship
 fi
 
+# Apply different settings depending on terminal width.
+function set_starship_config() {
+  if [ "$COLUMNS" -lt 75 ]; then
+    export STARSHIP_CONFIG=~/.config/starship_short.toml
+  else
+    export STARSHIP_CONFIG=~/.config/starship.toml
+  fi
+}
+autoload -Uz add-zsh-hook
+add-zsh-hook precmd set_starship_config
+
 # Load starship if current session is not a TTY.
 [[ -t 1 ]] && eval "$(starship init zsh)"
 

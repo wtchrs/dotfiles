@@ -1,0 +1,126 @@
+# Based on original gist by aiden1999
+# Source: https://gist.github.com/aiden1999/509a54e7665c6da1b115c24686eac14c
+# Modified by wtchrs on 2025-12-11
+
+"$schema" = 'https://starship.rs/config-schema.json'
+
+format = """
+[](nord10)\
+$os$username[@](bg:nord10 fg:nord0)$hostname$sudo\
+[](bg:nord9 fg:nord10)\
+$directory\
+[](bg:nord8 fg:nord9)\
+[](bg:nord7 fg:nord8)\
+[](bg:nord4 fg:nord7)\
+$cmd_duration\
+[](fg:nord4)\
+$line_break\
+$character
+"""
+
+continuation_prompt = "[  ](#62708a)"
+
+palette = 'nord'
+
+[palettes.nord]
+nord0 = '#2E3440'
+nord1 = '#3B4252'
+nord2 = '#434C5E'
+nord3 = '#4C566A'
+nord4 = '#D8DEE9'
+nord5 = '#E5E9F0'
+nord6 = '#ECEFF4'
+nord7 = '#8FBCBB'
+nord8 = '#88C0D0'
+nord9 = '#81A1C1'
+nord10 = '#5E81AC'
+nord11 = '#BF616A'
+nord13 = '#EBCB8B'
+nord14 = '#A2BE8A'
+
+# MISC
+# ====
+
+[hostname]
+ssh_only = false
+style = "fg:nord0 bg:nord10"
+format = "[$ssh_symbol$hostname ]($style)"
+ssh_symbol = " "
+
+[os]
+style = "fg:nord0 bg:nord10"
+disabled = false
+
+[os.symbols]
+Alpaquita = " "
+Alpine = " "
+AlmaLinux = " "
+Amazon = " "
+Android = " "
+AOSC = " "
+Arch = " "
+Artix = " "
+CachyOS = " "
+CentOS = " "
+Debian = " "
+DragonFly = " "
+Emscripten = " "
+EndeavourOS = " "
+Fedora = " "
+FreeBSD = " "
+Garuda = "󰛓 "
+Gentoo = " "
+HardenedBSD = "󰞌 "
+Illumos = "󰈸 "
+Kali = " "
+Linux = " "
+Mabox = " "
+Macos = " "
+Manjaro = " "
+Mariner = " "
+MidnightBSD = " "
+Mint = " "
+NetBSD = " "
+NixOS = " "
+Nobara = " "
+OpenBSD = "󰈺 "
+openSUSE = " "
+OracleLinux = "󰌷 "
+Pop = " "
+Raspbian = " "
+Redhat = " "
+RedHatEnterprise = " "
+RockyLinux = " "
+Redox = "󰀘 "
+Solus = "󰠳 "
+SUSE = " "
+Ubuntu = " "
+Unknown = " "
+Void = " "
+Windows = "󰍲 "
+
+[username]
+show_always = true
+format = '[$user]($style)'
+style_user = "fg:nord0 bg:nord10"
+
+[directory]
+style = "fg:nord0 bg:nord9"
+read_only = " "
+format = "[ 󰉋 $path ]($style)[$read_only]($read_only_style)"
+read_only_style = "fg:nord0 bold bg:nord9"
+
+[sudo]
+disabled = false
+symbol = " "
+style = "fg:nord0 bg:nord10"
+format = "[$symbol]($style)"
+
+[cmd_duration]
+format = "[ 󰔚 $duration ]($style)"
+style = "fg:nord0 bg:nord4"
+
+[character]
+success_symbol = "[ •](bold green)"
+error_symbol = "[ •](bold red)"
+vimcmd_symbol = "[  •](bold green)"
