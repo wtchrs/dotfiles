@@ -14,17 +14,35 @@ RESET=$(tput sgr0)
 
 export PATH="$HOME/.local/bin:$PATH"
 
-# asdf
-if ! command -v asdf >/dev/null 2>&1; then
-  echo "\n${RED}Warning: ${RESET}${BOLD}asdf${RESET} not found. Visit https://github.com/asdf-vm/asdf/releases."
-else
-  export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
-fi
-
 # pnpm
 export PNPM_HOME="${HOME}/.local/share/pnpm"
 if [[ ":$PATH:" != *":$PNPM_HOME:"* ]]; then
-    export PATH="$PNPM_HOME:$PATH"
+    export PATH="$PATH:$PNPM_HOME"
+fi
+
+#########################
+# Shell Options & Editor
+#########################
+
+# Emacs keybindings
+bindkey -e
+bindkey '^H' backward-kill-word
+
+# History
+HISTFILE="$HOME/.zsh_history"
+HISTSIZE=10000000
+SAVEHIST=10000000
+setopt HIST_IGNORE_DUPS
+setopt HIST_IGNORE_SPACE
+setopt appendhistory
+setopt sharehistory
+setopt incappendhistory
+
+# Editor
+if command -v nvim >/dev/null 2>&1; then
+  export EDITOR=nvim
+else
+  export EDITOR=vim
 fi
 
 #########################
@@ -53,112 +71,73 @@ zinit light-mode for \
 zinit snippet OMZP::command-not-found
 zinit snippet OMZP::sudo
 
-# fzf
-zinit ice from"gh-r" as"program"
-zinit light junegunn/fzf
-
-# zinit ice wait"lucid" atload"zicompinit; zicdreplay" from"Aloxaf/fzf-tab"
-# zinit snippet ':fzf-tab:*' fzf-command ftb-tmux-popup
 zinit wait lucid for \
-  atload"zicompinit; zicdreplay" Aloxaf/fzf-tab
-zstyle ':fzf-tab:*' fzf-command ftb-tmux-popup
-
-zinit wait lucid for \
- atinit"ZINIT[COMPINIT_OPTS]=-C; zicompinit; zicdreplay" \
+  atinit"ZINIT[COMPINIT_OPTS]=-C; zicompinit; zicdreplay" \
     zdharma-continuum/fast-syntax-highlighting \
- blockf \
+  blockf \
     zsh-users/zsh-completions \
- atload"!_zsh_autosuggest_start" \
+  atload"!_zsh_autosuggest_start" \
     zsh-users/zsh-autosuggestions
 
 #########################
 # Starship Prompt
 #########################
 
-export STARSHIP_CONFIG=${XDG_CONFIG_HOME:-${HOME}/.config}/starship.toml
-STARSHIP_INSTALL_DIR=${HOME}/.local/bin
-
-install_starship() {
-  echo "${YELLOW}Install Starship...${RESET}"
-  mkdir -p $STARSHIP_INSTALL_DIR
-  command sh <(curl -sS https://starship.rs/install.sh) -y --bin-dir $STARSHIP_INSTALL_DIR
-}
-
-update_starship() {
-  if ! type starship >/dev/null; then
-    install_starship
-    return 0;
-  fi
-
-  INSTALLED_VERSION=$(starship --version | head -n 1 | awk '{print $2}')
-  RELEASE_LATEST_VERSION=$(curl -s https://api.github.com/repos/starship/starship/releases/latest |
-      grep 'tag_name' |
-      sed -E 's/.*"v?([^"]+)".*/\1/')
-
-  if [[ -z "$RELEASE_LATEST_VERSION" ]]; then
-    echo "Unable to fetch latest version info."
-    return 1
-  fi
-
-  LATEST_VERSION=$(printf '%s\n%s' "$INSTALLED_VERSION" "$LATEST_VERSION" | sort -rV | head -n 1)
-
-  if [[ "$INSTALLED_VERSION" != "$LATEST_VERSION" ]]; then
-    install_starship
-  else
-    echo "${YELLOW}Starship v${INSTALLED_VERSION}${RESET} is up to date."
-  fi
-}
-
-# Install Starship if not installed.
-if ! type starship > /dev/null; then
-  install_starship
+# Load starship if current session is not a TTY.
+if [[ -t 1 ]]; then
+  zinit ice as"command" from"gh-r" \
+            atclone"./starship init zsh > init.zsh; ./starship completions zsh > _starship" \
+            atpull"%atclone" src"init.zsh"
+  zinit light starship/starship
 fi
 
 # Apply different settings depending on terminal width.
-function set_starship_config() {
+set_starship_config_precmd() {
   if [ "$COLUMNS" -lt 75 ]; then
-    export STARSHIP_CONFIG=~/.config/starship_short.toml
+    export STARSHIP_CONFIG=${XDG_CONFIG_HOME:-${HOME}/.config}/starship_short.toml
   else
-    export STARSHIP_CONFIG=~/.config/starship.toml
+    export STARSHIP_CONFIG=${XDG_CONFIG_HOME:-${HOME}/.config}/starship.toml
   fi
 }
 autoload -Uz add-zsh-hook
-add-zsh-hook precmd set_starship_config
-
-# Load starship if current session is not a TTY.
-[[ -t 1 ]] && eval "$(starship init zsh)"
+add-zsh-hook precmd set_starship_config_precmd
 
 #########################
-# Shell Options & Editor
+# fzf
 #########################
 
-# Emacs keybindings
-bindkey -e
-bindkey '^H' backward-kill-word
+zinit ice from"gh-r" as"program" atload"eval \"\$(fzf --zsh)\""
+zinit light junegunn/fzf
 
-# History
-HISTFILE="$HOME/.zsh_history"
-HISTSIZE=10000000
-SAVEHIST=10000000
-setopt HIST_IGNORE_DUPS
-setopt HIST_IGNORE_SPACE
-setopt appendhistory
-setopt sharehistory
-setopt incappendhistory
+if command -v fd >/dev/null 2>&1; then
+  export FZF_DEFAULT_COMMAND="fd --hidden --strip-cwd-prefix --exclude .git"
+  export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+  export FZF_ALT_C_COMMAND="fd --type=d --hidden --strip-cwd-prefix --exclude .git"
 
-# Editor
-if [ -x nvim ]; then
-  export EDITOR=nvim
-else
-  export EDITOR=vim
+  _fzf_compgen_path() {
+    fd --hidden --exclude .git . "$1"
+  }
+  
+  # Use fd to generate the list for directory completion
+  _fzf_compgen_dir() {
+    fd --type=d --hidden --exclude .git . "$1"
+  }
 fi
+
+#########################
+# asdf
+#########################
+
+zinit ice as"command" from"gh-r"
+zinit light asdf-vm/asdf
+export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
 
 #########################
 # Aliases
 #########################
 
 setopt completealiases
-alias tmux="env TERM=screen-256color tmux"
+alias tmux="env TERM=tmux-256color tmux"
 
 if command -v eza >/dev/null 2>&1; then
   alias ls="eza --icons"
