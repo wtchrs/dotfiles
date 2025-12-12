@@ -12,13 +12,12 @@ RESET=$(tput sgr0)
 # PATH
 #########################
 
-export PATH="$HOME/.local/bin:$PATH"
+typeset -U path
+path=("$HOME/.local/bin" $path)
 
 # pnpm
 export PNPM_HOME="${HOME}/.local/share/pnpm"
-if [[ ":$PATH:" != *":$PNPM_HOME:"* ]]; then
-    export PATH="$PATH:$PNPM_HOME"
-fi
+[[ -d $PNPM_HOME ]] && path+=("$PNPM_HOME")
 
 #########################
 # Shell Options & Editor
@@ -34,12 +33,14 @@ HISTSIZE=10000000
 SAVEHIST=10000000
 setopt HIST_IGNORE_DUPS
 setopt HIST_IGNORE_SPACE
+setopt HIST_REDUCE_BLANKS
+setopt EXTENDED_HISTORY
 setopt appendhistory
 setopt sharehistory
 setopt incappendhistory
 
 # Editor
-if command -v nvim >/dev/null 2>&1; then
+if (( $+commands[nvim] )); then
   export EDITOR=nvim
 else
   export EDITOR=vim
@@ -83,8 +84,8 @@ zinit wait lucid for \
 # Starship Prompt
 #########################
 
-# Load starship if current session is not a TTY.
-if [[ -t 1 ]]; then
+# Load starship if current session is in graphic or ssh.
+if [[ -n "$DISPLAY" || -n "$WAYLAND_DISPLAY" || -n "$SSH_CONNECTION" ]]; then
   zinit ice as"command" from"gh-r" \
             atclone"./starship init zsh > init.zsh; ./starship completions zsh > _starship" \
             atpull"%atclone" src"init.zsh"
@@ -106,10 +107,10 @@ add-zsh-hook precmd set_starship_config_precmd
 # fzf
 #########################
 
-zinit ice from"gh-r" as"program" atload"eval \"\$(fzf --zsh)\""
+zinit ice from"gh-r" as"program" atload"source <(fzf --zsh)"
 zinit light junegunn/fzf
 
-if command -v fd >/dev/null 2>&1; then
+if (( $+commands[fd] )); then
   export FZF_DEFAULT_COMMAND="fd --hidden --strip-cwd-prefix --exclude .git"
   export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
   export FZF_ALT_C_COMMAND="fd --type=d --hidden --strip-cwd-prefix --exclude .git"
@@ -139,7 +140,7 @@ export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
 setopt completealiases
 alias tmux="env TERM=tmux-256color tmux"
 
-if command -v eza >/dev/null 2>&1; then
+if (( $+commands[eza] )); then
   alias ls="eza --icons"
   alias ll="ls -aal"
 else
@@ -147,9 +148,9 @@ else
   alias ll="ls -al"
 fi
 
-if command -v bat >/dev/null 2>&1; then
+if (( $+commands[bat] )); then
   alias cat="bat --paging=never"
-elif command -v batcat > /dev/null 2>&1; then
+elif (( $+commands[batcat] )); then
   alias bat="batcat"
   alias cat="bat --paging=never"
 fi
