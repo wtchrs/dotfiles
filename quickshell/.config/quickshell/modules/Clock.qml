@@ -1,44 +1,58 @@
 import QtQuick
 import Quickshell
 import QtQuick.Controls
+import QtQuick.Layouts
 
 Item {
     id: root
 
-    implicitWidth: timeText.implicitWidth
-    implicitHeight: timeText.implicitHeight
+    implicitWidth: container.width
+    implicitHeight: container.height
 
     Timer {
         id: clockTimer
         interval: 1000
         running: true
         repeat: true
-        onTriggered: timeText.text = formatTime()
-    }
-
-    function formatTime() {
-        const now = new Date();
-        const datePart = Qt.formatDate(now, "dd-MM");
-        const yearPart = Qt.formatDate(now, "yyyy");
-        const seconds = now.getSeconds();
-        const timePart = seconds % 2 == 0 ? Qt.formatTime(now, "HH mm") : Qt.formatTime(now, "HH:mm");
-        return datePart + "\n" + yearPart + "\n" + timePart;
-    }
-
-    Text {
-        id: timeText
-        text: formatTime()
-
-        color: "white"
-        font.pixelSize: 13
-        font {
-            pixelSize: 14
-            family: "Sarasa Mono K"
-        }
-        horizontalAlignment: Text.AlignHCenter
+        onTriggered: reload()
     }
 
     Component.onCompleted: {
-        timeText.text = formatTime();
+        reload()
+    }
+
+    function reload() {
+        const now = new Date()
+        dateText.text = Qt.formatDate(now, "dd-MM")
+        yearText.text = Qt.formatDate(now, "yyyy")
+        const timeFormat = now.getSeconds() % 2 == 0 ? "HH mm" : "HH:mm"
+        timeText.text = Qt.formatTime(now, timeFormat);
+    }
+
+    ColumnLayout {
+        id: container
+        width: 50
+        spacing: 0
+
+        ClockText {
+            id: dateText
+        }
+
+        ClockText {
+            id: yearText
+        }
+
+        ClockText {
+            id: timeText
+            font.bold: true
+        }
+    }
+
+    component ClockText: Text {
+        color: "white"
+        font.pixelSize: 13
+        font.family: "Sarasa Mono K"
+        horizontalAlignment: Text.AlignHCenter
+        anchors.horizontalCenter: parent.horizontalCenter
     }
 }
