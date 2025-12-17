@@ -5,8 +5,8 @@ import QtQuick.Controls
 Item {
     id: root
 
-    implicitWidth: timeText.implicitHeight
-    implicitHeight: timeText.implicitWidth
+    implicitWidth: timeText.implicitWidth
+    implicitHeight: timeText.implicitHeight
 
     Timer {
         id: clockTimer
@@ -17,11 +17,12 @@ Item {
     }
 
     function formatTime() {
-        var now = new Date();
-        var datePart = Qt.formatDate(now, "dd-MM-yyyy");
-        var timePart = Qt.formatTime(now, "HH mm");
-
-        return datePart + "\n" + timePart;
+        const now = new Date();
+        const datePart = Qt.formatDate(now, "dd-MM");
+        const yearPart = Qt.formatDate(now, "yyyy");
+        const seconds = now.getSeconds();
+        const timePart = seconds % 2 == 0 ? Qt.formatTime(now, "HH mm") : Qt.formatTime(now, "HH:mm");
+        return datePart + "\n" + yearPart + "\n" + timePart;
     }
 
     Text {
@@ -35,11 +36,6 @@ Item {
             family: "Sarasa Mono K"
         }
         horizontalAlignment: Text.AlignHCenter
-
-        transform: [
-            Rotation { angle: 90 },
-            Translate { x: (root.width + timeText.implicitHeight) / 2 }
-        ]
     }
 
     Component.onCompleted: {

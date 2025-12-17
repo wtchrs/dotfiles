@@ -12,7 +12,7 @@ PanelWindow {
         left: true
     }
 
-    width: 50
+    implicitWidth: 60
 
     color: "transparent"
 
@@ -21,11 +21,11 @@ PanelWindow {
             fill: parent
             topMargin: 10
             bottomMargin: 10
+            leftMargin: 10
         }
-        color: "#80000000" // 80 is hex for 0.5 opacity
+        color: "#A0000000" // First two hex digits are the alpha channel.
 
-        topRightRadius: 10
-        bottomRightRadius: 10
+        radius: 10
         antialiasing: true
 
         // TOP
@@ -71,7 +71,7 @@ PanelWindow {
             id: audio
             anchors {
                 bottom: brightness.top
-                bottomMargin: 10
+                bottomMargin: 2
                 horizontalCenter: parent.horizontalCenter
             }
         }
@@ -80,7 +80,7 @@ PanelWindow {
             id: brightness
             anchors {
                 bottom: battery.top
-                bottomMargin: 10
+                bottomMargin: 2
                 horizontalCenter: parent.horizontalCenter
             }
         }
