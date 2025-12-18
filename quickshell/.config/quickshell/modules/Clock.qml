@@ -52,7 +52,6 @@ Item {
         color: "white"
         font.pixelSize: 13
         font.family: "Sarasa Mono K"
-        horizontalAlignment: Text.AlignHCenter
-        anchors.horizontalCenter: parent.horizontalCenter
+        Layout.alignment: Qt.AlignCenter
     }
 }

@@ -1,8 +1,10 @@
 import QtQuick
-import QtQuick.Window
+import QtQuick.Layouts
+import Quickshell
 import Quickshell.Services.SystemTray
 
 Rectangle {
+    id: root
     width: 50
     height: icon.height
     color: "transparent"
@@ -17,29 +19,34 @@ Rectangle {
         height: 16
         source: {
             let iconUrl = systemTray.icon
-            console.log("System tray icon:", iconUrl)
             if (iconUrl.includes("?path=")) {
                 const [name, path] = systemTray.icon.split("?path=")
-                iconUrl = Qt.resolvedUrl(`${path}/${name.slice(name.lastIndexOf("/") + 1)}`)
+                iconUrl = Qt.resolvedUrl(path + "/" + name.slice(name.lastIndexOf("/") + 1))
             }
-            console.log("Resolved url:", iconUrl)
             return iconUrl
         }
+    }
 
-        MouseArea {
-            anchors.fill: parent
-            acceptedButtons: Qt.AllButtons
-            cursorShape: Qt.PointingHandCursor
+    MouseArea {
+        id: iconMouseArea
+        anchors.fill: parent
+        acceptedButtons: Qt.AllButtons
+        hoverEnabled: true
+        cursorShape: Qt.PointingHandCursor
 
-            onClicked: event => {
-                console.log("Item clicked:", systemTray)
-                if (event.button === Qt.LeftButton) {
-                    systemTray.activate()
-                } else if (event.button == Qt.RightButton) {
-                    const pos = mapToItem(null, event.x, event.y)
-                    systemTray.display(barWindow, pos.x, pos.y)
-                }
+        onClicked: event => {
+            console.log("Item clicked:", systemTray)
+            if (event.button === Qt.LeftButton) {
+                systemTray.activate()
+            } else if (event.button == Qt.RightButton) {
+                const pos = mapToItem(null, event.x, event.y)
+                systemTray.display(barWindow, pos.x, pos.y)
             }
         }
+    }
+
+    TrayItemMenu {
+        trayItem: root
+        iconMouseArea: iconMouseArea
     }
 }

@@ -7,7 +7,7 @@ Item {
     width: 50
     height: container.height
 
-    property var barWindow: null
+    required property var barWindow
 
     Column {
         id: container
