@@ -10,7 +10,7 @@ Item {
     property string device: "intel_backlight"
     property int brightness: 0
 
-    width: container.implicitWidth
+    width: 50
     height: container.implicitHeight
 
     // --- Logic ---
@@ -61,7 +61,7 @@ Item {
 
     RowLayout {
         id: container
-        anchors.fill: parent
+        anchors.horizontalCenter: parent.horizontalCenter
         spacing: 0
 
         Text {

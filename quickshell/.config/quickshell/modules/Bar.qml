@@ -28,88 +28,62 @@ PanelWindow {
         radius: 10
         antialiasing: true
 
-        // TOP
+        ColumnLayout {
+            anchors.fill: parent
+            spacing: 0
 
-        Workspaces {
-            id: workspaces
-            anchors {
-                top: parent.top
-                horizontalCenter: parent.horizontalCenter
+            // TOP
+
+            ColumnLayout {
+                Layout.alignment: Qt.AlignHCenter
+                Layout.topMargin: 30
+                spacing: 20
+
+                Workspaces {}
+
+                SpecialWorkspaces {}
+
+                ActiveWindowDisplay {
+                    Layout.topMargin: 30
+                    Layout.alignment: Qt.AlignCenter
+                }
             }
-            anchors.topMargin: 30
-        }
 
-        SpecialWorkspaces {
-            id: specialWorkspaces
-            anchors {
-                top: workspaces.bottom
-                horizontalCenter: parent.horizontalCenter
+            // SPACER
+
+            Item {
+                Layout.fillHeight: true
             }
-            anchors.topMargin: 20
-        }
 
-        ActiveWindowDisplay {
-            id: activeWindow
-            anchors {
-                top: specialWorkspaces.bottom
-                horizontalCenter: parent.horizontalCenter
-            }
-            anchors.topMargin: 55
-        }
+            // BOTTOM
 
-        // BOTTOM
+            ColumnLayout {
+                Layout.alignment: Qt.AlignHCenter
+                Layout.bottomMargin: 10
+                spacing: 0
 
-        Mpris {
-            anchors {
-                bottom: audio.top
-                bottomMargin: 20
-                horizontalCenter: parent.horizontalCenter
-            }
-        }
+                Mpris {
+                    Layout.bottomMargin: 20
+                }
 
-        Audio {
-            id: audio
-            anchors {
-                bottom: brightness.top
-                bottomMargin: 2
-                horizontalCenter: parent.horizontalCenter
-            }
-        }
+                Audio {
+                    Layout.bottomMargin: 2
+                }
 
-        Brightness {
-            id: brightness
-            anchors {
-                bottom: battery.top
-                bottomMargin: 2
-                horizontalCenter: parent.horizontalCenter
-            }
-        }
+                Brightness {
+                    Layout.bottomMargin: 2
+                }
 
-        Battery {
-            id: battery
-            anchors {
-                bottom: tray.top
-                bottomMargin: 10
-                horizontalCenter: parent.horizontalCenter
-            }
-        }
+                Battery {
+                    Layout.bottomMargin: 10
+                }
 
-        Tray {
-            id: tray
-            anchors {
-                bottom: clock.top
-                bottomMargin: 10
-                horizontalCenter: parent.horizontalCenter
-            }
-            barWindow: root
-        }
+                Tray {
+                    Layout.bottomMargin: 10
+                    barWindow: root
+                }
 
-        Clock {
-            id: clock
-            anchors {
-                bottom: parent.bottom
-                bottomMargin: 10
-                horizontalCenter: parent.horizontalCenter
+                Clock {}
             }
         }
     }

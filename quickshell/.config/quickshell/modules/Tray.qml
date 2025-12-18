@@ -1,15 +1,16 @@
 import QtQuick
+import QtQuick.Layouts
 import Quickshell
 import Quickshell.Services.SystemTray
 
 Item {
     id: root
     width: 50
-    height: container.height
+    implicitHeight: container.implicitHeight
 
     required property var barWindow
 
-    Column {
+    ColumnLayout {
         id: container
         spacing: 5
 

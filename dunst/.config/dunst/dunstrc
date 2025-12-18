@@ -62,3 +62,7 @@ timeout = 5
 background = "#ffffff"
 foreground = "#db0101"
 timeout = 0
+
+[ignore_flameshot_warning]
+body = "grim's screenshot component is implemented based on wlroots, it may not be used in GNOME or similar desktop environments"
+format = ""

@@ -9,7 +9,7 @@ Item {
     property real volume: 0.5
     property bool muted: false
 
-    width: container.implicitWidth
+    width: 50
     height: container.implicitHeight
 
     Process {
@@ -40,8 +40,7 @@ Item {
 
     RowLayout {
         id: container
-
-        anchors.fill: parent
+        anchors.horizontalCenter: parent.horizontalCenter
         spacing: 2
 
         Text {

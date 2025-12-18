@@ -22,7 +22,7 @@ Item {
 
     readonly property double percentage: battery.percentage * 100
 
-    width: container.implicitWidth
+    width: 50
     height: container.implicitHeight
 
     // --- Helpers ---
@@ -67,7 +67,7 @@ Item {
 
     RowLayout {
         id: container
-        anchors.fill: parent
+        anchors.horizontalCenter: parent.horizontalCenter
         spacing: 2
 
         Text {

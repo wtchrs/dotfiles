@@ -3,7 +3,7 @@ import Quickshell.Hyprland
 
 Item {
     id: root
-    width: 48
+    width: 50
     implicitHeight: titleText.width
     clip: true
 
@@ -51,7 +51,7 @@ Item {
             font.bold: true
             color: "#FFFFFF"
 
-            width: Math.min(titleText.implicitWidth, 200)
+            width: Math.min(titleText.implicitWidth, 180)
             clip: true
             elide: Text.ElideRight
 

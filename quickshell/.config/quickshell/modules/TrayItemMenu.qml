@@ -36,7 +36,7 @@ PopupWindow {
         id: popupContent
         width: menuColumn.implicitWidth >= 150 ? menuColumn.implicitWidth : 150
         height: menuColumn.implicitHeight + 10
-        color: "#A0000000"
+        color: "#B0000000"
         radius: 10
         border.color: "#AAA"
         border.width: 1
@@ -98,10 +98,21 @@ PopupWindow {
 
                         Item {
                             visible: !modelData.isSeparator
+                            anchors.fill: parent
                             RowLayout {
-                                anchors.topMargin: 3
                                 anchors.fill: parent
                                 anchors.leftMargin: 5
+
+                                Item {
+                                    width: 16
+                                    height: 16
+                                    visible: modelData.icon
+                                    Image {
+                                        source: modelData.icon
+                                        width: 16
+                                        height: 16
+                                    }
+                                }
 
                                 Text {
                                     text: modelData.text
