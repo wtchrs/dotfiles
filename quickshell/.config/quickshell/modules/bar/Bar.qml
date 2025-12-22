@@ -34,25 +34,18 @@ PanelWindow {
 
             // TOP
 
-            ColumnLayout {
-                Layout.alignment: Qt.AlignHCenter
+            Workspaces {
                 Layout.topMargin: 30
-                spacing: 20
-
-                Workspaces {}
-
-                SpecialWorkspaces {}
-
-                ActiveWindowDisplay {
-                    Layout.topMargin: 30
-                    Layout.alignment: Qt.AlignCenter
-                }
             }
 
-            // SPACER
+            SpecialWorkspaces {
+                Layout.topMargin: 20
+            }
 
-            Item {
+            ActiveWindowDisplay {
                 Layout.fillHeight: true
+                Layout.topMargin: 50
+                Layout.bottomMargin: 50
             }
 
             // BOTTOM

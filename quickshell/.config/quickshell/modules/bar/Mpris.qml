@@ -4,8 +4,8 @@ import Quickshell.Services.Mpris
 
 Item {
     id: root
-    width: 50
-    height: container.implicitHeight
+    implicitWidth: 50
+    implicitHeight: container.implicitHeight
 
     visible: player !== null && player.trackTitle
 

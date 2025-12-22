@@ -5,7 +5,7 @@ import Quickshell.Services.SystemTray
 
 Item {
     id: root
-    width: 50
+    implicitWidth: 50
     implicitHeight: container.implicitHeight
 
     required property var barWindow

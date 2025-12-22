@@ -10,8 +10,8 @@ Item {
     property string device: "intel_backlight"
     property int brightness: 0
 
-    width: 50
-    height: container.implicitHeight
+    implicitWidth: 50
+    implicitHeight: container.implicitHeight
 
     // --- Logic ---
 

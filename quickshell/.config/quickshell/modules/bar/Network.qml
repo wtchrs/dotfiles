@@ -11,8 +11,8 @@ Item {
     property string interfaceName: ""
     property int signalStrength: 0 // 0-100
 
-    width: container.implicitWidth
-    height: container.implicitHeight
+    implicitWidth: container.implicitWidth
+    implicitHeight: container.implicitHeight
 
     // --- nmcli Data Source (Polling) ---
     Process {

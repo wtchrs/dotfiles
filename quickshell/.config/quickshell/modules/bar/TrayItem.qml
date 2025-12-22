@@ -5,8 +5,8 @@ import Quickshell.Services.SystemTray
 
 Rectangle {
     id: root
-    width: 50
-    height: icon.height
+    implicitWidth: 50
+    implicitHeight: icon.height
     color: "transparent"
 
     property SystemTrayItem systemTray: null

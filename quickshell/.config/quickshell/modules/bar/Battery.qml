@@ -22,8 +22,8 @@ Item {
 
     readonly property double percentage: battery.percentage * 100
 
-    width: 50
-    height: container.implicitHeight
+    implicitWidth: 50
+    implicitHeight: container.implicitHeight
 
     // --- Helpers ---
 

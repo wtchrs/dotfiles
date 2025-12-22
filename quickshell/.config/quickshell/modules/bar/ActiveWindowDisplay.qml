@@ -3,8 +3,8 @@ import Quickshell.Hyprland
 
 Item {
     id: root
-    width: 50
-    implicitHeight: titleText.width
+    implicitWidth: 50
+    implicitHeight: 10
     clip: true
 
     readonly property bool isWindowOnCurrentWorkspace: Hyprland.activeToplevel
@@ -20,7 +20,7 @@ Item {
             State {
                 name: "empty"
                 when: !root.isWindowOnCurrentWorkspace || Hyprland.activeToplevel.title === ""
-                PropertyChanges { target: titleWrapper; x: -titleWrapper.implicitHeight }
+                PropertyChanges { target: titleWrapper; x: -titleWrapper.width }
             },
             State {
                 name: "visible"
@@ -51,7 +51,7 @@ Item {
             font.bold: true
             color: "#FFFFFF"
 
-            width: Math.min(titleText.implicitWidth, 180)
+            width: root.height
             clip: true
             elide: Text.ElideRight
 

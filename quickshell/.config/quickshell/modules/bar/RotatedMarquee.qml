@@ -14,8 +14,8 @@ Item {
 
     Item {
         id: textContainer
-        width: parent.width
-        height: marquee.running ? info1.implicitWidth * 2 + textSpace : info1.implicitHeight
+        implicitWidth: parent.width
+        implicitHeight: marquee.running ? info1.implicitWidth * 2 + textSpace : info1.implicitHeight
 
         property bool shouldMarquee: info1.implicitWidth > root.height
         property int textSpace: 30
