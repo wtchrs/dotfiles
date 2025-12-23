@@ -75,20 +75,30 @@ Item {
         Repeater {
             model: root.specialWs
 
-            delegate: Text {
+            delegate: Item {
                 Layout.fillWidth: true
-                horizontalAlignment: Text.AlignHCenter
+                implicitHeight: text.implicitHeight
 
-                readonly property int wsId: modelData.id
-                readonly property string wsName: modelData.name.replace("special:", "")
+                readonly property var ws: modelData
+                readonly property string wsName: ws.name.replace("special:", "")
+                readonly property bool isUrgent: ws ? ws.urgent : false
+                readonly property bool isFocused: wsName === root.activeSpecialWorkspace
 
-                text: root.iconMap[wsName] || root.iconMap["default"]
-
-                font: {
-                    pixelSize: 13
-                    family: "Symbols Nerd Font"
+                Rectangle {
+                    anchors.fill: parent
+                    visible: isUrgent
+                    color: "#1b1e28"
                 }
-                color: wsName === root.activeSpecialWorkspace ? "#FFFFFF" : "#AAAAAA"
+
+                Text {
+                    id: text
+                    anchors.horizontalCenter: parent.horizontalCenter
+
+                    text: root.iconMap[wsName] || root.iconMap["default"]
+                    font.pixelSize: 13
+                    font.family: "Symbols Nerd Font"
+                    color: isFocused ? "#FFFFFF" : isUrgent ? "#a994b8" : "#AAAAAA"
+                }
 
                 MouseArea {
                     anchors.fill: parent

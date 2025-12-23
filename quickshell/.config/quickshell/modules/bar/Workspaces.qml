@@ -13,6 +13,14 @@ Item {
         return Array.from(Hyprland.workspaces.values).sort((a, b) => a.id - b.id);
     }
 
+    readonly property var workspaceMap: {
+        let map = {};
+        Hyprland.workspaces.values.forEach(ws => {
+            map[ws.id] = ws;
+        });
+        return map;
+    }
+
     readonly property var visibleWorkspaces: {
         let workspaces = new Set([1, 2, 3, 4, 5]);
         workspaces.add(focusedWorkspaceId);
@@ -41,14 +49,30 @@ Item {
         Repeater {
             model: root.visibleWorkspaces
 
-            delegate: Text {
+            delegate: Item {
                 Layout.fillWidth: true
-                horizontalAlignment: Text.AlignHCenter
+                implicitHeight: text.implicitHeight
+
                 readonly property int wsId: modelData
-                text: iconMap[wsId] || wsId.toString()
-                font.pixelSize: 13
-                font.family: "Sarasa mono K"
-                color: wsId === root.focusedWorkspaceId ? "#FFFFFF" : "#AAAAAA"
+                readonly property var ws: root.workspaceMap[wsId]
+                readonly property bool isUrgent: ws ? ws.urgent : false
+                readonly property bool isFocused: wsId === root.focusedWorkspaceId
+
+                Rectangle {
+                    anchors.fill: parent
+                    visible: isUrgent
+                    color: "#1b1e28"
+                }
+
+                Text {
+                    id: text
+                    anchors.horizontalCenter: parent.horizontalCenter
+
+                    text: iconMap[wsId] || wsId.toString()
+                    font.pixelSize: 13
+                    font.family: "Sarasa mono K"
+                    color: isFocused ? "#FFFFFF" : isUrgent ? "#a994b8" : "#AAAAAA"
+                }
 
                 MouseArea {
                     anchors.fill: parent
