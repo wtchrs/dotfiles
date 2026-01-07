@@ -6,7 +6,7 @@
 
 format = """
 [](nord10)\
-$os$username[@](bg:nord10 fg:nord0)$hostname$sudo\
+$os$hostname$sudo\
 [](bg:nord9 fg:nord10)\
 $directory\
 [](bg:nord8 fg:nord9)\
@@ -51,11 +51,16 @@ symbol = "󰘬 "
 style = "fg:nord0 bg:nord8"
 
 [git_status]
-format = "[$all_status$ahead_behind ]($style)"
+format = "[$all_status$ahead_behind]($style)"
 style = "fg:nord0 bg:nord8"
 
 # LANGUAGES
 # =========
+
+[bun]
+symbol = " "
+format = "[$symbol]($style)"
+style = "fg:nord0 bg:nord7"
 
 [c]
 symbol = " "
@@ -198,7 +203,7 @@ style = "fg:nord0 bg:nord7"
 [hostname]
 ssh_only = false
 style = "fg:nord0 bg:nord10"
-format = "[$ssh_symbol$hostname ]($style)"
+format = "[$ssh_symbol]($style)"
 ssh_symbol = " "
 
 [os]
@@ -253,11 +258,6 @@ Unknown = " "
 Void = " "
 Windows = "󰍲 "
 
-[username]
-show_always = true
-format = '[$user]($style)'
-style_user = "fg:nord0 bg:nord10"
-
 [directory]
 style = "fg:nord0 bg:nord9"
 read_only = " "
@@ -275,6 +275,6 @@ format = "[ 󰔚 $duration ]($style)"
 style = "fg:nord0 bg:nord4"
 
 [character]
-success_symbol = "[ •](bold green)"
-error_symbol = "[ •](bold red)"
-vimcmd_symbol = "[  •](bold green)"
+success_symbol = "[ •](green)"
+error_symbol = "[ •](red)"
+vimcmd_symbol = "[  •](green)"
