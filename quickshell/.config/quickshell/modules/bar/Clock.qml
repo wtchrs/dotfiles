@@ -23,7 +23,7 @@ Item {
 
     function reload() {
         const now = new Date()
-        dateText.text = Qt.formatDate(now, "dd-MM")
+        dateText.text = Qt.formatDate(now, "MMM dd")
         yearText.text = Qt.formatDate(now, "yyyy")
         const timeFormat = now.getSeconds() % 2 == 0 ? "HH mm" : "HH:mm"
         timeText.text = Qt.formatTime(now, timeFormat);

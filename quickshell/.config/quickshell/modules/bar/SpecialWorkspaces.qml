@@ -14,7 +14,7 @@ Item {
 
     readonly property var iconMap: ({
         "chat": "",
-        "music": "󰎇",
+        "music": "",
         "default": ""
     })
 

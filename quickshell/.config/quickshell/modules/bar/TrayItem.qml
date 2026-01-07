@@ -17,14 +17,7 @@ Rectangle {
         anchors.centerIn: parent
         width: 16
         height: 16
-        source: {
-            let iconUrl = systemTray.icon
-            if (iconUrl.includes("?path=")) {
-                const [name, path] = systemTray.icon.split("?path=")
-                iconUrl = Qt.resolvedUrl(path + "/" + name.slice(name.lastIndexOf("/") + 1))
-            }
-            return iconUrl
-        }
+        source: systemTray.icon
     }
 
     MouseArea {
