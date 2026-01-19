@@ -144,8 +144,8 @@ layout {
 }
 
 spawn-at-startup "qs"
-// spawn-at-startup "hyprpaper"
 spawn-at-startup "dunst"
+spawn-at-startup "systemctl" "--user" "start" "hyprpolkitagent"
 
 spawn-at-startup "vesktop"
 spawn-at-startup "spotify"
@@ -217,7 +217,8 @@ binds {
 
     // Suggested binds for running programs: terminal, app launcher, screen locker.
     Mod+Return hotkey-overlay-title="Open a Terminal: ghostty" { spawn "ghostty"; }
-    Mod+Space hotkey-overlay-title="Run an Application: rofi" { spawn "rofi" "-show" "drun"; }
+    // Mod+Space hotkey-overlay-title="Run an Application: rofi" { spawn "rofi" "-show" "drun"; }
+    Mod+Space hotkey-overlay-title="Run an Application: quickshell app launcher" { spawn "qs" "ipc" "call" "appLauncher" "toggle"; }
     Super+Alt+L hotkey-overlay-title="Lock the Screen: swaylock" { spawn "swaylock"; }
 
     // You can also use a shell. Do this if you need pipes, multiple commands, etc.
@@ -426,8 +427,8 @@ binds {
     Mod+Shift+Equal { set-window-height "+10%"; }
 
     // Move the focused window between the floating and the tiling layout.
-    Mod+V       { toggle-window-floating; }
-    Mod+Shift+V { switch-focus-between-floating-and-tiling; }
+    Mod+V       hotkey-overlay-title="Toggle floating" { toggle-window-floating; }
+    Mod+Shift+V hotkey-overlay-title="Switch focus between floating and tiling" { switch-focus-between-floating-and-tiling; }
 
     // Toggle tabbed column display mode.
     // Windows in this column will appear as vertical tabs,
