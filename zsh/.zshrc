@@ -1,26 +1,5 @@
 #########################
-# Colors
-#########################
-
-RED=$(tput setaf 1)
-GREEN=$(tput setaf 2)
-YELLOW=$(tput setaf 3)
-BOLD=$(tput bold)
-RESET=$(tput sgr0)
-
-#########################
-# PATH
-#########################
-
-typeset -U path
-path=("$HOME/.local/bin" $path)
-
-# pnpm
-export PNPM_HOME="${HOME}/.local/share/pnpm"
-[[ -d $PNPM_HOME ]] && path+=("$PNPM_HOME")
-
-#########################
-# Shell Options & Editor
+# Shell Options
 #########################
 
 # Emacs keybindings
@@ -39,12 +18,22 @@ setopt appendhistory
 setopt sharehistory
 setopt incappendhistory
 
+typeset -U path
+path=("$HOME/.local/bin" $path)
+
 # Editor
 if (( $+commands[nvim] )); then
   export EDITOR=nvim
 else
   export EDITOR=vim
 fi
+
+# pnpm
+export PNPM_HOME="${HOME}/.local/share/pnpm"
+[[ -d $PNPM_HOME ]] && path+=("$PNPM_HOME")
+
+# broot
+[[ -f "$HOME/.config/broot/launcher/bash/br" ]] && source "$HOME/.config/broot/launcher/bash/br"
 
 #########################
 # Zinit
@@ -68,17 +57,9 @@ zinit light-mode for \
     zdharma-continuum/zinit-annex-patch-dl \
     zdharma-continuum/zinit-annex-rust
 
-# Plugins
+# OMZ Plugins
 zinit snippet OMZP::command-not-found
 zinit snippet OMZP::sudo
-
-zinit wait lucid for \
-  atinit"ZINIT[COMPINIT_OPTS]=-C; zicompinit; zicdreplay" \
-    zdharma-continuum/fast-syntax-highlighting \
-  blockf \
-    zsh-users/zsh-completions \
-  atload"!_zsh_autosuggest_start" \
-    zsh-users/zsh-autosuggestions
 
 #########################
 # Starship Prompt
@@ -104,7 +85,7 @@ autoload -Uz add-zsh-hook
 add-zsh-hook precmd set_starship_config_precmd
 
 #########################
-# fzf
+# fzf and completions
 #########################
 
 zinit ice from"gh-r" as"program" atload"source <(fzf --zsh)"
@@ -115,23 +96,38 @@ if (( $+commands[fd] )); then
   export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
   export FZF_ALT_C_COMMAND="fd --type=d --hidden --strip-cwd-prefix --exclude .git"
 
-  _fzf_compgen_path() {
-    fd --hidden --exclude .git . "$1"
-  }
-  
-  # Use fd to generate the list for directory completion
-  _fzf_compgen_dir() {
-    fd --type=d --hidden --exclude .git . "$1"
-  }
+  _fzf_compgen_path() { fd --hidden --exclude .git . "$1" }
+  _fzf_compgen_dir() { fd --type=d --hidden --exclude .git . "$1" }
 fi
+
+# Completions
+zinit ice blockf
+zinit light zsh-users/zsh-completions
+
+# Load no actual plugin, but execute only initialization
+zinit ice atinit"ZINIT[COMPINIT_OPTS]=-C; zicompinit; zicdreplay"
+zinit light zdharma-continuum/null
+
+# Load fzf-tab
+zinit ice wait"0" lucid
+zinit light Aloxaf/fzf-tab
+zstyle ':fzf-tab:*' fzf-command fzf
+zstyle ':fzf-tab:*' fzf-pad 4
+zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls --color=always $realpath'
+
+# Load visual-aid plugins
+zinit ice wait"0" lucid
+zinit light zdharma-continuum/fast-syntax-highlighting
+zinit ice wait"0" lucid atload"!_zsh_autosuggest_start"
+zinit light zsh-users/zsh-autosuggestions
 
 #########################
 # asdf
 #########################
 
-zinit ice as"command" from"gh-r"
+export ASDF_DATA_DIR="${ASDF_DATA_DIR:-$HOME/.asdf}"
+zinit ice as"command" from"gh-r" atload'path=("$ASDF_DATA_DIR/shims" $path)'
 zinit light asdf-vm/asdf
-export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
 
 #########################
 # Aliases
