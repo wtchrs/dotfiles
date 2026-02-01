@@ -3,7 +3,9 @@ set -euo pipefail
 
 DATA_HOME="${XDG_DATA_HOME:-$HOME/.local/share}"
 DATA_DIRS="${XDG_DATA_DIRS:-/usr/local/share:/usr/share}"
-IFS=':' read -ra DIRS <<<"$DATA_HOME:$DATA_DIRS"
+FLATPAK_USER="$HOME/.local/share/flatpak/exports/share"
+FLATPAK_SYSTEM="/var/lib/flatpak/exports/share"
+IFS=':' read -ra DIRS <<<"$DATA_HOME:$DATA_DIRS:$FLATPAK_USER:$FLATPAK_SYSTEM"
 
 DESKTOP_ENV="${XDG_CURRENT_DESKTOP:-}"
 
@@ -25,6 +27,7 @@ AWK_SCRIPT='
 BEGIN {
     in_entry = 0
     valid = 1
+    is_flatpak = 0
 }
 
 /^\[Desktop Entry\]/ {
@@ -51,19 +54,34 @@ BEGIN {
     for (i in a) if (a[i] == env) valid = 0
 }
 
+/^X-Flatpak=/ {
+    is_flatpak = 1
+    next
+}
+
+/^Exec=/ && exec == "" {
+    exec = substr($0,6)
+    if (exec ~ /(^|\/)flatpak[[:space:]]+run/)
+        is_flatpak = 1
+}
+
 /^TryExec=/ {
-    cmd = substr($0,9)
-    if (system("command -v \"" cmd "\" >/dev/null 2>&1") != 0)
-        valid = 0
+    if (is_flatpak)
+        next
+    split(substr($0,9), t, /[ \t]+/)
+    cmd = t[1]
+    if (cmd == "flatpak" || cmd ~ /\/flatpak$/) {
+        if (system("command -v flatpak >/dev/null 2>&1") != 0)
+            valid = 0
+    } else {
+        if (system("command -v \"" cmd "\" >/dev/null 2>&1") != 0)
+            valid = 0
+    }
 }
 
 /^Name(\[.*\])?=/ && name == "" {
     if ($0 ~ /^Name=/)
         name = substr($0,6)
-}
-
-/^Exec=/ && exec == "" {
-    exec = substr($0,6)
 }
 
 /^Icon=/ && icon == "" {
@@ -111,7 +129,7 @@ for base in "${DIRS[@]}"; do
         )
 
     done < <(
-        find "$appdir" -type f -name '*.desktop' 2>/dev/null
+        find "$appdir" \( -type f -o -type l \) -name '*.desktop' 2>/dev/null
     )
 done
 

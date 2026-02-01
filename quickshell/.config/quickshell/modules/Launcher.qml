@@ -348,6 +348,7 @@ PanelWindow {
 
     onVisibleChanged: {
         if (visible) {
+            loadAppsProc.running = true
             searchInput.forceActiveFocus();
         }
     }
