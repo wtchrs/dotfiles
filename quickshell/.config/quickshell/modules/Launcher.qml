@@ -160,6 +160,7 @@ PanelWindow {
 
         Quickshell.execDetached(argv);
         root.visible = false;
+        searchInput.text = "";
     }
 
     MouseArea {
