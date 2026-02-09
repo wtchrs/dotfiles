@@ -6,19 +6,13 @@ focused_node=$(echo "$layout" | jq -r '.. | select(.is_focused? == true)')
 focused_pid=$(echo "$focused_node" | jq -r '.pid')
 app_id=$(echo "$focused_node" | jq -r '.app_id')
 
-if [[ -z "$focused_pid" ]] || [[ "$focused_pid" == "null" ]]; then
-    ghostty &
-    notify-send "Error: No focused window found." "Terminal has been opened in home directory."
-    exit 1
-fi
-
-# If not Ghostty, just open a default Ghostty
-if [[ "$app_id" != *"ghostty"* ]]; then
+# If no focused window or not Ghostty, just open a default Ghostty
+if [[ -z "$focused_pid" ]] || [[ "$focused_pid" == "null" ]] || [[ "$app_id" != *"ghostty"* ]]; then
     ghostty &
     exit 0
 fi
 
-child_pid=$(pgrep -P "$focused_pid" --newest)
+child_pid=$(pgrep -P "$focused_pid" --oldest)
 target_pid=${child_pid:-$focused_pid}
 cwd=$(readlink "/proc/$target_pid/cwd")
 
