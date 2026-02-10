@@ -100,8 +100,10 @@ layout {
     gaps 10
 
     struts {
-        left 10
-        right 10
+        top 5
+        bottom 5
+        left 5
+        right 5
     }
 
     // "never", "always", "on-overflow"

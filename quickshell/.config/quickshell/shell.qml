@@ -5,8 +5,12 @@ import Quickshell
 import Quickshell.Io
 import "modules"
 import "modules/bar"
+import "modules/border"
 
 ShellRoot {
+    id: root
+    property color color: "#FF000000"
+
     Variants {
         model: Quickshell.screens
 
@@ -20,6 +24,12 @@ ShellRoot {
 
             Bar {
                 screen: modelData
+                barColor: root.color
+                lineColor: "#FF555555"
+            }
+
+            Border {
+                borderColor: root.color
             }
 
             Launcher {

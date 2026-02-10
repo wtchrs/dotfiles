@@ -12,18 +12,18 @@ PanelWindow {
         left: true
     }
 
-    implicitWidth: 60
+    property color barColor: "#FF000000"
 
-    color: "transparent"
+    implicitWidth: 50
+    color: barColor
 
     Rectangle {
         anchors {
             fill: parent
             topMargin: 10
             bottomMargin: 10
-            leftMargin: 10
         }
-        color: "#A0000000" // First two hex digits are the alpha channel.
+        color: "transparent"
 
         radius: 10
         antialiasing: true
