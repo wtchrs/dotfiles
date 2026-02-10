@@ -321,19 +321,62 @@ PanelWindow {
                             anchors.leftMargin: 15
                             spacing: 15
 
-                            // TODO: Icon placeholder
-                            Text {
-                                text: ""
-                                font.family: "Symbols Nerd Font"
-                                color: index === root.selectedIndex ? root.colors.select_fg : root.colors.main_fg
+                            Item {
+                                width: 24
+                                height: 24
+
+                                property string resolvedIcon: {
+                                    if (!modelData.icon || modelData.icon === "")
+                                        return ""
+                                    if (modelData.icon.startsWith("/"))
+                                        return modelData.icon
+                                    return Quickshell.iconPath(modelData.icon, 24)
+                                }
+
+                                Image {
+                                    anchors.fill: parent
+                                    source: parent.resolvedIcon
+                                    visible: source !== ""
+                                    fillMode: Image.PreserveAspectFit
+                                    smooth: true
+                                }
+
+                                Text {
+                                    anchors.centerIn: parent
+                                    text: ""
+                                    font.family: "Symbols Nerd Font"
+                                    visible: parent.resolvedIcon === ""
+                                    color: index === root.selectedIndex
+                                        ? root.colors.select_fg
+                                        : root.colors.main_fg
+                                }
                             }
 
-                            Text {
-                                text: modelData.name
-                                color: index === root.selectedIndex ? root.colors.select_fg : root.colors.main_fg
-                                font.family: "Sarasa Mono K Nerd Font"
-                                font.pixelSize: 14
+                            ColumnLayout {
                                 Layout.fillWidth: true
+                                spacing: 2
+
+                                Text {
+                                    text: modelData.name
+                                    color: index === root.selectedIndex
+                                        ? root.colors.select_fg
+                                        : root.colors.main_fg
+                                    font.family: "Sarasa Mono K Nerd Font"
+                                    font.pixelSize: 14
+                                    Layout.fillWidth: true
+                                }
+
+                                Text {
+                                    text: modelData.description
+                                    color: index === root.selectedIndex
+                                        ? Qt.darker(root.colors.select_fg, 1.2)
+                                        : Qt.darker(root.colors.main_fg, 1.3)
+                                    font.family: "Sarasa Mono K Nerd Font"
+                                    font.pixelSize: 11
+                                    Layout.fillWidth: true
+                                    elide: Text.ElideRight
+                                    visible: modelData.description !== ""
+                                }
                             }
                         }
 
