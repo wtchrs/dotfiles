@@ -5,11 +5,6 @@ import Quickshell
 PanelWindow {
     id: root
 
-    mask: Region {
-        item: mouseMask
-        intersection: Intersection.Xor
-    }
-
     anchors {
         top: true
         bottom: true
@@ -17,13 +12,14 @@ PanelWindow {
         right: true
     }
 
+    property BorderConfig config: BorderConfig {}
+
     color: "transparent"
 
-    property int borderThickness: 3
-    property int borderRadius: 15
-    property color borderColor: "#FF000000"
-    property int lineWidth: 2
-    property color lineColor: "#FF555555"
+    mask: Region {
+        item: mouseMask
+        intersection: Intersection.Xor
+    }
 
     Item {
         id: borderRoot
@@ -43,24 +39,14 @@ PanelWindow {
         BorderShape {
             id: borderShape
             anchors.fill: parent
-
-            radius: borderRadius
-            thickness: borderThickness
-            color: borderColor
-            innerLineWidth: lineWidth
-            innerLineColor: lineColor
+            config: root.config
         }
 
         MouseMask {
             id: mouseMask
             anchors.fill: parent
             visible: false
-
-            radius: borderRadius
-            thickness: borderThickness
-            color: borderColor
-            innerLineWidth: lineWidth
-            innerLineColor: lineColor
+            config: root.config
         }
     }
 }

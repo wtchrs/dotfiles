@@ -5,7 +5,8 @@ import Quickshell
 import Quickshell.Io
 import "modules"
 import "modules/bar"
-import "modules/border"
+import "modules/screenborder"
+import "modules/launcher"
 
 ShellRoot {
     id: root
@@ -25,16 +26,15 @@ ShellRoot {
             Bar {
                 screen: modelData
                 barColor: root.color
-                lineColor: "#FF555555"
             }
 
-            Border {
-                borderColor: root.color
+            ScreenBorder {
+                config.borderColor: root.color
+                config.lineColor: "#FF555555"
             }
 
             Launcher {
                 id: appLauncher
-                visible: false
             }
 
             IpcHandler {
