@@ -100,19 +100,19 @@ layout {
     gaps 10
 
     struts {
-        top 5
-        bottom 5
-        left 55
-        right 5
+        top 10
+        bottom 10
+        left 10
+        right 10
     }
 
     // "never", "always", "on-overflow"
-    center-focused-column "never"
+    center-focused-column "always"
 
     preset-column-widths {
         proportion 0.33333
         proportion 0.5
-        proportion 0.66667
+        proportion 0.75
         proportion 1.0
     }
 

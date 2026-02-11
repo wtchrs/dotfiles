@@ -16,12 +16,14 @@ PanelWindow {
     property BorderConfig config: BorderConfig {}
 
     color: "transparent"
+    exclusionMode: ExclusionMode.Ignore
 
     mask: Region {
         width: root.width
         height: root.height
         Region {
-            readonly property int t: root.config.borderThickness + root.config.lineWidth
+            readonly property int l: root.config.lineWidth
+            readonly property int t: root.config.borderThickness + l
             x: t + root.config.barWidth
             y: t
             width: root.width - t - root.config.barWidth
@@ -35,6 +37,10 @@ PanelWindow {
         z: 10
     }
 
+    BarPlaceholder {
+        barWidth: root.config.barWidth
+    }
+
     Item {
         id: borderRoot
         anchors.fill: parent
@@ -46,8 +52,8 @@ PanelWindow {
             shadowEnabled: true
             shadowBlur: 0.8
             shadowColor: "#90000000"
-            shadowVerticalOffset: 3
-            shadowHorizontalOffset: 3
+            shadowVerticalOffset: 2
+            shadowHorizontalOffset: 2
         }
 
         BorderShape {

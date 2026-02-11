@@ -3,8 +3,8 @@ import QtQuick
 QtObject {
     property int barWidth: 50
 
-    property int borderThickness: 3
-    property int borderRadius: 15
+    property int borderThickness: 5
+    property int borderRadius: 20
     property color borderColor: "#FF000000"
 
     // inner outline
