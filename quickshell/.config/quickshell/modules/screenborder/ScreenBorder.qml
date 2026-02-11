@@ -17,8 +17,16 @@ PanelWindow {
     color: "transparent"
 
     mask: Region {
-        item: mouseMask
-        intersection: Intersection.Xor
+        width: root.width
+        height: root.height
+        Region {
+            readonly property int t: root.config.borderThickness + root.config.lineWidth
+            x: t
+            y: t
+            width: root.width - t
+            height: root.height - t * 2
+            intersection: Intersection.Subtract
+        }
     }
 
     Item {
@@ -39,13 +47,6 @@ PanelWindow {
         BorderShape {
             id: borderShape
             anchors.fill: parent
-            config: root.config
-        }
-
-        MouseMask {
-            id: mouseMask
-            anchors.fill: parent
-            visible: false
             config: root.config
         }
     }
