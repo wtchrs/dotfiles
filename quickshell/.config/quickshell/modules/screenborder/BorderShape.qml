@@ -4,6 +4,7 @@ import QtQuick.Shapes
 Shape {
     id: root
     anchors.fill: parent
+    preferredRendererType: Shape.CurveRenderer
 
     required property BorderConfig config
 
