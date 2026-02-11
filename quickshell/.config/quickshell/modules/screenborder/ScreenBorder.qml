@@ -1,6 +1,7 @@
 import QtQuick
 import QtQuick.Effects
 import Quickshell
+import "../bar"
 
 PanelWindow {
     id: root
@@ -21,12 +22,17 @@ PanelWindow {
         height: root.height
         Region {
             readonly property int t: root.config.borderThickness + root.config.lineWidth
-            x: t
+            x: t + root.config.barWidth
             y: t
-            width: root.width - t
+            width: root.width - t - root.config.barWidth
             height: root.height - t * 2
             intersection: Intersection.Subtract
         }
+    }
+
+    Bar {
+        barWidth: root.config.barWidth
+        z: 10
     }
 
     Item {

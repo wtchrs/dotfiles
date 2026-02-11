@@ -1,6 +1,8 @@
 import QtQuick
 
 QtObject {
+    property int barWidth: 50
+
     property int borderThickness: 3
     property int borderRadius: 15
     property color borderColor: "#FF000000"

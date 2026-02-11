@@ -3,19 +3,19 @@ import QtQuick.Layouts
 import Quickshell
 import Quickshell.Wayland
 
-PanelWindow {
+Rectangle {
     id: root
 
     anchors {
-        top: true
-        bottom: true
-        left: true
+        top: parent.top
+        bottom: parent.bottom
+        left: parent.left
     }
 
-    property color barColor: "#FF000000"
+    property int barWidth: 50
 
-    implicitWidth: 50
-    color: barColor
+    implicitWidth: barWidth
+    color: "transparent"
 
     Rectangle {
         anchors {

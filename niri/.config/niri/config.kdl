@@ -102,7 +102,7 @@ layout {
     struts {
         top 5
         bottom 5
-        left 5
+        left 55
         right 5
     }
 

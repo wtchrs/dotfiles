@@ -8,6 +8,11 @@ Shape {
 
     required property BorderConfig config
 
+    readonly property int barw: root.config.barWidth
+    readonly property int bt: root.config.borderThickness
+    readonly property int br: root.config.borderRadius
+    readonly property int lw: root.config.lineWidth
+
     ShapePath {
         fillColor: root.config.borderColor
         fillRule: ShapePath.OddEvenFill
@@ -20,25 +25,25 @@ Shape {
         }
 
         PathRectangle {
-            x: root.config.borderThickness
-            y: root.config.borderThickness
-            width: root.width - root.config.borderThickness * 2
-            height: root.height - root.config.borderThickness * 2
-            radius: root.config.borderRadius
+            x: barw + bt
+            y: bt
+            width: root.width - barw - bt * 2
+            height: root.height - bt * 2
+            radius: br
         }
     }
 
     ShapePath {
         strokeColor: root.config.lineColor
-        strokeWidth: root.config.lineWidth
+        strokeWidth: lw
         fillColor: "transparent"
 
         PathRectangle {
-            x: root.config.borderThickness + root.config.lineWidth / 2
-            y: root.config.borderThickness + root.config.lineWidth / 2
-            width: root.width - root.config.borderThickness * 2 - root.config.lineWidth / 2
-            height: root.height - root.config.borderThickness * 2 - root.config.lineWidth / 2
-            radius: root.config.borderRadius
+            x: barw + bt + lw / 2
+            y: bt + lw / 2
+            width: root.width - barw - bt * 2 - lw / 2
+            height: root.height - bt * 2 - lw / 2
+            radius: br
         }
     }
 }

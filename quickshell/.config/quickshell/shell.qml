@@ -23,11 +23,6 @@ ShellRoot {
                 screen: modelData
             }
 
-            Bar {
-                screen: modelData
-                barColor: root.color
-            }
-
             ScreenBorder {
                 config.borderColor: root.color
                 config.lineColor: "#FF555555"
