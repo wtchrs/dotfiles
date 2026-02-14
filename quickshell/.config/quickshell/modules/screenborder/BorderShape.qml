@@ -1,22 +1,21 @@
 import QtQuick
 import QtQuick.Shapes
+import qs.configs
 
 Shape {
     id: root
     anchors.fill: parent
     preferredRendererType: Shape.CurveRenderer
 
-    required property BorderConfig config
-
-    readonly property int barw: root.config.barWidth
-    readonly property int bt: root.config.borderThickness
-    readonly property int br: root.config.borderRadius
-    readonly property int lw: root.config.lineWidth
+    readonly property int barw: Config.bar.width
+    readonly property int bt: Config.border.thickness
+    readonly property int br: Config.border.radius
+    readonly property int lw: Config.border.lineWidth
 
     ShapePath {
-        fillColor: root.config.borderColor
+        fillColor: Config.theme.bg
         fillRule: ShapePath.OddEvenFill
-        strokeColor: root.config.borderColor
+        strokeColor: Config.theme.bg
 
         PathRectangle {
             x: 0; y: 0
@@ -34,7 +33,7 @@ Shape {
     }
 
     ShapePath {
-        strokeColor: root.config.lineColor
+        strokeColor: Config.theme.br
         strokeWidth: lw
         fillColor: "transparent"
 

@@ -1,11 +1,11 @@
 import QtQuick
 import QtQuick.Layouts
 import Quickshell
+import qs.configs
 
 ListView {
     id: root
 
-    required property LauncherConfig config
     required property var appModel // Injecting filtered model from outside
 
     signal itemClicked(string exec)
@@ -24,9 +24,9 @@ ListView {
     delegate: Rectangle {
         id: delegateItem
         width: root.width
-        height: root.config.itemHeight
+        height: Config.launcher.itemHeight
         radius: 8
-        color: ListView.isCurrentItem ? root.config.selectBg : "transparent"
+        color: ListView.isCurrentItem ? Config.launcher.selectBg : "transparent"
 
         // Mouse click handling
         MouseArea {
@@ -65,9 +65,9 @@ ListView {
                 Text {
                     anchors.centerIn: parent
                     text: ""
-                    font.family: root.config.iconFont
+                    font.family: Config.font.icon
                     visible: parent.resolvedIcon === ""
-                    color: ListView.isCurrentItem ? root.config.selectFg : root.config.mainFg
+                    color: ListView.isCurrentItem ? Config.launcher.selectFg : Config.launcher.mainFg
                 }
             }
 
@@ -79,23 +79,23 @@ ListView {
                 Text {
                     text: modelData.name
                     Layout.fillWidth: true
-                    font.family: root.config.textFont
+                    font.family: Config.font.text
                     font.pixelSize: 14
                     color: ListView.isCurrentItem
-                        ? root.config.selectFg
-                        : root.config.mainFg
+                        ? Config.launcher.selectFg
+                        : Config.launcher.mainFg
                 }
 
                 Text {
                     text: modelData.description || ""
                     Layout.fillWidth: true
-                    font.family: root.config.textFont
+                    font.family: Config.font.text
                     font.pixelSize: 11
                     elide: Text.ElideRight
                     visible: text !== ""
                     color: ListView.isCurrentItem
-                        ? Qt.darker(root.config.selectFg, 1.2)
-                        : Qt.darker(root.config.mainFg, 1.3)
+                        ? Qt.darker(Config.launcher.selectFg, 1.2)
+                        : Qt.darker(Config.launcher.mainFg, 1.3)
                 }
             }
         }

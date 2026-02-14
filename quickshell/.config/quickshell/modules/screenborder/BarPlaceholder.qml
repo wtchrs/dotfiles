@@ -1,11 +1,11 @@
 import QtQuick
 import Quickshell
+import qs.configs
 
 PanelWindow {
     anchors { top: true; bottom: true; left: true }
 
-    required property int barWidth
-    exclusiveZone: barWidth
+    exclusiveZone: Config.bar.width
 
     color: "transparent"
     mask: Region {}

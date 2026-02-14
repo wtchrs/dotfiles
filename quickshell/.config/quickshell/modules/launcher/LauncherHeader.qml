@@ -2,11 +2,11 @@ import QtQuick
 import QtQuick.Layouts
 import QtQuick.Effects
 import Quickshell
+import qs.configs
 
 Item {
     id: root
 
-    required property LauncherConfig config
     property alias text: searchInput.text
 
     signal requestNext()
@@ -19,7 +19,7 @@ Item {
     }
 
     Layout.fillWidth: true
-    Layout.preferredHeight: config.headerHeight
+    Layout.preferredHeight: Config.launcher.headerHeight
     Layout.margins: 2
 
     // Background Image
@@ -48,8 +48,8 @@ Item {
 
         Rectangle {
             anchors.fill: parent
-            topLeftRadius: root.config.cornerRadius
-            topRightRadius: root.config.cornerRadius
+            topLeftRadius: Config.launcher.cornerRadius
+            topRightRadius: Config.launcher.cornerRadius
             color: "black"
         }
     }
@@ -63,8 +63,8 @@ Item {
             margins: 15
             bottomMargin: 20
         }
-        height: root.config.itemHeight
-        color: root.config.entryBg
+        height: Config.launcher.itemHeight
+        color: Config.launcher.entryBg
         radius: 10
 
         RowLayout {
@@ -74,16 +74,16 @@ Item {
 
             Text {
                 text: ""
-                color: root.config.entryFg
-                font.family: root.config.iconFont
+                color: Config.launcher.entryFg
+                font.family: Config.font.icon
                 font.pixelSize: 16
             }
 
             TextInput {
                 id: searchInput
                 Layout.fillWidth: true
-                color: root.config.entryFg
-                font.family: root.config.textFont
+                color: Config.launcher.entryFg
+                font.family: Config.font.text
                 font.pixelSize: 14
                 focus: true
                 verticalAlignment: TextInput.AlignVCenter

@@ -19,18 +19,9 @@ ShellRoot {
             id: screenScope
             required property ShellScreen modelData
 
-            Wallpaper {
-                screen: modelData
-            }
-
-            ScreenBorder {
-                config.borderColor: root.color
-                config.lineColor: "#FF555555"
-            }
-
-            Launcher {
-                id: appLauncher
-            }
+            Wallpaper { screen: modelData }
+            ScreenBorder { screen: modelData }
+            Launcher { id: appLauncher; screen: modelData }
 
             IpcHandler {
                 target: "appLauncher"

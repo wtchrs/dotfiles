@@ -2,17 +2,16 @@ import QtQuick
 import QtQuick.Layouts
 import Quickshell
 import Quickshell.Io
+import qs.configs
 
 PanelWindow {
     id: root
     anchors { top: true; bottom: true; left: true; right: true }
 
-    property LauncherConfig config: LauncherConfig {}
-
     focusable: true
     exclusionMode: ExclusionMode.Ignore
     aboveWindows: true
-    color: config.overlayDim
+    color: Config.launcher.overlayDim
     visible: false
 
     // --- State ---
@@ -146,10 +145,10 @@ PanelWindow {
             anchors.centerIn: parent
             
             // Use config
-            implicitWidth: root.config.windowWidth
-            implicitHeight: root.config.windowHeight
-            color: root.config.mainBg
-            radius: root.config.cornerRadius
+            implicitWidth: Config.launcher.windowWidth
+            implicitHeight: Config.launcher.windowHeight
+            color: Config.launcher.mainBg
+            radius: Config.launcher.cornerRadius
             clip: true
 
             MouseArea { anchors.fill: parent; onClicked: (mouse) => mouse.accepted = true }
@@ -158,7 +157,7 @@ PanelWindow {
             Rectangle {
                 anchors.fill: parent
                 color: "transparent"
-                border.color: root.config.mainBr
+                border.color: Config.launcher.mainBr
                 border.width: 2
                 radius: parent.radius
                 z: 100
@@ -170,8 +169,7 @@ PanelWindow {
 
                 LauncherHeader {
                     id: header
-                    config: root.config
-                    
+
                     // Reflect changes in the header to the root state
                     onTextChanged: {
                         root.query = text;
@@ -191,7 +189,6 @@ PanelWindow {
 
                 LauncherList {
                     id: listView
-                    config: root.config
                     appModel: root.filteredApps
                     onItemClicked: (exec) => root.launchApp(exec)
                 }
