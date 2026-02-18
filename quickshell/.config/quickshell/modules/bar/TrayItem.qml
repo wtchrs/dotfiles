@@ -2,10 +2,11 @@ import QtQuick
 import QtQuick.Layouts
 import Quickshell
 import Quickshell.Services.SystemTray
+import qs.configs
 
 Rectangle {
     id: root
-    implicitWidth: 50
+    implicitWidth: Config.bar.width
     implicitHeight: icon.height
     color: "transparent"
 

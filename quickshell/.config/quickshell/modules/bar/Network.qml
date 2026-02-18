@@ -2,6 +2,7 @@ import QtQuick
 import QtQuick.Layouts
 import Quickshell
 import Quickshell.Io
+import qs.configs
 
 Item {
     id: root
@@ -20,7 +21,7 @@ Item {
         command: ["nmcli", "-t", "-f", "DEVICE,TYPE,STATE,CONNECTION", "dev", "status"]
         stdout: StdioCollector {
             onStreamFinished: {
-                var lines = text.trim().split('\n');
+                const lines = text.trim().split('\n');
 
                 // Find a connected device.
                 const activeLine = lines.find(line => line.includes("connected"));
@@ -83,7 +84,7 @@ Item {
             case "wifi":
                 // signal strength icons
                 const icons = ["󰤯", "󰤟", "󰤢", "󰤥", "󰤨"];
-                var idx = Math.floor(root.signalStrength / 20);
+                const idx = Math.floor(root.signalStrength / 20);
                 return icons[Math.min(idx, 4)];
             case "ethernet":
                 return ""; // ethernet icon
@@ -103,12 +104,10 @@ Item {
         Text {
             id: icon
             text: getIcon()
-            color: "white"
+            color: Config.theme.fg
             Layout.alignment: Qt.AlignVCenter
-            font {
-                pixelSize: 16
-                family: "Symbols Nerd Font"
-            }
+            font.family: Config.font.icon
+            font.pixelSize: 16
         }
     }
 

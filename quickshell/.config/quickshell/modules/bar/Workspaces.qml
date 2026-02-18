@@ -1,10 +1,11 @@
 import QtQuick
 import QtQuick.Layouts
 import Quickshell.Hyprland
+import qs.configs
 
 Item {
     id: root
-    implicitWidth: 50
+    implicitWidth: container.implicitWidth
     implicitHeight: container.implicitHeight
 
     readonly property int focusedWorkspaceId: Hyprland.focusedWorkspace?.id || 0
@@ -43,7 +44,7 @@ Item {
 
     ColumnLayout {
         id: container
-        width: 50
+        width: Config.bar.width
         spacing: 2
 
         Repeater {
@@ -69,8 +70,8 @@ Item {
                     anchors.horizontalCenter: parent.horizontalCenter
 
                     text: iconMap[wsId] || wsId.toString()
+                    font.family: Config.font.text
                     font.pixelSize: 13
-                    font.family: "Sarasa mono K"
                     color: isFocused ? "#FFFFFF" : isUrgent ? "#a994b8" : "#AAAAAA"
                 }
 

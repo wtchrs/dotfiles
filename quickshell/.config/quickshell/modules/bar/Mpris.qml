@@ -1,10 +1,11 @@
 import QtQuick
 import QtQuick.Layouts
 import Quickshell.Services.Mpris
+import qs.configs
 
 Item {
     id: root
-    implicitWidth: 50
+    implicitWidth: Config.bar.width
     implicitHeight: container.implicitHeight
 
     visible: player !== null && player.trackTitle
@@ -29,7 +30,7 @@ Item {
 
         anchors.horizontalCenter: parent.horizontalCenter
 
-        RotatedText {
+        RotatedTextIcon {
             id: playerIcon
             text: root.player?.isPlaying ? "▶" : "⏸"
         }
@@ -37,7 +38,7 @@ Item {
         RotatedMarquee {
             id: marquee
             Layout.fillWidth: true
-            // Layout.fillHeight: true
+            // TODO: Add maxHeight custom property and replace height
             height: 150
             text: {
                 if (!root.player)
@@ -52,10 +53,10 @@ Item {
         }
     }
 
-    component RotatedText: Text {
-        color: "white"
+    component RotatedTextIcon: Text {
+        color: Config.theme.fg
+        font.family: Config.font.icon
         font.pixelSize: 13
-        font.family: "Sarasa Mono K Nerd Font"
 
         transform: [
             Rotation { angle: 90 },

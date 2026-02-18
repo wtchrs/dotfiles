@@ -2,6 +2,7 @@ import QtQuick
 import QtQuick.Layouts
 import Quickshell
 import Quickshell.Services.UPower
+import qs.configs
 
 Item {
     id: root
@@ -22,7 +23,7 @@ Item {
 
     readonly property double percentage: battery.percentage * 100
 
-    implicitWidth: 50
+    implicitWidth: Config.bar.width
     implicitHeight: container.implicitHeight
 
     // --- Helpers ---
@@ -40,6 +41,7 @@ Item {
     }
 
     function getColor() {
+        // Replace colors with global config
         if (root.isCharging) return "#a6da95"; // Green
         if (percentage <= root.criticalThreshold) return "#ed8796"; // Red
         if (percentage <= root.warningThreshold) return "#eed49f"; // Yellow
@@ -74,10 +76,8 @@ Item {
             id: icon
             text: getIcon()
             color: getColor()
-            font {
-                pixelSize: 14
-                family: "Symbols Nerd Font"
-            }
+            font.family: Config.font.icon
+            font.pixelSize: 14
         }
 
         // Info (Percentage or Time)
@@ -91,10 +91,8 @@ Item {
                 }
             }
             color: getColor()
-            font {
-                pixelSize: 14
-                family: "Sarasa Mono K"
-            }
+            font.family: Config.font.text
+            font.pixelSize: 14
         }
     }
 

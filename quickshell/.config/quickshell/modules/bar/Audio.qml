@@ -2,6 +2,7 @@ import QtQuick
 import QtQuick.Layouts
 import Quickshell
 import Quickshell.Io
+import qs.configs
 
 Item {
     id: root
@@ -9,7 +10,7 @@ Item {
     property real volume: 0.5
     property bool muted: false
 
-    implicitWidth: 50
+    implicitWidth: Config.bar.width
     implicitHeight: container.implicitHeight
 
     Process {
@@ -50,20 +51,16 @@ Item {
                 if (root.volume < 0.5) return "󰕿";
                 return "󰕾";
             }
-            color: "white"
-            font {
-                pixelSize: 18
-                family: "Symbols Nerd Font"
-            }
+            color: Config.theme.fg
+            font.family: Config.font.icon
+            font.pixelSize: 18
         }
 
         Text {
             text: root.muted ? "Muted" : `${Math.round(root.volume * 100)}%`
-            color: "white"
-            font {
-                pixelSize: 14
-                family: "Sarasa Mono K"
-            }
+            color: Config.theme.fg
+            font.family: Config.font.text
+            font.pixelSize: 14
         }
     }
 

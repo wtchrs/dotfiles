@@ -2,6 +2,7 @@ import QtQuick
 import QtQuick.Layouts
 import Quickshell
 import Quickshell.Wayland
+import qs.configs
 
 Rectangle {
     id: root
@@ -12,9 +13,7 @@ Rectangle {
         left: parent.left
     }
 
-    property int barWidth: 50
-
-    implicitWidth: barWidth
+    implicitWidth: Config.bar.width
     color: "transparent"
 
     Rectangle {

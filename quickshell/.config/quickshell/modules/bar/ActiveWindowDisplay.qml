@@ -1,9 +1,10 @@
 import QtQuick
 import Quickshell.Hyprland
+import qs.configs
 
 Item {
     id: root
-    implicitWidth: 50
+    implicitWidth: Config.bar.width
     implicitHeight: 10
     clip: true
 
@@ -47,9 +48,9 @@ Item {
             text: Hyprland.activeToplevel?.title || ""
 
             font.pixelSize: 14
-            font.family: "Sarasa Mono K Nerd Font"
+            font.family: Config.font.text
             font.bold: true
-            color: "#FFFFFF"
+            color: Config.theme.fg
 
             width: root.height
             clip: true

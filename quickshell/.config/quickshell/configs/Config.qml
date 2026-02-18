@@ -5,9 +5,10 @@ import Quickshell
 
 Singleton {
     property QtObject theme: QtObject {
-        property color bg: "#FF000000"
-        property color fg: "#FFFFFF"
-        property color br: "#FF555555"
+        property color bg: "#000000" // background
+        property color fg: "#FFFFFF" // foregroude
+        property color br: "#555555" // border
+        property color fgDim: "#A0A0A0" // inactive
     }
 
     property QtObject font: QtObject {

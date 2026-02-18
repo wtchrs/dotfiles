@@ -2,10 +2,11 @@ import QtQuick
 import QtQuick.Layouts
 import Quickshell.Hyprland
 import Quickshell.Io
+import qs.configs
 
 Item {
     id: root
-    implicitWidth: 50
+    implicitWidth: container.implicitWidth
     implicitHeight: container.implicitHeight
 
     property var activeSpecialWorkspace: null
@@ -69,7 +70,7 @@ Item {
 
     ColumnLayout {
         id: container
-        width: 50
+        width: Config.bar.width
         spacing: 6
 
         Repeater {
@@ -95,8 +96,8 @@ Item {
                     anchors.horizontalCenter: parent.horizontalCenter
 
                     text: root.iconMap[wsName] || root.iconMap["default"]
+                    font.family: Config.font.text
                     font.pixelSize: 13
-                    font.family: "Symbols Nerd Font"
                     color: isFocused ? "#FFFFFF" : isUrgent ? "#a994b8" : "#AAAAAA"
                 }
 

@@ -1,11 +1,12 @@
 import QtQuick
+import qs.configs
 
 Item {
     id: root
 
     property alias text: info1.text
-    property color color: "white"
-    property font font: Qt.font({ family: "Sarasa Mono K Nerd Font", pixelSize: 13 })
+    property color color: Config.theme.fg
+    property font font: Qt.font({ family: Config.font.text, pixelSize: 13 })
     property bool running: true
 
     clip: true

@@ -2,6 +2,7 @@ import QtQuick
 import QtQuick.Layouts
 import Quickshell
 import Quickshell.Io
+import qs.configs
 
 Item {
     id: root
@@ -10,7 +11,7 @@ Item {
     property string device: "intel_backlight"
     property int brightness: 0
 
-    implicitWidth: 50
+    implicitWidth: Config.bar.width
     implicitHeight: container.implicitHeight
 
     // --- Logic ---
@@ -67,20 +68,16 @@ Item {
         Text {
             id: icon
             text: getIcon()
-            color: "white"
-            font {
-                pixelSize: 14
-                family: "Symbols Nerd Font"
-            }
+            color: Config.theme.fg
+            font.family: Config.font.icon
+            font.pixelSize: 14
         }
 
         Text {
             text: root.brightness + "%"
-            color: "white"
-            font {
-                pixelSize: 14
-                family: "Sarasa Mono K"
-            }
+            color: Config.theme.fg
+            font.family: Config.font.text
+            font.pixelSize: 14
         }
     }
 

@@ -2,10 +2,11 @@ import QtQuick
 import QtQuick.Layouts
 import Quickshell
 import Quickshell.Services.SystemTray
+import qs.configs
 
 Item {
     id: root
-    implicitWidth: 50
+    implicitWidth: Config.bar.width
     implicitHeight: container.implicitHeight
 
     required property var barWindow

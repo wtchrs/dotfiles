@@ -2,6 +2,7 @@ import QtQuick
 import Quickshell
 import QtQuick.Controls
 import QtQuick.Layouts
+import qs.configs
 
 Item {
     id: root
@@ -31,7 +32,7 @@ Item {
 
     ColumnLayout {
         id: container
-        width: 50
+        width: Config.bar.width
         spacing: 0
 
         ClockText {
@@ -49,9 +50,9 @@ Item {
     }
 
     component ClockText: Text {
-        color: "white"
+        color: Config.theme.fg
+        font.family: Config.font.text
         font.pixelSize: 13
-        font.family: "Sarasa Mono K"
         Layout.alignment: Qt.AlignCenter
     }
 }
