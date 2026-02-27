@@ -3,10 +3,10 @@
 import QtQuick
 import Quickshell
 import Quickshell.Io
-import "modules"
 import "modules/bar"
-import "modules/screenborder"
 import "modules/launcher"
+import "modules/wallpaper"
+// import "modules/screenborder"
 
 ShellRoot {
     id: root
@@ -19,8 +19,10 @@ ShellRoot {
             id: screenScope
             required property ShellScreen modelData
 
+            Backdrop { screen: modelData }
             Wallpaper { screen: modelData }
-            ScreenBorder { screen: modelData }
+            BarStandalone { screen: modelData }
+            // ScreenBorder { screen: modelData }
             Launcher { id: appLauncher; screen: modelData }
 
             IpcHandler {

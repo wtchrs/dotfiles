@@ -45,7 +45,7 @@ Item {
         if (root.isCharging) return "#a6da95"; // Green
         if (percentage <= root.criticalThreshold) return "#ed8796"; // Red
         if (percentage <= root.warningThreshold) return "#eed49f"; // Yellow
-        return "white";
+        return Config.theme.fg;
     }
 
     function getFormattedTime() {

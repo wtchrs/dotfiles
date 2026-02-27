@@ -2,10 +2,13 @@ import QtQuick
 import QtQuick.Layouts
 import Quickshell
 import Quickshell.Services.SystemTray
+import Quickshell.Wayland
 import qs.configs
 
 PopupWindow {
     id: root
+
+    // WlrLayershell.namespace: "quickshell:blur"
 
     property Rectangle trayItem: null
     property MouseArea iconMouseArea: null
@@ -48,7 +51,7 @@ PopupWindow {
             color: Config.theme.bg
             radius: 10
             border.color: Config.theme.br
-            border.width: 1.5
+            border.width: 1
 
             states: [
                 State {

@@ -5,10 +5,11 @@ import Quickshell
 
 Singleton {
     property QtObject theme: QtObject {
-        property color bg: "#000000" // background
-        property color fg: "#FFFFFF" // foregroude
-        property color br: "#555555" // border
-        property color fgDim: "#A0A0A0" // inactive
+        property bool darkMode: true
+        property color bg: darkMode ? "#80202020" : "#55dddddd"
+        property color fg: darkMode ? "#FFFFFF" : "#333333"
+        property color br: darkMode ? "#33FFFFFF" : "#555555"
+        property color fgDim: darkMode ? "#A0A0A0" : "#A0A0A0"
     }
 
     property QtObject font: QtObject {
@@ -29,7 +30,7 @@ Singleton {
         property int radius: 20
 
         // Inner outline
-        property int lineWidth: 2
+        property int lineWidth: 1
     }
 
     property QtObject bar: QtObject {
@@ -55,6 +56,6 @@ Singleton {
         property color entryBg: "#BB3B4252"
         property color entryFg: "#ECEFF4"
 
-        property color overlayDim: "#44000000"
+        property color overlayDim: "#30000000"
     }
 }

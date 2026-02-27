@@ -97,6 +97,8 @@ output "eDP-1" {
 }
 
 layout {
+    background-color "transparent"
+
     gaps 10
 
     struts {
@@ -138,11 +140,19 @@ layout {
 
     shadow {
         on
-        softness 3
+        softness 5
         spread 1
         offset x=0 y=0
         color "#0007"
     }
+}
+
+// set global blur
+blur {
+    passes 4
+    offset 4.0
+    noise 0.02
+    saturation 1.7
 }
 
 spawn-at-startup "qs"
@@ -170,8 +180,28 @@ animations {
     slowdown 1.5
 }
 
+overview {
+    workspace-shadow {
+        // off
+    }
+}
+
+layer-rule {
+    match namespace="^quickshell:backdrop$"
+    place-within-backdrop true
+}
+
+layer-rule {
+    match namespace="^quickshell:blur$"
+
+    background-effect {
+        blur true
+        xray false
+    }
+}
+
 window-rule {
-    geometry-corner-radius 8
+    geometry-corner-radius 4
     clip-to-geometry true
     draw-border-with-background false
 }
@@ -183,6 +213,15 @@ window-rule {
     // - Flatpak Firefox (app-id is "org.mozilla.firefox")
     match app-id=r#"firefox$"# title="^Picture-in-Picture$"
     open-floating true
+}
+
+window-rule {
+    match app-id="com.mitchellh.ghostty"
+
+    background-effect {
+        blur true
+        xray false
+    }
 }
 
 // Example: block out two password managers from screen capture.
