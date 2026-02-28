@@ -5,40 +5,156 @@ import Quickshell.Services.SystemTray
 import Quickshell.Wayland
 import qs.configs
 
-PopupWindow {
+PanelWindow {
     id: root
 
-    // WlrLayershell.namespace: "quickshell:blur"
+    property string layershellNamespace: "quickshell:tray-menu"
+    WlrLayershell.namespace: layershellNamespace
 
-    property Rectangle trayItem: null
+    exclusionMode: ExclusionMode.Ignore
+    focusable: false
+    aboveWindows: true
+    color: "transparent"
+
+    anchors {
+        left: true
+        top: true
+    }
+
+    // ----- External bindings -----
+    property Item trayItem: null
     property MouseArea iconMouseArea: null
 
+    readonly property SystemTrayItem systemTray: trayItem ? trayItem.systemTray : null
+
+    // ----- state -----
     property bool active: true
 
-    readonly property bool containsMouse: iconMouseArea.containsMouse || popupMouseArea.containsMouse
+    readonly property bool containsMouse:
+        (iconMouseArea && iconMouseArea.containsMouse) || popupMouseArea.containsMouse
     readonly property bool isShown: containsMouse && active
+
     readonly property int borderMargin: Config.border.thickness + Config.border.lineWidth + 2
     readonly property int windowWidth: menuColumn.implicitWidth >= 150 ? menuColumn.implicitWidth : 150
 
+    // Set visible when opacity>0
     visible: popupContent.opacity > 0
-
-    onContainsMouseChanged: function() {
-        if (!containsMouse) {
-            active = true;
-        }
-    }
 
     implicitWidth: windowWidth + borderMargin
     implicitHeight: popupContent.implicitHeight
-    color: "transparent"
 
-    anchor {
-        window: barWindow
-        item: trayItem
-        edges: Edges.Right
-        gravity: Edges.Right
+    onContainsMouseChanged: function() {
+        if (!containsMouse) {
+            active = true
+        }
     }
 
+    function windowOriginInScreen(win) {
+        if (!win || !win.screen)
+            return Qt.point(0, 0)
+
+        const sc = win.screen
+
+        // If win is PanelWindow, it can be calculated acurately with anchors/margins.
+        if (("anchors" in win) && ("margins" in win) && ("width" in win) && ("height" in win)) {
+            const a = win.anchors
+            const m = win.margins
+            let x0 = 0
+            let y0 = 0
+
+            if (a.left) {
+                x0 = m.left
+            } else if (a.right) {
+                x0 = sc.width - win.width - m.right
+            }
+
+            if (a.top) {
+                y0 = m.top
+            } else if (a.bottom) {
+                y0 = sc.height - win.height - m.bottom
+            }
+
+            return Qt.point(x0, y0)
+        }
+
+        // fallback: if there is normal window x/y, convert it to screen-local.
+        if (("x" in win) && ("y" in win)) {
+            return Qt.point(win.x - sc.x, win.y - sc.y)
+        }
+
+        return Qt.point(0, 0)
+    }
+
+    function updatePosition() {
+        if (!trayItem || !trayItem.QsWindow || !trayItem.QsWindow.window)
+            return
+
+        const parentWin = trayItem.QsWindow.window
+        if (!parentWin || !parentWin.screen)
+            return
+
+        root.screen = parentWin.screen
+
+        const origin = windowOriginInScreen(parentWin)
+        const r = parentWin.itemRect(trayItem)
+
+        let rx = Math.floor(origin.x + r.x)
+        let ry = Math.floor(origin.y + r.y)
+        let rw = Math.max(1, Math.floor(r.width))
+        let rh = Math.max(1, Math.floor(r.height))
+
+        const anchorX = rx + rw - 1
+        const anchorY = ry + Math.floor((rh - 1) / 2)
+
+        const winW = Math.max(1, Math.floor(root.implicitWidth))
+        const winH = Math.max(1, Math.floor(root.implicitHeight))
+
+        let x = anchorX
+        let y = anchorY - Math.floor(winH / 2) + 1
+
+        const sc = root.screen
+        if (sc) {
+            x = Math.max(0, Math.min(x, sc.width - winW))
+            y = Math.max(0, Math.min(y, sc.height - winH))
+        }
+
+        root.margins.left = x
+        root.margins.top = y
+    }
+
+    onIsShownChanged: {
+        if (isShown)
+            updatePosition()
+    }
+
+    // Update position when menu size changes so that center alignment is maintained.
+    onImplicitWidthChanged: {
+        if (isShown || visible)
+            updatePosition()
+    }
+    onImplicitHeightChanged: {
+        if (isShown || visible)
+            updatePosition()
+    }
+
+    // Attempt to follow changes of TrayItem's geometry/parent window transform.
+    Connections {
+        target: trayItem
+        function onXChanged() { if (root.isShown || root.visible) root.updatePosition() }
+        function onYChanged() { if (root.isShown || root.visible) root.updatePosition() }
+        function onWidthChanged() { if (root.isShown || root.visible) root.updatePosition() }
+        function onHeightChanged() { if (root.isShown || root.visible) root.updatePosition() }
+    }
+
+    Connections {
+        target: trayItem && trayItem.QsWindow ? trayItem.QsWindow.window : null
+        function onWindowTransformChanged() {
+            if (root.isShown || root.visible)
+                root.updatePosition()
+        }
+    }
+
+    // ----- Content / interaction -----
     MouseArea {
         id: popupMouseArea
         anchors.fill: parent
@@ -77,7 +193,6 @@ PopupWindow {
                 }
             ]
 
-
             Column {
                 id: menuColumn
                 anchors.fill: parent
@@ -86,7 +201,7 @@ PopupWindow {
 
                 QsMenuOpener {
                     id: menuOpener
-                    menu: systemTray.menu
+                    menu: root.systemTray ? root.systemTray.menu : null
                 }
 
                 Repeater {

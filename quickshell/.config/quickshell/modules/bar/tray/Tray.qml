@@ -3,6 +3,7 @@ import QtQuick.Layouts
 import Quickshell
 import Quickshell.Services.SystemTray
 import qs.configs
+import ".."
 
 Item {
     id: root

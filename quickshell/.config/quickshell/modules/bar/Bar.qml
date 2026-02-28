@@ -4,6 +4,7 @@ import Quickshell
 import Quickshell.Wayland
 import qs.configs
 import qs.modules.bar.media
+import qs.modules.bar.tray
 
 Rectangle {
     id: root
