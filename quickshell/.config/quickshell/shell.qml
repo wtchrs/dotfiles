@@ -6,7 +6,6 @@ import Quickshell.Io
 import "modules/bar"
 import "modules/launcher"
 import "modules/wallpaper"
-// import "modules/screenborder"
 
 ShellRoot {
     id: root
@@ -22,7 +21,6 @@ ShellRoot {
             Backdrop { screen: modelData }
             Wallpaper { screen: modelData }
             BarStandalone { screen: modelData }
-            // ScreenBorder { screen: modelData }
             Launcher { id: appLauncher; screen: modelData }
 
             IpcHandler {
