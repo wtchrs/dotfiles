@@ -1,6 +1,7 @@
 import QtQuick
-import Quickshell.Hyprland
+import Quickshell
 import qs.configs
+import qs.niri
 
 Item {
     id: root
@@ -8,9 +9,65 @@ Item {
     implicitHeight: 10
     clip: true
 
-    readonly property bool isWindowOnCurrentWorkspace: Hyprland.activeToplevel
-        && Hyprland.focusedWorkspace
-        && Hyprland.activeToplevel.workspace.id === Hyprland.focusedWorkspace.id
+    property var niri: NiriEventStream
+
+    readonly property string outputName: root.QsWindow?.window?.screen?.name || ""
+
+    readonly property var activeWorkspace: {
+        const wsAll = (root.niri && Array.isArray(root.niri.workspaces)) ? root.niri.workspaces : []
+        if (!root.outputName)
+            return null
+        return wsAll.find(ws => ws && String(ws.output || "") === root.outputName && !!ws.is_active) || null
+    }
+
+    readonly property var activeWindowId: {
+        const ws = root.activeWorkspace
+        if (!ws) return null
+        return ("active_window_id" in ws) ? ws.active_window_id : null
+    }
+
+    readonly property string resolvedTitle: {
+        const id = root.activeWindowId
+        if (id === null || id === undefined)
+            return ""
+
+        const wins = (root.niri && Array.isArray(root.niri.windows)) ? root.niri.windows : []
+        const w = wins.find(x => x && x.id === id) || null
+        const t = (w && w.title !== null && w.title !== undefined) ? String(w.title) : ""
+        return t
+    }
+
+    // Flicker guard: keep the previous title briefly if the id updates before the windows list.
+    property string stableTitle: ""
+
+    Timer {
+        id: clearDelay
+        interval: 180
+        repeat: false
+        onTriggered: {
+            // Still unresolved: clear it.
+            if (root.resolvedTitle === "")
+                root.stableTitle = ""
+        }
+    }
+
+    onResolvedTitleChanged: {
+        if (root.resolvedTitle !== "") {
+            root.stableTitle = root.resolvedTitle
+            clearDelay.stop()
+        } else {
+            // No active window: clear immediately.
+            if (root.activeWindowId === null || root.activeWindowId === undefined || !root.activeWorkspace) {
+                root.stableTitle = ""
+                clearDelay.stop()
+            } else {
+                // Possible event reordering: delay clearing slightly.
+                clearDelay.restart()
+            }
+        }
+    }
+
+    readonly property bool shouldShowTitle: root.stableTitle !== ""
 
     Item {
         id: titleWrapper
@@ -20,12 +77,12 @@ Item {
         states: [
             State {
                 name: "empty"
-                when: !root.isWindowOnCurrentWorkspace || Hyprland.activeToplevel.title === ""
+                when: !root.shouldShowTitle
                 PropertyChanges { target: titleWrapper; x: -titleWrapper.width }
             },
             State {
                 name: "visible"
-                when: root.isWindowOnCurrentWorkspace && Hyprland.activeToplevel.title !== ""
+                when: root.shouldShowTitle
                 PropertyChanges { target: titleWrapper; x: 0 }
             }
         ]
@@ -35,8 +92,8 @@ Item {
                 from: "*"; to: "*"
                 SequentialAnimation {
                     NumberAnimation {
-                        properties: "x";
-                        duration: 200;
+                        properties: "x"
+                        duration: 200
                         easing.type: Easing.InOutQuad
                     }
                 }
@@ -45,7 +102,7 @@ Item {
 
         Text {
             id: titleText
-            text: Hyprland.activeToplevel?.title || ""
+            text: root.stableTitle
 
             font.pixelSize: 14
             font.family: Config.font.text

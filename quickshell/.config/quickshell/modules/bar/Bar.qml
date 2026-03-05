@@ -39,10 +39,6 @@ Rectangle {
                 Layout.topMargin: 30
             }
 
-            SpecialWorkspaces {
-                Layout.topMargin: 20
-            }
-
             ActiveWindowDisplay {
                 Layout.fillHeight: true
                 Layout.topMargin: 50

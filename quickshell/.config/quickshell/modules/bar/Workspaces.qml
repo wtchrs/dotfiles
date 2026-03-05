@@ -1,34 +1,21 @@
 import QtQuick
 import QtQuick.Layouts
-import Quickshell.Hyprland
+import Quickshell
+import Quickshell.Io
 import qs.configs
+import qs.niri
 
 Item {
     id: root
     implicitWidth: container.implicitWidth
     implicitHeight: container.implicitHeight
 
-    readonly property int focusedWorkspaceId: Hyprland.focusedWorkspace?.id || 0
+    property var niri: NiriEventStream
 
-    readonly property var occupiedWs: {
-        return Array.from(Hyprland.workspaces.values).sort((a, b) => a.id - b.id);
-    }
+    // On click: optionally focus the monitor hosting this bar, then switch workspace.
+    property bool focusMonitorOnClick: true
 
-    readonly property var workspaceMap: {
-        let map = {};
-        Hyprland.workspaces.values.forEach(ws => {
-            map[ws.id] = ws;
-        });
-        return map;
-    }
-
-    readonly property var visibleWorkspaces: {
-        let workspaces = new Set([1, 2, 3, 4, 5]);
-        workspaces.add(focusedWorkspaceId);
-        root.occupiedWs.forEach(ws => workspaces.add(ws.id));
-        // Filter out special workspaces which have negative IDs
-        return Array.from(workspaces).filter(id => id > 0).sort((a, b) => a - b);
-    }
+    readonly property string outputName: root.QsWindow?.window?.screen?.name || ""
 
     readonly property var iconMap: ({
         "1": "",
@@ -38,8 +25,79 @@ Item {
         "5": "",
     })
 
-    onFocusedWorkspaceIdChanged: {
-        Hyprland.refreshWorkspaces();
+    function shellEscape(s) {
+        const v = (s === null || s === undefined) ? "" : String(s)
+        return "'" + v.replace(/'/g, "'\"'\"'") + "'"
+    }
+
+    // niri display model:
+    // - hide empty workspaces (active_window_id == null), except the active one on this output
+    // - reindex visible entries as 1..N for labeling
+    readonly property var displayModel: {
+        const wsAll = (root.niri && Array.isArray(root.niri.workspaces)) ? root.niri.workspaces : []
+        let list = wsAll.filter(ws => ws)
+
+        if (root.outputName) {
+            list = list.filter(ws => String(ws.output || "") === root.outputName)
+        }
+
+        list.sort((a, b) => (a.idx ?? 0) - (b.idx ?? 0))
+
+        const out = []
+        let di = 0
+
+        for (const ws of list) {
+            const isActive = !!ws.is_active
+            const isEmpty = (ws.active_window_id === null || ws.active_window_id === undefined)
+
+            if (isEmpty && !isActive)
+                continue
+
+            di++
+
+            const name = (ws.name === null || ws.name === undefined) ? "" : String(ws.name)
+            const hasName = name !== ""
+
+            const ref = hasName ? name : String(ws.idx)
+
+            let label = ""
+            if (hasName) {
+                label = root.iconMap[name] || name
+            } else {
+                const k = String(di)
+                label = root.iconMap[k] || k
+            }
+
+            out.push({
+                ws: ws,
+                ref: ref,
+                label: label,
+            })
+        }
+
+        return out
+    }
+
+    // Action exec
+    property var actionCommand: ["sh", "-c", "true"]
+
+    Process {
+        id: actionProc
+        command: root.actionCommand
+    }
+
+    function focusWorkspace(entry) {
+        if (!entry || !entry.ref || actionProc.running)
+            return
+
+        const parts = []
+        if (root.focusMonitorOnClick && root.outputName) {
+            parts.push(`niri msg action focus-monitor ${root.shellEscape(root.outputName)} >/dev/null 2>&1`)
+        }
+        parts.push(`niri msg action focus-workspace ${root.shellEscape(String(entry.ref))} >/dev/null 2>&1`)
+
+        root.actionCommand = ["sh", "-c", parts.join(" ; ")]
+        actionProc.running = true
     }
 
     ColumnLayout {
@@ -48,16 +106,18 @@ Item {
         spacing: 2
 
         Repeater {
-            model: root.visibleWorkspaces
+            model: root.displayModel
 
             delegate: Item {
                 Layout.fillWidth: true
                 implicitHeight: text.implicitHeight
 
-                readonly property int wsId: modelData
-                readonly property var ws: root.workspaceMap[wsId]
-                readonly property bool isUrgent: ws ? ws.urgent : false
-                readonly property bool isFocused: wsId === root.focusedWorkspaceId
+                readonly property var entry: modelData
+                readonly property var ws: entry.ws
+
+                readonly property bool isUrgent: ws ? !!ws.is_urgent : false
+                readonly property bool isActive: ws ? !!ws.is_active : false
+                readonly property bool isFocused: ws ? !!ws.is_focused : false
 
                 Rectangle {
                     anchors.fill: parent
@@ -69,18 +129,21 @@ Item {
                     id: text
                     anchors.horizontalCenter: parent.horizontalCenter
 
-                    text: iconMap[wsId] || wsId.toString()
+                    text: entry.label
                     font.family: Config.font.text
                     font.pixelSize: 13
-                    color: isFocused ? "#FFFFFF" : isUrgent ? "#a994b8" : "#AAAAAA"
+
+                    // Priority: focused (global) > active (this output) > urgent
+                    color: isFocused ? "#FFFFFF"
+                          : isActive  ? "#DDDDDD"
+                          : isUrgent  ? "#a994b8"
+                          : "#AAAAAA"
                 }
 
                 MouseArea {
                     anchors.fill: parent
                     cursorShape: Qt.PointingHandCursor
-                    onClicked: {
-                        Hyprland.dispatch(`workspace ${parent.wsId}`);
-                    }
+                    onClicked: root.focusWorkspace(entry)
                 }
             }
         }
