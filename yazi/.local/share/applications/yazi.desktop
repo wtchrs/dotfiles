@@ -1,9 +1,0 @@
-[Desktop Entry]
-Type=Application
-Name=Yazi
-Comment=Launch Yazi file manager
-Exec=ghostty --title="Yazi" -e yazi %u
-Icon=yazi
-Terminal=false
-Categories=System;Utility;FileManager;
-MimeType=inode/directory;
