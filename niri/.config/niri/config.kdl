@@ -192,7 +192,7 @@ layer-rule {
 }
 
 layer-rule {
-    match namespace="^quickshell:blur$"
+    match namespace="^quickshell:(bar|tray-menu)$"
 
     background-effect {
         blur true

@@ -2,11 +2,14 @@ import QtQuick
 import QtQuick.Layouts
 import Quickshell
 import Quickshell.Io
+import Quickshell.Wayland
 import qs.configs
 
 PanelWindow {
     id: root
     anchors { top: true; bottom: true; left: true; right: true }
+
+    WlrLayershell.namespace: "quickshell:launcher"
 
     focusable: true
     exclusionMode: ExclusionMode.Ignore

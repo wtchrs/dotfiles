@@ -7,7 +7,7 @@ import qs.configs
 PanelWindow {
     id: barWin
 
-    WlrLayershell.namespace: "quickshell:blur"
+    WlrLayershell.namespace: "quickshell:bar"
 
     anchors {
         top: true
