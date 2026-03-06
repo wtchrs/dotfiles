@@ -1,5 +1,5 @@
 theme = "nord-custom"
-title = ">_ Ghostty"
+title = " Ghostty"
 term = "xterm-256color"
 
 # Ghostty has its own nerd font support
