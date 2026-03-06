@@ -74,7 +74,7 @@ Item {
 
     Process {
         id: openNmtui
-        command: ["hyprctl", "dispatch", "exec", "[float] ghostty -e nmtui"]
+        command: ["ghostty", "-e", "nmtui"]
     }
 
     // --- Helpers ---
