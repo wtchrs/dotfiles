@@ -54,6 +54,19 @@ style = "fg:nord0 bg:nord8"
 format = "[$all_status$ahead_behind]($style)"
 style = "fg:nord0 bg:nord8"
 
+modified    = ' '
+staged      = ' '
+renamed     = ' '
+deleted     = ' '
+ahead       = ' '
+behind      = ' '
+diverged    = ' '
+up_to_date  = ' '
+untracked   = ' '
+stashed     = ' '
+typechanged = ' '
+conflicted  = ' '
+
 # LANGUAGES
 # =========
 
