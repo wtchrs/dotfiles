@@ -1,44 +1,48 @@
 # Dotfiles
 
+Personal Arch Linux configuration dotfiles managed with GNU Stow, built around niri and quickshell.
+
 ## Screenshot
 
 ![screenshot](assets/screenshot.png)
 
-## Dependencies
+## Requirements
 
-- stow - symlink farm manager used for managing dotfiles
+- stow - symlink farm manager for managing dotfiles
 - [niri][niri] - scrollable-tiling Wayland compositor
-- [quickshell][quickshell] - shell UI (bar, launcher, wallpaper)
+- [quickshell][quickshell] - desktop shell UI (bar, launcher, wallpaper)
 - [ghostty][ghostty] - terminal emulator
 - [dunst][dunst] - notification daemon
-- [swaylock][swaylock] - lockscreen
+- [swaylock][swaylock] - lock screen
 - [nautilus][nautilus] - file manager
-- [Zen Browser][zen-browser] - firefox-based browser
-- [zsh][zsh]
+- [Zen Browser][zen-browser] - Firefox-based browser
+- [zsh][zsh] - shell
 - [starship][starship] - cross-shell prompt
-- [neovim][neovim] - vim-like terminal editor
+- [neovim][neovim] - Vim-based text editor
 - [tmux][tmux] - terminal multiplexer
-- [brightnessctl][brightnessctl]
+- [brightnessctl][brightnessctl] - brightness control utility
 - [networkmanager][networkmanager] - `nmcli` for network widget
 - [pipewire][pipewire] - audio and video processing engine
-- [wireplumber][wireplumber] - provides `wpctl`
+- [wireplumber][wireplumber] - `wpctl` for volume control
 - [playerctl][playerctl] - media key controls
 - [jq][jq] - used by niri helper script
-- qt6-wayland
-- aur/ttf-sarasa-gothic-nerd-fonts - or manually install only needed fonts from [here][sarasa-font-release]
+- qt6-wayland - Qt Wayland platform plugin
+- [Symbols Nerd Fonts][nerd-fonts] (ttf-nerd-fonts-symbols) - for Nerd Font icons
+- [Sarasa Gothic][sarasa-gothic-font] (ttf-sarasa-gothic) - for Sarasa Mono
 
-Optional:
-- [hyprpolkitagent][hyprpolkitagent] - started by niri config for polkit prompts
+### Optional
+
+- [hyprpolkitagent][hyprpolkitagent] - used for polkit prompts, started by the niri config
 
 > [!NOTE]
-> I installed `aur/niri-wip-git` for [blur support](https://github.com/niri-wm/niri/pull/3483). If the feature is merged to upstream, you can install it instead.
+> I use `niri-wip-git` from the AUR for [blur support](https://github.com/niri-wm/niri/pull/3483). If the feature is merged upstream, you can use the official package instead.
 
-## Stow Package Lists
+## Stow Packages
 
-- zsh
+- zsh - zsh configuration with zinit plugin manager
 - starship - starship prompt configuration
 - neovim - [LazyVim][lazyvim] configuration
-- tmux - nord color theme configuration
+- tmux - Nord color theme configuration
 - dunst - notification configuration
 - ghostty - terminal configuration
 - niri - niri WM configuration
@@ -49,20 +53,24 @@ Optional:
 ### Clone
 
 ```sh
-git clone https://github.com/wtchrs/dotfiles
+git clone https://github.com/wtchrs/dotfiles.git
 cd dotfiles
 ```
 
 ### Apply Stow Packages
 
+Run the following commands from the repository root:
+
 ```sh
-stow package_name
+stow <package>
 ```
 
 ### Remove Stow Packages
 
+Run the following commands from the repository root:
+
 ```sh
-stow -D package_name
+stow -D <package>
 ```
 
 ### Example Setup
@@ -71,10 +79,10 @@ stow -D package_name
 stow zsh starship neovim tmux dunst ghostty niri quickshell
 ```
 
-### Niri Configurations
+### Niri Configuration
 
 > [!WARNING]
-> Before launching niri, review environment and monitor output settings in:
+> Before launching niri, review the environment and monitor output settings in:
 > - `niri/.config/niri/config.kdl`
 
 
@@ -86,12 +94,13 @@ stow zsh starship neovim tmux dunst ghostty niri quickshell
 [lazyvim]: https://github.com/LazyVim/LazyVim
 [nautilus]: https://apps.gnome.org/Nautilus/
 [neovim]: https://github.com/neovim/neovim
+[nerd-fonts]: https://github.com/ryanoasis/nerd-fonts
 [niri]: https://github.com/niri-wm/niri
 [networkmanager]: https://networkmanager.dev/
 [playerctl]: https://github.com/altdesktop/playerctl
 [pipewire]: https://pipewire.org/
 [quickshell]: https://quickshell.org/
-[sarasa-font-release]: https://github.com/jonz94/Sarasa-Gothic-Nerd-Fonts/releases
+[sarasa-gothic-font]: https://github.com/be5invis/Sarasa-Gothic
 [swaylock]: https://github.com/swaywm/swaylock
 [starship]: https://github.com/starship/starship
 [tmux]: https://github.com/tmux/tmux
