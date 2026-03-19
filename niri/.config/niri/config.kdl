@@ -187,11 +187,20 @@ layer-rule {
 }
 
 layer-rule {
-    match namespace="^quickshell:(bar|tray-menu|launcher)$"
+    match namespace="^quickshell:(bar|tray-menu)$"
 
     background-effect {
         blur true
         xray false
+    }
+}
+
+layer-rule {
+    match namespace="^quickshell:launcher$"
+
+    background-effect {
+        blur true
+        xray true
     }
 }
 
