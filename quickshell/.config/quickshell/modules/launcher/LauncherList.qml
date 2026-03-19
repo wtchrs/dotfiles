@@ -3,107 +3,204 @@ import QtQuick.Layouts
 import Quickshell
 import qs.configs
 
-ListView {
+Item {
     id: root
 
-    required property var appModel // Injecting filtered model from outside
+    required property var appModel
 
     signal itemClicked(string exec)
 
+    property alias currentIndex: listView.currentIndex
+
+    function incrementCurrentIndex() {
+        listView.incrementCurrentIndex();
+    }
+
+    function decrementCurrentIndex() {
+        listView.decrementCurrentIndex();
+    }
+
     Layout.fillWidth: true
     Layout.fillHeight: true
-    Layout.margins: 10
-
-    model: appModel
+    Layout.margins: 12
     clip: true
 
-    // Highlight Animation
-    highlightMoveDuration: 100
-    highlightMoveVelocity: -1
+    ListView {
+        id: listView
+        anchors.fill: parent
+        model: appModel
+        clip: true
+        spacing: 8
+        highlightMoveDuration: 120
+        highlightMoveVelocity: -1
+        boundsBehavior: Flickable.StopAtBounds
+        focus: true
 
-    delegate: Rectangle {
-        id: delegateItem
-        width: root.width
-        height: Config.launcher.itemHeight
-        radius: 8
-        color: ListView.isCurrentItem ? Config.launcher.selectBg : "transparent"
-
-        // Mouse click handling
-        MouseArea {
-            anchors.fill: parent
-            onClicked: {
-                root.currentIndex = index
-                root.model[index].exec && root.launchApp(root.model[index].exec)
+        onCountChanged: {
+            if (count === 0) {
+                currentIndex = -1;
+            } else if (currentIndex < 0) {
+                currentIndex = 0;
             }
         }
 
-        RowLayout {
-            anchors.fill: parent
-            anchors.leftMargin: 15
-            spacing: 15
+        delegate: Rectangle {
+            id: delegateRoot
 
-            // Icon
-            Item {
-                width: 24; height: 24
+            required property var modelData
 
-                property string resolvedIcon: {
-                    if (!modelData.icon) return ""
-                    if (modelData.icon.startsWith("/")) return modelData.icon
-                    return Quickshell.iconPath(modelData.icon, 24)
+            width: listView.width
+            height: Config.launcher.itemHeight
+            radius: 14
+            antialiasing: true
+
+            color: ListView.isCurrentItem
+                ? Config.theme.surfaceActive
+                : mouseArea.containsMouse
+                    ? Config.theme.surface
+                    : "transparent"
+            border.color: ListView.isCurrentItem
+                ? Config.theme.br
+                : "transparent"
+            border.width: ListView.isCurrentItem ? 1 : 0
+
+            RowLayout {
+                anchors.fill: parent
+                anchors.leftMargin: 14
+                anchors.rightMargin: 14
+                spacing: 12
+
+                Rectangle {
+                    Layout.preferredWidth: 32
+                    Layout.preferredHeight: 32
+                    Layout.alignment: Qt.AlignVCenter
+                    radius: 10
+                    color: Config.theme.surface
+                    border.color: Config.theme.br
+                    border.width: 1
+                    antialiasing: true
+
+                    property string resolvedIcon: {
+                        if (!delegateRoot.modelData.icon) {
+                            return "";
+                        }
+
+                        if (typeof delegateRoot.modelData.icon === "string"
+                            && delegateRoot.modelData.icon.startsWith("/")) {
+                            return delegateRoot.modelData.icon;
+                        }
+
+                        return Quickshell.iconPath(delegateRoot.modelData.icon, 20);
+                    }
+
+                    Image {
+                        anchors.fill: parent
+                        anchors.margins: 5
+                        source: parent.resolvedIcon
+                        visible: parent.resolvedIcon !== ""
+                        fillMode: Image.PreserveAspectFit
+                        smooth: true
+                        asynchronous: true
+                        cache: true
+                        sourceSize.width: 20
+                        sourceSize.height: 20
+                    }
+
+                    Text {
+                        anchors.centerIn: parent
+                        text: delegateRoot.modelData.name ? delegateRoot.modelData.name.charAt(0).toUpperCase() : "?"
+                        visible: parent.resolvedIcon === ""
+                        color: Config.theme.fg
+                        font.family: Config.font.text
+                        font.pixelSize: 12
+                        font.weight: Font.DemiBold
+                    }
                 }
 
-                // Show icon if it exists
-                Image {
-                    anchors.fill: parent
-                    source: parent.resolvedIcon
-                    visible: source !== ""
-                    fillMode: Image.PreserveAspectFit
-                    smooth: true
+                ColumnLayout {
+                    Layout.fillWidth: true
+                    Layout.alignment: Qt.AlignVCenter
+                    spacing: 2
+
+                    Text {
+                        Layout.fillWidth: true
+                        text: delegateRoot.modelData.name || ""
+                        color: Config.theme.fg
+                        font.family: Config.font.text
+                        font.pixelSize: 14
+                        font.weight: ListView.isCurrentItem ? Font.DemiBold : Font.Medium
+                        elide: Text.ElideRight
+                    }
+
+                    Text {
+                        Layout.fillWidth: true
+                        text: delegateRoot.modelData.description || ""
+                        visible: text.length > 0
+                        color: Config.theme.fgDim
+                        font.family: Config.font.text
+                        font.pixelSize: 11
+                        opacity: ListView.isCurrentItem ? 1.0 : 0.85
+                        elide: Text.ElideRight
+                    }
                 }
 
-                // Fallback placeholder icon
                 Text {
-                    anchors.centerIn: parent
-                    text: ""
-                    font.family: Config.font.icon
-                    visible: parent.resolvedIcon === ""
-                    color: ListView.isCurrentItem ? Config.launcher.selectFg : Config.launcher.mainFg
+                    Layout.alignment: Qt.AlignVCenter
+                    visible: delegateRoot.modelData.exec && delegateRoot.modelData.exec.length > 0
+                    text: "↵"
+                    color: Config.theme.fgDim
+                    font.family: Config.font.text
+                    font.pixelSize: 12
+                    opacity: 0.7
                 }
             }
 
-            // Text Content
-            ColumnLayout {
-                Layout.fillWidth: true
-                spacing: 2
-
-                Text {
-                    text: modelData.name
-                    Layout.fillWidth: true
-                    font.family: Config.font.text
-                    font.pixelSize: 14
-                    color: ListView.isCurrentItem
-                        ? Config.launcher.selectFg
-                        : Config.launcher.mainFg
-                }
-
-                Text {
-                    text: modelData.description || ""
-                    Layout.fillWidth: true
-                    font.family: Config.font.text
-                    font.pixelSize: 11
-                    elide: Text.ElideRight
-                    visible: text !== ""
-                    color: ListView.isCurrentItem
-                        ? Qt.darker(Config.launcher.selectFg, 1.2)
-                        : Qt.darker(Config.launcher.mainFg, 1.3)
+            MouseArea {
+                id: mouseArea
+                anchors.fill: parent
+                hoverEnabled: true
+                cursorShape: Qt.PointingHandCursor
+                onClicked: {
+                    listView.currentIndex = index;
+                    if (delegateRoot.modelData.exec) {
+                        root.itemClicked(delegateRoot.modelData.exec);
+                    }
                 }
             }
         }
+    }
 
-        // Helper function for click
-        function launchApp(exec) {
-             // Emit the signal for convenience
-             root.itemClicked(exec);
+    Item {
+        anchors.fill: parent
+        visible: listView.count === 0
+        z: 2
+
+        Column {
+            anchors.centerIn: parent
+            width: Math.max(0, Math.min(parent.width - 48, 280))
+            spacing: 6
+
+            Text {
+                width: parent.width
+                horizontalAlignment: Text.AlignHCenter
+                wrapMode: Text.WordWrap
+                text: "No matches"
+                color: Config.theme.fg
+                font.family: Config.font.text
+                font.pixelSize: 16
+                font.weight: Font.DemiBold
+            }
+
+            Text {
+                width: parent.width
+                horizontalAlignment: Text.AlignHCenter
+                wrapMode: Text.WordWrap
+                text: "Try a different search term."
+                color: Config.theme.fgDim
+                font.family: Config.font.text
+                font.pixelSize: 11
+                opacity: 0.8
+            }
         }
     }
 }

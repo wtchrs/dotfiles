@@ -14,13 +14,17 @@ PanelWindow {
     focusable: true
     exclusionMode: ExclusionMode.Ignore
     aboveWindows: true
-    color: Config.launcher.overlayDim
+    color: Config.theme.overlay
     visible: false
 
     // --- State ---
     property string query: ""
     property var allApps: []
     property var filteredApps: []
+
+    function closeLauncher() {
+        root.visible = false;
+    }
     
     // --- Logic : App Loading ---
     Process {
@@ -126,45 +130,39 @@ PanelWindow {
                 .sort((a, b) => b.score - a.score)
                 .map(e => e.app);
         }
-        listView.currentIndex = 0;
+        listView.currentIndex = root.filteredApps.length > 0 ? 0 : -1;
     }
 
     function launchApp(exec) {
         if (!exec) return;
         const cleaned = exec.replace(/%[fFuUikne]/g, '').trim();
-        const argv = cleaned.match(/(?:[^\s"]+|"[^"]*")+/g).map(s => s.replace(/^"(.*)"$/, '$1'));
+        const argvParts = cleaned.match(/(?:[^\s"]+|"[^"]*")+/g);
+        if (!argvParts || argvParts.length === 0)
+            return;
+        const argv = argvParts.map(s => s.replace(/^"(.*)"$/, '$1'));
+
         Quickshell.execDetached(argv);
-        root.visible = false;
+        closeLauncher();
         header.text = "";
     }
 
     // --- Main UI Structure ---
     MouseArea {
         anchors.fill: parent
-        onClicked: root.visible = false
+        onClicked: root.closeLauncher()
 
         Rectangle {
-            id: container
+            id: panel
             anchors.centerIn: parent
-            
-            // Use config
             implicitWidth: Config.launcher.windowWidth
             implicitHeight: Config.launcher.windowHeight
-            color: Config.launcher.mainBg
+            color: Config.theme.bg
             radius: Config.launcher.cornerRadius
             clip: true
+            border.color: Config.theme.br
+            border.width: 1
 
             MouseArea { anchors.fill: parent; onClicked: (mouse) => mouse.accepted = true }
-
-            // Border
-            Rectangle {
-                anchors.fill: parent
-                color: "transparent"
-                border.color: Config.launcher.mainBr
-                border.width: 2
-                radius: parent.radius
-                z: 100
-            }
 
             ColumnLayout {
                 anchors.fill: parent
@@ -187,7 +185,16 @@ PanelWindow {
                             root.launchApp(root.filteredApps[listView.currentIndex].exec)
                         }
                     }
-                    onRequestClose: root.visible = false
+                    onRequestClose: root.closeLauncher()
+                }
+
+                Rectangle {
+                    Layout.fillWidth: true
+                    Layout.leftMargin: 20
+                    Layout.rightMargin: 20
+                    implicitHeight: 1
+                    color: Config.theme.br
+                    opacity: 0.75
                 }
 
                 LauncherList {
@@ -202,7 +209,10 @@ PanelWindow {
     onVisibleChanged: {
         if (visible) {
             loadAppsProc.running = true;
+            root.filterApps();
             header.forceInputFocus();
+        } else {
+            header.text = "";
         }
     }
 }

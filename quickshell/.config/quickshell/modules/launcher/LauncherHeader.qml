@@ -1,9 +1,6 @@
 import QtQuick
 import QtQuick.Layouts
-import QtQuick.Effects
-import Quickshell
 import qs.configs
-import qs.modules.wallpaper
 
 Item {
     id: root
@@ -21,83 +18,105 @@ Item {
 
     Layout.fillWidth: true
     Layout.preferredHeight: Config.launcher.headerHeight
-    Layout.margins: 2
+    clip: true
 
-    // Background Image
-    Image {
-        id: img
+    ColumnLayout {
         anchors.fill: parent
-        source: WallpaperState.source
-        fillMode: Image.PreserveAspectCrop
-        opacity: 0.9
-        visible: false
-    }
-
-    // Image Masking (Rounded Corners)
-    MultiEffect {
-        source: img
-        anchors.fill: img
-        maskEnabled: true
-        maskSource: maskRect
-    }
-
-    Item {
-        id: maskRect
-        anchors.fill: img
-        layer.enabled: true
-        visible: false
+        anchors.leftMargin: 16
+        anchors.rightMargin: 16
+        anchors.topMargin: 0
+        anchors.bottomMargin: 12
+        spacing: 0
 
         Rectangle {
-            anchors.fill: parent
-            topLeftRadius: Config.launcher.cornerRadius
-            topRightRadius: Config.launcher.cornerRadius
-            color: "black"
-        }
-    }
+            Layout.fillWidth: true
+            Layout.preferredHeight: 48
+            radius: 14
+            color: Config.theme.surface
+            border.color: Config.theme.br
+            border.width: 1
+            antialiasing: true
 
-    // Search Bar
-    Rectangle {
-        anchors {
-            bottom: parent.bottom
-            left: parent.left
-            right: parent.right
-            margins: 15
-            bottomMargin: 20
-        }
-        height: Config.launcher.itemHeight
-        color: Config.launcher.entryBg
-        radius: 10
+            RowLayout {
+                anchors.fill: parent
+                anchors.leftMargin: 14
+                anchors.rightMargin: 14
+                spacing: 12
 
-        RowLayout {
-            anchors.fill: parent
-            anchors.leftMargin: 15
-            anchors.rightMargin: 15
+                Rectangle {
+                    Layout.preferredWidth: 26
+                    Layout.preferredHeight: 26
+                    Layout.alignment: Qt.AlignVCenter
+                    radius: 8
+                    color: Config.theme.surfaceActive
+                    border.color: Config.theme.br
+                    border.width: 1
+                    antialiasing: true
 
-            Text {
-                text: ""
-                color: Config.launcher.entryFg
-                font.family: Config.font.icon
-                font.pixelSize: 16
-            }
+                    Text {
+                        anchors.centerIn: parent
+                        text: ""
+                        color: Config.theme.fgDim
+                        font.family: Config.font.icon
+                        font.pixelSize: 14
+                    }
+                }
 
-            TextInput {
-                id: searchInput
-                Layout.fillWidth: true
-                color: Config.launcher.entryFg
-                font.family: Config.font.text
-                font.pixelSize: 14
-                focus: true
-                verticalAlignment: TextInput.AlignVCenter
-                clip: true
+                Item {
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
 
-                // Deligate keyboard navigation logic to signals
-                Keys.onPressed: (event) => {
-                    if (event.key === Qt.Key_Down) root.requestNext();
-                    else if (event.key === Qt.Key_Up) root.requestPrev();
-                    else if (event.key === Qt.Key_Return) root.requestLaunch();
-                    else if (event.key === Qt.Key_Escape) root.requestClose();
+                    TextInput {
+                        id: searchInput
+                        anchors.fill: parent
+                        color: Config.theme.fg
+                        font.family: Config.font.text
+                        font.pixelSize: 14
+                        verticalAlignment: TextInput.AlignVCenter
+                        clip: true
+                        focus: true
+                        selectByMouse: true
+
+                        Keys.onPressed: (event) => {
+                            if (event.key === Qt.Key_Down) {
+                                root.requestNext();
+                                event.accepted = true;
+                            } else if (event.key === Qt.Key_Up) {
+                                root.requestPrev();
+                                event.accepted = true;
+                            } else if (event.key === Qt.Key_Return || event.key === Qt.Key_Enter) {
+                                root.requestLaunch();
+                                event.accepted = true;
+                            } else if (event.key === Qt.Key_Escape) {
+                                root.requestClose();
+                                event.accepted = true;
+                            }
+                        }
+                    }
+
+                    Text {
+                        anchors.fill: parent
+                        verticalAlignment: Text.AlignVCenter
+                        text: "Search applications"
+                        color: Config.theme.fgDim
+                        font.family: Config.font.text
+                        font.pixelSize: 14
+                        visible: searchInput.text.length === 0
+                        opacity: 0.7
+                        elide: Text.ElideRight
+                    }
                 }
             }
+        }
+
+        Text {
+            Layout.fillWidth: true
+            horizontalAlignment: Text.AlignRight
+            text: "↑/↓ navigate · Enter launch · Esc close"
+            color: Config.theme.fgDim
+            font.family: Config.font.text
+            font.pixelSize: 11
+            opacity: 0.65
         }
     }
 }

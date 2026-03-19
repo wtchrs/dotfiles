@@ -10,6 +10,9 @@ Singleton {
         property color fg: darkMode ? "#FFFFFF" : "#333333"
         property color br: darkMode ? "#33FFFFFF" : "#555555"
         property color fgDim: darkMode ? "#A0A0A0" : "#A0A0A0"
+        property color surface: darkMode ? "#AA262626" : "#E6F0F0F0"
+        property color surfaceActive: darkMode ? "#CC3A3A3A" : "#DDE2E2E2"
+        property color overlay: darkMode ? "#66000000" : "#33000000"
     }
 
     property QtObject font: QtObject {
@@ -38,24 +41,10 @@ Singleton {
     }
 
     property QtObject launcher: QtObject {
-        // Layout Constants
         property int windowWidth: 400
         property int windowHeight: 640
         property int cornerRadius: 24
-        property int itemHeight: 45
-        property int headerHeight: 180
-
-        // Nord Palette Colors
-        property color mainBg: "#DD2E3440"
-        property color mainFg: "#D8DEE9"
-        property color mainBr: "#4C566A"
-
-        property color selectBg: "#434C5E"
-        property color selectFg: "#8FBCBB"
-
-        property color entryBg: "#BB3B4252"
-        property color entryFg: "#ECEFF4"
-
-        property color overlayDim: "#30000000"
+        property int itemHeight: 60
+        property int headerHeight: 124
     }
 }
