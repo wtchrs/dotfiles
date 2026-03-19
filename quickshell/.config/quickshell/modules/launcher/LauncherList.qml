@@ -22,7 +22,10 @@ Item {
 
     Layout.fillWidth: true
     Layout.fillHeight: true
-    Layout.margins: 12
+    Layout.leftMargin: Config.launcher.padding
+    Layout.rightMargin: Config.launcher.padding
+    Layout.topMargin: Config.launcher.listTopGap
+    Layout.bottomMargin: Config.launcher.padding
     clip: true
 
     ListView {

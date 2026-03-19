@@ -17,20 +17,26 @@ Item {
     }
 
     Layout.fillWidth: true
-    Layout.preferredHeight: Config.launcher.headerHeight
+    implicitHeight: Config.launcher.padding
+        + searchField.implicitHeight
+        + Config.launcher.helperGap
+        + guideText.implicitHeight
+        + Config.launcher.sectionGap
     clip: true
 
     ColumnLayout {
-        anchors.fill: parent
-        anchors.leftMargin: 16
-        anchors.rightMargin: 16
-        anchors.topMargin: 0
-        anchors.bottomMargin: 12
-        spacing: 0
+        id: headerLayout
+        x: Config.launcher.padding
+        y: Config.launcher.padding
+        width: parent.width - (Config.launcher.padding * 2)
+        height: parent.implicitHeight - Config.launcher.padding - Config.launcher.sectionGap
+        spacing: Config.launcher.helperGap
 
         Rectangle {
+            id: searchField
             Layout.fillWidth: true
-            Layout.preferredHeight: 48
+            implicitHeight: 48
+            Layout.preferredHeight: implicitHeight
             radius: 14
             color: Config.theme.surface
             border.color: Config.theme.br
@@ -110,6 +116,7 @@ Item {
         }
 
         Text {
+            id: guideText
             Layout.fillWidth: true
             horizontalAlignment: Text.AlignRight
             text: "↑/↓ navigate · Enter launch · Esc close"

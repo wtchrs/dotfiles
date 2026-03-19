@@ -190,8 +190,8 @@ PanelWindow {
 
                 Rectangle {
                     Layout.fillWidth: true
-                    Layout.leftMargin: 20
-                    Layout.rightMargin: 20
+                    Layout.leftMargin: Config.launcher.padding
+                    Layout.rightMargin: Config.launcher.padding
                     implicitHeight: 1
                     color: Config.theme.br
                     opacity: 0.75

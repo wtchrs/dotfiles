@@ -45,6 +45,9 @@ Singleton {
         property int windowHeight: 640
         property int cornerRadius: 24
         property int itemHeight: 60
-        property int headerHeight: 124
+        property int padding: 16
+        property int helperGap: 8
+        property int sectionGap: 12
+        property int listTopGap: 12
     }
 }
