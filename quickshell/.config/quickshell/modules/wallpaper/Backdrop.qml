@@ -21,7 +21,7 @@ PanelWindow {
     Image {
         id: image
         anchors.fill: parent
-        source: Quickshell.env("HOME") + "/Pictures/wallpapers/wallpaper.jpg"
+        source: WallpaperState.source
         fillMode: Image.PreserveAspectCrop
 
         visible: status === Image.Ready

@@ -3,6 +3,7 @@ import QtQuick.Layouts
 import QtQuick.Effects
 import Quickshell
 import qs.configs
+import qs.modules.wallpaper
 
 Item {
     id: root
@@ -26,7 +27,7 @@ Item {
     Image {
         id: img
         anchors.fill: parent
-        source: Quickshell.env("HOME") + "/Pictures/wallpapers/wallpaper.jpg"
+        source: WallpaperState.source
         fillMode: Image.PreserveAspectCrop
         opacity: 0.9
         visible: false
