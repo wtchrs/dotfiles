@@ -1,0 +1,48 @@
+layer-rule {
+    match namespace="^quickshell:backdrop$"
+    place-within-backdrop true
+}
+
+layer-rule {
+    match namespace="^quickshell:(bar|tray-menu)$"
+
+    background-effect {
+        blur true
+        xray false
+    }
+}
+
+layer-rule {
+    match namespace="^quickshell:launcher$"
+
+    background-effect {
+        blur true
+        xray true
+    }
+}
+
+// Open the Firefox or Zen browser picture-in-picture player as floating by default.
+/-window-rule {
+    match app-id=r#"(firefox|zen)$"# title="^Picture-in-Picture$"
+    open-floating true
+}
+
+// Ghostty blur
+window-rule {
+    match app-id="com.mitchellh.ghostty"
+
+    background-effect {
+        blur true
+        xray false
+    }
+}
+
+// Example: block out two password managers from screen capture.
+// (This example rule is commented out with a "/-" in front.)
+/-window-rule {
+    match app-id=r#"^org\.keepassxc\.KeePassXC$"#
+    match app-id=r#"^org\.gnome\.World\.Secrets$"#
+    block-out-from "screen-capture"
+    // Use this instead if you want them visible on third-party screenshot tools.
+    // block-out-from "screencast"
+}

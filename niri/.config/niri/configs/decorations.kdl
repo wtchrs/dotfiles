@@ -1,0 +1,38 @@
+layout {
+    background-color "transparent"
+
+    focus-ring { off; }
+
+    border {
+        on
+        width 1.5
+        active-gradient from="#33ccffee" to="#00ff99ee" angle=45 relative-to="workspace-view"
+        inactive-color "#595959aa"
+
+        urgent-color "#9b0000"
+    }
+
+    shadow {
+        on
+        softness 5
+        spread 1
+        offset x=0 y=0
+        color "#0007"
+    }
+}
+
+prefer-no-csd
+
+// set global blur
+blur {
+    passes 4
+    offset 4.0
+    noise 0.02
+    saturation 1.7
+}
+
+window-rule {
+    geometry-corner-radius 4
+    clip-to-geometry true
+    draw-border-with-background false
+}

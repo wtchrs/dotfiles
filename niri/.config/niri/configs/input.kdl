@@ -1,0 +1,23 @@
+input {
+    keyboard {
+        xkb {
+            layout "us"
+            options "ctrl:nocaps"
+        }
+
+        repeat-delay 250
+    }
+
+    touchpad {
+        tap
+        dwt
+        dwtp
+        drag true
+        drag-lock
+        natural-scroll
+        tap-button-map "left-right-middle"
+    }
+
+    // Prevent from moving focus if scrolling is required.
+    focus-follows-mouse max-scroll-amount="0%"
+}

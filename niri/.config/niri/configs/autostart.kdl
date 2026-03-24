@@ -1,0 +1,6 @@
+spawn-at-startup "qs"
+spawn-at-startup "dunst"
+spawn-at-startup "systemctl" "--user" "start" "hyprpolkitagent"
+
+spawn-at-startup "vesktop"
+spawn-at-startup "spotify"
