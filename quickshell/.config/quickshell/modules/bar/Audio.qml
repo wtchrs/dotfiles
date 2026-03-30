@@ -1,43 +1,16 @@
 import QtQuick
 import QtQuick.Layouts
 import Quickshell
-import Quickshell.Io
 import qs.configs
+import qs.modules.bar.state
 
 Item {
     id: root
 
-    property real volume: 0.5
-    property bool muted: false
+    readonly property var audioState: AudioState
 
     implicitWidth: Config.bar.width
     implicitHeight: container.implicitHeight
-
-    Process {
-        id: getVolumeProc
-        command: ["wpctl", "get-volume", "@DEFAULT_AUDIO_SINK@"]
-        stdout: StdioCollector {
-            onStreamFinished: {
-                var output = text;
-                var matches = output.match(/Volume: ([\d.]+)( \[MUTED\])?/);
-                if (matches) {
-                    root.volume = parseFloat(matches[1]);
-                    root.muted = (matches[2] !== undefined);
-                }
-            }
-        }
-    }
-
-    Process { id: volumeUpProc; command: ["wpctl", "set-volume", "@DEFAULT_AUDIO_SINK@", "1%+"]; onExited: getVolumeProc.running = true }
-    Process { id: volumeDownProc; command: ["wpctl", "set-volume", "@DEFAULT_AUDIO_SINK@", "1%-"]; onExited: getVolumeProc.running = true }
-
-    Timer {
-        interval: 200
-        running: true
-        repeat: true
-        onTriggered: getVolumeProc.running = true
-        Component.onCompleted: getVolumeProc.running = true
-    }
 
     RowLayout {
         id: container
@@ -47,8 +20,9 @@ Item {
         Text {
             id: volumeIcon
             text: {
-                if (root.muted || root.volume == 0) return "󰝟";
-                if (root.volume < 0.5) return "󰕿";
+                if (!root.audioState.everValid) return "󰕾";
+                if (root.audioState.muted || root.audioState.volume === 0) return "󰝟";
+                if (root.audioState.volume < 0.5) return "󰕿";
                 return "󰕾";
             }
             color: Config.theme.fg
@@ -57,7 +31,10 @@ Item {
         }
 
         Text {
-            text: root.muted ? "Muted" : `${Math.round(root.volume * 100)}%`
+            text: {
+                if (!root.audioState.everValid) return "--";
+                return root.audioState.muted ? "Muted" : `${Math.round(root.audioState.volume * 100)}%`;
+            }
             color: Config.theme.fg
             font.family: Config.font.text
             font.pixelSize: 14
@@ -70,9 +47,9 @@ Item {
         cursorShape: Qt.PointingHandCursor
         onWheel: {
             if (wheel.angleDelta.y > 0) {
-                volumeUpProc.running = true;
+                root.audioState.increase();
             } else {
-                volumeDownProc.running = true;
+                root.audioState.decrease();
             }
         }
     }
