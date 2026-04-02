@@ -10,6 +10,7 @@ bindkey '^H' backward-kill-word
 HISTFILE="$HOME/.zsh_history"
 HISTSIZE=100000
 SAVEHIST=10000000
+
 setopt HIST_IGNORE_DUPS
 setopt HIST_IGNORE_SPACE
 setopt HIST_REDUCE_BLANKS
@@ -18,7 +19,10 @@ setopt EXTENDED_HISTORY
 setopt sharehistory
 setopt incappendhistorytime
 
+# path and fpath
 typeset -U path
+typeset -U fpath
+
 path=("$HOME/.local/bin" $path)
 
 # Editor
@@ -110,9 +114,9 @@ zinit light junegunn/fzf
 # Load fzf-tab
 zinit ice wait"0" lucid
 zinit light Aloxaf/fzf-tab
+
 zstyle ':fzf-tab:*' fzf-command fzf
 zstyle ':fzf-tab:*' fzf-pad 4
-
 zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls --color=always "$realpath"'
 zstyle ':completion:*:descriptions' format '[%d]'
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
@@ -123,8 +127,17 @@ zstyle ':completion:*' menu no
 #########################
 
 export ASDF_DATA_DIR="${ASDF_DATA_DIR:-$HOME/.asdf}"
-zinit ice as"command" from"gh-r" atload'path=("$ASDF_DATA_DIR/shims" $path)'
+ASDF_COMPL_DIR="$ASDF_DATA_DIR/completions"
+
+zinit ice \
+    as"program" \
+    from"gh-r" \
+    atclone'mkdir -p "$ASDF_COMPL_DIR"; ./asdf completion zsh > "$ASDF_COMPL_DIR/_asdf"' \
+    atpull"%atclone" \
+    atload'path=("$ASDF_DATA_DIR/shims" $path)'
 zinit light asdf-vm/asdf
+
+fpath=("$ASDF_COMPL_DIR" $fpath)
 
 #########################
 # Completions
