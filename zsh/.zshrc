@@ -108,7 +108,12 @@ if (( $+commands[fd] )); then
   _fzf_compgen_dir() { fd --type=d --hidden --exclude .git . "$1" }
 fi
 
-zinit ice from"gh-r" as"program" atload"source <(fzf --zsh)"
+zinit ice \
+    as"program" \
+    from"gh-r" \
+    atclone'./fzf --zsh > fzf.zsh' \
+    atpull"%atclone" \
+    src"fzf.zsh"
 zinit light junegunn/fzf
 
 # Load fzf-tab
