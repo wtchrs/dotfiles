@@ -8,15 +8,15 @@ bindkey '^H' backward-kill-word
 
 # History
 HISTFILE="$HOME/.zsh_history"
-HISTSIZE=10000000
+HISTSIZE=100000
 SAVEHIST=10000000
 setopt HIST_IGNORE_DUPS
 setopt HIST_IGNORE_SPACE
 setopt HIST_REDUCE_BLANKS
 setopt EXTENDED_HISTORY
-setopt appendhistory
+
 setopt sharehistory
-setopt incappendhistory
+setopt incappendhistorytime
 
 typeset -U path
 path=("$HOME/.local/bin" $path)
@@ -45,7 +45,8 @@ export PNPM_HOME="${HOME}/.local/share/pnpm"
 # Install Zinit if not installed
 ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
 if [[ ! -d "$ZINIT_HOME" ]]; then
-  mkdir -p "$(dirname $ZINIT_HOME)"
+  mkdir -p "$(dirname -- "$ZINIT_HOME")"
+  (( $+commands[git] )) || return
   git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
 fi
 source "${ZINIT_HOME}/zinit.zsh"
@@ -70,9 +71,11 @@ zinit snippet OMZP::sudo
 
 # Load starship if current session is in graphic or ssh.
 if [[ -n "$DISPLAY" || -n "$WAYLAND_DISPLAY" || -n "$SSH_CONNECTION" ]]; then
-  zinit ice as"command" from"gh-r" \
-            atclone"./starship init zsh > init.zsh; ./starship completions zsh > _starship" \
-            atpull"%atclone" src"init.zsh"
+  zinit ice \
+      as"program" \
+      from"gh-r" \
+      atclone"./starship init zsh > init.zsh; ./starship completions zsh > _starship" \
+      atpull"%atclone" src"init.zsh"
   zinit light starship/starship
 fi
 
@@ -88,13 +91,11 @@ autoload -Uz add-zsh-hook
 add-zsh-hook precmd set_starship_config_precmd
 
 #########################
-# fzf and completions
+# fzf
 #########################
 
-zinit ice from"gh-r" as"program" atload"source <(fzf --zsh)"
-zinit light junegunn/fzf
-
 if (( $+commands[fd] )); then
+  # Set custom commands
   export FZF_DEFAULT_COMMAND="fd --hidden --strip-cwd-prefix --exclude .git"
   export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
   export FZF_ALT_C_COMMAND="fd --type=d --hidden --strip-cwd-prefix --exclude .git"
@@ -103,26 +104,19 @@ if (( $+commands[fd] )); then
   _fzf_compgen_dir() { fd --type=d --hidden --exclude .git . "$1" }
 fi
 
-# Completions
-zinit ice blockf
-zinit light zsh-users/zsh-completions
-
-# Load no actual plugin, but execute only initialization
-zinit ice atinit"ZINIT[COMPINIT_OPTS]=-C; zicompinit; zicdreplay"
-zinit light zdharma-continuum/null
+zinit ice from"gh-r" as"program" atload"source <(fzf --zsh)"
+zinit light junegunn/fzf
 
 # Load fzf-tab
 zinit ice wait"0" lucid
 zinit light Aloxaf/fzf-tab
 zstyle ':fzf-tab:*' fzf-command fzf
 zstyle ':fzf-tab:*' fzf-pad 4
-zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls --color=always $realpath'
 
-# Load visual-aid plugins
-zinit ice wait"0" lucid
-zinit light zdharma-continuum/fast-syntax-highlighting
-zinit ice wait"0" lucid atload"!_zsh_autosuggest_start"
-zinit light zsh-users/zsh-autosuggestions
+zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls --color=always "$realpath"'
+zstyle ':completion:*:descriptions' format '[%d]'
+zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+zstyle ':completion:*' menu no
 
 #########################
 # asdf
@@ -133,11 +127,25 @@ zinit ice as"command" from"gh-r" atload'path=("$ASDF_DATA_DIR/shims" $path)'
 zinit light asdf-vm/asdf
 
 #########################
-# Aliases
+# Completions
 #########################
 
-setopt completealiases
-alias tmux="env TERM=tmux-256color tmux"
+zinit ice blockf
+zinit light zsh-users/zsh-completions
+
+# Load visual-aid plugins
+zinit ice wait"0" lucid
+zinit light zdharma-continuum/fast-syntax-highlighting
+zinit ice wait"0" lucid atload"!_zsh_autosuggest_start"
+zinit light zsh-users/zsh-autosuggestions
+
+# Load no actual plugin, but execute only initialization
+zinit ice atinit"ZINIT[COMPINIT_OPTS]=-C; zicompinit; zicdreplay"
+zinit light zdharma-continuum/null
+
+#########################
+# Aliases
+#########################
 
 if (( $+commands[eza] )); then
   alias ls="eza --icons"
