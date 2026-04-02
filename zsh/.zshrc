@@ -127,17 +127,14 @@ zstyle ':completion:*' menu no
 #########################
 
 export ASDF_DATA_DIR="${ASDF_DATA_DIR:-$HOME/.asdf}"
-ASDF_COMPL_DIR="$ASDF_DATA_DIR/completions"
 
 zinit ice \
     as"program" \
     from"gh-r" \
-    atclone'mkdir -p "$ASDF_COMPL_DIR"; ./asdf completion zsh > "$ASDF_COMPL_DIR/_asdf"' \
+    atclone'./asdf completion zsh > _asdf' \
     atpull"%atclone" \
     atload'path=("$ASDF_DATA_DIR/shims" $path)'
 zinit light asdf-vm/asdf
-
-fpath=("$ASDF_COMPL_DIR" $fpath)
 
 #########################
 # Completions
