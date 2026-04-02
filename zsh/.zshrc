@@ -34,6 +34,7 @@ fi
 
 # GPG
 export GPG_TTY=$(tty)
+gpg-connect-agent updatestartuptty /bye >/dev/null 2>&1
 
 # pnpm
 export PNPM_HOME="${HOME}/.local/share/pnpm"
@@ -163,8 +164,8 @@ zinit light zdharma-continuum/null
 #########################
 
 if (( $+commands[eza] )); then
-  alias ls="eza --icons"
-  alias ll="ls -aal"
+  alias ls="eza --icons=always"
+  alias ll="eza --icons=always -aal"
 else
   alias ls="ls --color=auto -h"
   alias ll="ls -al"
@@ -174,5 +175,5 @@ if (( $+commands[bat] )); then
   alias cat="bat --paging=never --theme=Nord"
 elif (( $+commands[batcat] )); then
   alias bat="batcat"
-  alias cat="bat --paging=never --theme=Nord"
+  alias cat="batcat --paging=never --theme=Nord"
 fi
