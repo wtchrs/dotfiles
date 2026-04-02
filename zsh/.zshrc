@@ -28,6 +28,9 @@ else
   export EDITOR=vim
 fi
 
+# GPG
+export GPG_TTY=$(tty)
+
 # pnpm
 export PNPM_HOME="${HOME}/.local/share/pnpm"
 [[ -d $PNPM_HOME ]] && path+=("$PNPM_HOME")
@@ -145,8 +148,8 @@ else
 fi
 
 if (( $+commands[bat] )); then
-  alias cat="bat --paging=never"
+  alias cat="bat --paging=never --theme=Nord"
 elif (( $+commands[batcat] )); then
   alias bat="batcat"
-  alias cat="bat --paging=never"
+  alias cat="bat --paging=never --theme=Nord"
 fi
